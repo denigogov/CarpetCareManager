@@ -1,0 +1,14 @@
+{
+  "name": "luxyapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-frontend": "cd \"luxyCo Client\" && pnpm run dev",
+    "start-backend": "cd \"luxyCo Server\" && pnpm run dev",
+    "dev": "start /B cmd /c \"cd \"luxyCo Client\" && pnpm install && pnpm run dev\" & start /B cmd /c \"cd \"luxyCo Server\" && pnpm install && pnpm run dev\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
