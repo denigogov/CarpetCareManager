@@ -1,0 +1,61 @@
+@use "./colors";
+@use "./general";
+@use "./mixing";
+@import "./main.scss";
+
+body {
+  background-color: colors.$background-Primary;
+}
+
+.loginView {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 40px;
+
+  form {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+
+    .login__username {
+      background: url(../assets/user-input-icon.svg) no-repeat;
+      @include mixing.inputFields;
+      background-color: #fff;
+    }
+
+    .login__password {
+      background: url(../assets/password-input-icon.svg) no-repeat;
+      @include mixing.inputFields;
+      background-color: #fff;
+    }
+
+    .login-btn {
+      @include mixing.button;
+      margin: 24px 45px 0 45px;
+    }
+  }
+}
+
+.service {
+  font-size: 33px;
+  font-weight: 200;
+}
+
+.name {
+  font-size: 24px;
+  color: colors.$banner-Primary;
+  font-weight: 600;
+}
+
+.login-icon {
+  width: 115px;
+  height: 115px;
+  border: 1px solid colors.$borderLine-Second;
+  border-radius: 50%;
+  padding: 20px;
+}

@@ -1,0 +1,33 @@
+@use "./colors";
+@use "./general";
+
+@mixin inputFields($borderColor: colors.$borderLine-Primary) {
+  border: 1px solid $borderColor;
+  border-radius: 10px;
+  background-size: 13px;
+  background-position: right 10px top 11px;
+  padding: 13px 40px;
+}
+
+@mixin button() {
+  background-color: colors.$button-Primary;
+  padding: 15px;
+  border-radius: 20px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: general.$transition;
+
+  &:hover {
+    background-color: colors.$button-Primary-Dark;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(-3px);
+  }
+}
+
+//   @mixin buttonHover($btnHoverColor: colors.$primary-darker) {
+//     background-color: $btnHoverColor;
+//   }
