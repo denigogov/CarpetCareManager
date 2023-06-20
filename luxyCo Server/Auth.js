@@ -34,9 +34,9 @@ const verifyPassword = (req, res) => {
       //  ifVerified return true or false if the password match return true!
       if (isVerified) {
         // res.send("credentials are valid");
-        const payload = { sub: req.users.id, name: req.users.first_name };
+        const payload = { sub: req.user.id, name: req.user.firstname };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "1h",
+          expiresIn: "9h",
         });
 
         // console.log(payload);

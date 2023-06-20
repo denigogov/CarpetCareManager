@@ -9,6 +9,6 @@
     "dev": "start /B cmd /c \"cd \"luxyCo Client\" && pnpm install && pnpm run dev\" & start /B cmd /c \"cd \"luxyCo Server\" && pnpm install && pnpm run dev\""
   },
   "keywords": [],
-  "author": "",
+  "author": "dejan gogov",
   "license": "ISC"
 }

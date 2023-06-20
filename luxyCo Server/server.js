@@ -6,9 +6,11 @@ app.use(express.json());
 
 const port = process.env.SERVER_PORT ?? 4001;
 
-const database = require("./database/database");
-const { validateUsers } = require("./validators");
-const { hashpassword, verifyPassword, verifyToken } = require("./Auth");
+const userRoute = require("./routes/userRoute");
+// const custumerRouter = require("./routes/custumerRoute");
+
+app.use("/user", userRoute);
+// app.use("/custumer", custumerRouter);
 
 app.listen(port, (err) => {
   if (err) {
@@ -21,13 +23,5 @@ app.listen(port, (err) => {
 const welcome = (_, res) => {
   res.send(`welcome , owner Dejan Gogov`);
 };
-app.get("/users", database.userOrderCount);
-app.get("/users/:id", database.getUsersById);
-app.post("/users", hashpassword, validateUsers, database.createUser);
 
-// Login
-app.post(
-  "/login",
-  database.getUserByEmailWithPasswordAndPassToNext,
-  verifyPassword
-);
+app.use("/", welcome);
