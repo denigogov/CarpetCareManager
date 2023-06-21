@@ -12,12 +12,19 @@ import Order from "./pages/Order";
 import Delivery from "./pages/Delivery";
 import Contact from "./pages/Contact";
 import Managment from "./pages/Managment";
+import useToken from "./useToken";
 
 const App = () => {
+  const { token, setToken } = useToken(null);
+
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
-        {/* <Route index element={<Login />} />  FOR NOW WE WONT ADD DEFAULT PAGE !!!!  */}
+        <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="order" element={<Order />} />
         <Route path="delivery" element={<Delivery />} />
