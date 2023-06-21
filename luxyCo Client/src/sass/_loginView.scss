@@ -3,10 +3,6 @@
 @use "./mixing";
 @import "./main.scss";
 
-body {
-  background-color: colors.$background-Primary;
-}
-
 .loginView {
   height: 100vh;
   display: flex;
@@ -15,6 +11,7 @@ body {
   justify-content: center;
   text-align: center;
   gap: 40px;
+  background-color: colors.$background-Primary;
 
   form {
     margin-top: 1rem;

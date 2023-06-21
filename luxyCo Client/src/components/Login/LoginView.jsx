@@ -23,6 +23,7 @@ const LoginView = ({ setToken }) => {
       first_name,
       password,
     });
+
     setToken(token);
   };
 

@@ -1,12 +1,11 @@
 import { Outlet, NavLink } from "react-router-dom";
-import NavbarView from "../components/navbar/NavbarOwner";
+import NavbarView from "../components/navbar/NavbarView";
 import Login from "./Login";
 
 const Root = () => {
   return (
     <div>
       <NavbarView />
-      {/* <Login /> */}
 
       <main>
         <Outlet />
