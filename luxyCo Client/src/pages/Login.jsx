@@ -1,9 +1,9 @@
 import LoginView from "../components/Login/LoginView";
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setUserInfo }) => {
   return (
     <div>
-      <LoginView setToken={setToken} />
+      <LoginView setToken={setToken} setUserInfo={setUserInfo} />
     </div>
   );
 };

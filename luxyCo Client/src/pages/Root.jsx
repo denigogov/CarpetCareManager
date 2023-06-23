@@ -3,7 +3,7 @@ import NavbarView from "../components/navbar/NavbarView";
 import "../sass/Navbar/_navbarView.scss";
 import appLogo from "../assets/appLogo.svg";
 
-const Root = ({ setToken }) => {
+const Root = ({ setToken, userInfo }) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
@@ -26,7 +26,7 @@ const Root = ({ setToken }) => {
             </div>
           </div>
 
-          <div className="userLoggedin">username</div>
+          <div className="userLoggedin">{userInfo.name}</div>
           <nav>
             <ul>
               <li>
@@ -80,19 +80,20 @@ const Root = ({ setToken }) => {
                   {/* <span className="tooltip">Contact</span> */}
                 </NavLink>
               </li>
-
-              <li>
-                <NavLink
-                  to="management"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : "navLink"
-                  }
-                >
-                  <i className="bx bxs-folder-open"></i>
-                  Management
-                  {/* <span className="tooltip">Management</span> */}
-                </NavLink>
-              </li>
+              {userInfo.department === 2 && (
+                <li>
+                  <NavLink
+                    to="management"
+                    className={({ isActive, isPending }) =>
+                      isPending ? "pending" : isActive ? "active" : "navLink"
+                    }
+                  >
+                    <i className="bx bxs-folder-open"></i>
+                    Management
+                    {/* <span className="tooltip">Management</span> */}
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </nav>
           <div className="ownername">Powerd by Gogov</div>

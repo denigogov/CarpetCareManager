@@ -41,7 +41,12 @@ const verifyPassword = (req, res) => {
 
         // console.log(payload);
 
-        res.send({ token });
+        res.send({
+          token,
+          name: req.user.first_name,
+          id: req.user.id,
+          department: req.user.department_id,
+        });
       } else {
         res.status(401).send("wrong password or username");
       }
