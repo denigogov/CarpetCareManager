@@ -1,5 +1,5 @@
 const Price = () => {
-  return <div>show all Price </div>;
+  return <div>show all prices</div>;
 };
 
 export default Price;

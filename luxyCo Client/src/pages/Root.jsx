@@ -1,6 +1,5 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import NavbarView from "../components/navbar/NavbarView";
-import "../sass/Navbar/_navbarView.scss";
+import "../sass/_root.scss";
 import appLogo from "../assets/appLogo.svg";
 
 const Root = ({ setToken, userInfo }) => {
@@ -17,10 +16,10 @@ const Root = ({ setToken, userInfo }) => {
       <div className="navbarContainer">
         <div className="navbar-left">
           <div className="logo">
-            <div className="appLogo">
+            <div className="appLogo ">
               <img
                 src={appLogo}
-                alt="app logo"
+                alt="app logo "
                 onClick={() => navigate("/dashboard")}
               />
             </div>
@@ -29,80 +28,89 @@ const Root = ({ setToken, userInfo }) => {
           <div className="userLoggedin">{userInfo.name}</div>
           <nav>
             <ul>
-              <li>
-                <NavLink
-                  to="dashboard"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : "navLink"
-                  }
-                >
+              <NavLink
+                to="dashboard"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : "navLink"
+                }
+              >
+                <li>
                   <i className="bx bx-grid-alt"></i>
                   Dashboard
-                  {/* <span className="tooltip">Dashboard</span> */}
-                </NavLink>
-              </li>
+                  {/* <span className="tooltip">Dashboard</span> */}{" "}
+                </li>
+              </NavLink>
 
-              <li>
-                <NavLink
-                  to="order"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : "navLink"
-                  }
-                >
+              <NavLink
+                to="order"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : "navLink"
+                }
+              >
+                {" "}
+                <li>
                   <i className="bx bxs-pen"></i>
                   Order
-                  {/* <span className="tooltip">Order</span> */}
-                </NavLink>
-              </li>
+                  {/* <span className="tooltip">Order</span> */}{" "}
+                </li>
+              </NavLink>
 
-              <li>
-                <NavLink
-                  to="delivery"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : "navLink"
-                  }
-                >
+              <NavLink
+                to="delivery"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : "navLink"
+                }
+              >
+                {" "}
+                <li>
                   <i className="bx bxs-truck"></i>
                   Delivery
-                  {/* <span className="tooltip">Delivery</span> */}
-                </NavLink>
-              </li>
+                  {/* <span className="tooltip">Delivery</span> */}{" "}
+                </li>
+              </NavLink>
 
-              <li>
+              <NavLink
+                to="contact"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : "navLink"
+                }
+              >
+                {" "}
+                <li>
+                  <i className="bx bxs-contact"></i>
+                  Contact
+                  {/* <span className="tooltip">Contact</span> */}{" "}
+                </li>
+              </NavLink>
+
+              {userInfo.department === 2 && (
                 <NavLink
-                  to="contact"
+                  to="management"
                   className={({ isActive, isPending }) =>
                     isPending ? "pending" : isActive ? "active" : "navLink"
                   }
                 >
-                  <i className="bx bxs-contact"></i>
-                  Contact
-                  {/* <span className="tooltip">Contact</span> */}
-                </NavLink>
-              </li>
-              {userInfo.department === 2 && (
-                <li>
-                  <NavLink
-                    to="management"
-                    className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active" : "navLink"
-                    }
-                  >
+                  {" "}
+                  <li>
                     <i className="bx bxs-folder-open"></i>
                     Management
-                    {/* <span className="tooltip">Management</span> */}
-                  </NavLink>
-                </li>
+                    {/* <span className="tooltip">Management</span> */}{" "}
+                  </li>
+                </NavLink>
               )}
             </ul>
           </nav>
-          <div className="ownername">Powerd by Gogov</div>
+          <div className="ownername">
+            <p>Powerd by Gogov</p>
+          </div>
         </div>
-        <div className="navbar-top">
-          <i className="bx bx-power-off" onClick={logoutHandler}></i>
+        <div className="navbar-topTest">
+          <div className="navbar-top">
+            <i className="bx bx-power-off" onClick={logoutHandler}></i>
+          </div>{" "}
+          <Outlet />
         </div>
       </div>{" "}
-      <Outlet />
     </div>
   );
 };

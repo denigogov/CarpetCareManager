@@ -1,5 +1,5 @@
-@use "../colors";
-@use "../general";
+@use "./colors";
+@use "./general";
 
 .navbarContainer {
   display: flex;
@@ -33,6 +33,12 @@
       width: 120px;
       border: 1px solid colors.$navbar-Primary;
       border-radius: 50%;
+      transition: general.$transition;
+
+      &:active {
+        transform: scale(0.95);
+        border: 1px solid yellow;
+      }
 
       img {
         width: 70px;
@@ -49,14 +55,15 @@
 
   nav {
     background-color: colors.$background-Primary;
+    border-right: 1px solid colors.$borderLine-Primary;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 0.5px;
-    padding: 20px;
+
     transition: general.$transition;
     ul {
       text-align: justify;
-      height: 200px;
+      height: 220px;
 
       display: flex;
       flex-direction: column;
@@ -65,9 +72,17 @@
 
       li {
         border-bottom: 1px solid colors.$borderLine-Primary;
+        padding: 10px;
+        transition: general.$transition;
+
+        &:hover {
+          background-color: colors.$navbar-Primary;
+          color: colors.$banner-Primary;
+        }
 
         i {
           font-size: 20px;
+          margin-right: 20px;
         }
       }
     }
@@ -79,6 +94,13 @@
 }
 .navLink {
   color: colors.$font-Primary;
+}
+
+.navbar-topTest {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: colors.$background-Primary;
 }
 
 .navbar-top {
@@ -100,4 +122,8 @@
       transform: scale(0.99);
     }
   }
+}
+
+.ownername {
+  font-size: 10px;
 }

@@ -25,8 +25,6 @@ const App = () => {
   const { token, setToken } = useToken(null);
   const [userInfo, setUserInfo] = useState({});
 
-  console.log(userInfo);
-
   if (!token) {
     return <Login setToken={setToken} setUserInfo={setUserInfo} />;
   }

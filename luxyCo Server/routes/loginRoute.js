@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const database = require("../database/userQueries");
-const { validateUsers } = require("../validators");
+
 const {
   hashpassword,
   verifyPassword,
