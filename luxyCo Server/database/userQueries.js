@@ -23,7 +23,6 @@ const getAllUsers = (_, res) => {
       "select users.id, first_name, last_name, department_name, salary, street from users inner join departments on users.department_id = departments.id order by users.id asc"
     )
     .then(([user]) => {
-      console.log(user);
       res.json(user);
     })
     .catch((err) => {
@@ -143,12 +142,18 @@ const updateUsers = (req, res) => {
       res.status(500).send("error", err);
     });
 };
-
 const deleteUsers = (req, res) => {
   const id = req.params.id;
 
+  // Delete the associated orders
+  const deleteOrdersQuery = "DELETE FROM orders WHERE user_id = ?";
   database
-    .query("DELETE FROM users WHERE id = ? ", [id])
+    .query(deleteOrdersQuery, [id])
+    .then(() => {
+      // Delete the user
+      const deleteUserQuery = "DELETE FROM users WHERE id = ?";
+      return database.query(deleteUserQuery, [id]);
+    })
     .then(([user]) => {
       if (user.affectedRows) {
         res.sendStatus(200);
@@ -157,7 +162,7 @@ const deleteUsers = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(404).send("anything test blabla", err);
+      res.status(500).send("Error deleting user", err);
     });
 };
 

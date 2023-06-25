@@ -1,8 +1,10 @@
 @use "../colors";
 @use "../general";
 
-.producer-order {
+.table-container {
   text-align: center;
+  max-height: 400px; /* Adjust the height as per your requirement */
+  overflow-y: scroll;
 }
 
 table {

@@ -47,8 +47,8 @@ const App = () => {
           <Route path="management" element={<Management />}>
             <Route
               path="users"
-              element={<Users />}
-              loader={async () => await fetchAllUsers(token)}
+              element={<Users token={token} />}
+              // loader={async () => await fetchAllUsers(token)}
             />
             <Route path="analytics" element={<Analytics />} />
             <Route path="expenses" element={<Expenses />} />

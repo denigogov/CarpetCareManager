@@ -1,59 +1,51 @@
-import { useLoaderData } from "react-router-dom";
-import { useState } from "react";
 import "../../sass/management/_users.scss";
 import deleteIcon from "../../assets/deleteIcon.svg";
-import { useNavigate } from "react-router-dom";
+import useSWR, { useSWRConfig } from "swr";
 
-const Users = () => {
-  const navigate = useNavigate();
-  const [selectedUser, setSelectedUser] = useState();
-  // const [allUsers, setAllUsers] = useState(useLoaderData());
+const Users = ({ token }) => {
+  const { mutate } = useSWRConfig();
 
-  const data = useLoaderData();
-
-  console.log(selectedUser);
-
-  const selectUser = (id) => {
-    setSelectedUser(id);
+  const fetcher = async (url) => {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.json();
   };
 
-  // const deleteUser = (item) => {
+  // To Render ERROR ,DATA and WHEN DATA IS LOAD!
+  const { data, error, isLoading } = useSWR(
+    "http://localhost:4000/user",
+    fetcher
+  );
 
-  //  ;
-  //   const result = confirm(
-  //     `Are you sure you want to delete ${item.first_name} ?`
-  //   );
-  //   if (result) setSelectedMenuItems(deleteItem);
-  // };
+  const deleteUser = async (id, first_name) => {
+    try {
+      const confirmDelete = confirm(
+        `Please confirm if you want to delete this user ${first_name}`
+      );
+      if (confirmDelete) {
+        await fetch(`http://localhost:4000/user/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        mutate("http://localhost:4000/user"); // mutate is  Refresh the users data
+      }
+    } catch (error) {
+      console.error("Error deleting user", error);
+    }
+  };
 
-  // const deleteUser = async () => {
-  //   try {
-  //     if (!selectedUser) {
-  //       return; // No user selected, do nothing
-  //     }
-
-  //     const res = await fetch(`http://localhost:4000/user/${selectedUser.id}`, {
-  //       method: "DELETE",
-  //     });
-
-  //     if (res.ok) {
-  //       console.log("User deleted successfully");
-  //       // Perform any additional actions after successful deletion
-  //       navigate("/managment/users");
-  //     } else {
-  //       console.log("Error deleting user");
-  //       // Handle the case when the delete request fails
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting user", error);
-  //     // Handle any errors that occurred during the delete request
-  //   }
-  // };
+  if (error) return <h2>{error.message} </h2>;
+  if (isLoading) return <h3>loading...</h3>;
 
   return (
     <div>
       show all users
-      <div className="producer-order">
+      <div className="table-container">
         <table>
           <tr>
             <th></th>
@@ -65,7 +57,7 @@ const Users = () => {
           </tr>
           {data.map((users, i) => {
             return (
-              <tr onClick={() => selectUser(users)} key={users.id}>
+              <tr key={users.id}>
                 <td>{i + 1}</td>
                 <td>{users.first_name}</td>
                 <td>{users.department_name}</td>
@@ -73,7 +65,7 @@ const Users = () => {
                 <td></td>
                 <td>
                   <img
-                    // onClick={deleteUser}
+                    onClick={() => deleteUser(users.id, users.first_name)}
                     className="userDeleteIcon"
                     src={deleteIcon}
                     alt="delete Icon"
