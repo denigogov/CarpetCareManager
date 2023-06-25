@@ -11,10 +11,6 @@ router
   .get("/:id", verifyToken, database.getUsersById)
   .post("/", verifyToken, hashpassword, validateUsers, database.createUser)
   .put("/:id", verifyToken, validateUsers, hashpassword, database.updateUsers)
-  .post(
-    "/login",
-    database.getUserByEmailWithPasswordAndPassToNext,
-    verifyPassword
-  );
+  .delete("/:id", database.deleteUsers);
 
 module.exports = router;

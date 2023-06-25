@@ -1,0 +1,27 @@
+@use "../colors";
+@use "../general";
+
+.producer-order {
+  text-align: center;
+}
+
+table {
+  background-color: #fff;
+  width: 50%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid colors.$borderLine-Primary;
+}
+
+tr:hover {
+  background-color: #e0dbdb36;
+}
+
+.userDeleteIcon {
+  width: 20px;
+  cursor: pointer;
+}

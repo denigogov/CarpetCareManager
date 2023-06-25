@@ -62,6 +62,7 @@ const verifyToken = (req, res, next) => {
     const authorizationHeader = req.get("Authorization");
 
     console.log(authorizationHeader);
+    console.log(req);
 
     if (authorizationHeader == null) {
       throw new Error("Authorization header is missing");

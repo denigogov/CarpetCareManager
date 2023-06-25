@@ -11,7 +11,7 @@ const Management = () => {
     <div className="managment__navbar">
       <div className="managment-container">
         <ul>
-          <NavLink to="users" className="navLink">
+          <NavLink to="users">
             users
             <li>
               <img src={userTieIcon} alt="userIcon" />

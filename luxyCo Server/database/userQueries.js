@@ -20,7 +20,7 @@ const userOrderCount = (req, res) => {
 const getAllUsers = (_, res) => {
   database
     .query(
-      "SELECT first_name, last_name,street,phone_number,salary FROM users "
+      "select users.id, first_name, last_name, department_name, salary, street from users inner join departments on users.department_id = departments.id order by users.id asc"
     )
     .then(([user]) => {
       console.log(user);
@@ -144,17 +144,20 @@ const updateUsers = (req, res) => {
     });
 };
 
-// TESTING
-const getUserInfo = (_, res) => {
+const deleteUsers = (req, res) => {
+  const id = req.params.id;
+
   database
-    .query("SELECT id,first_name, department_id  FROM users ")
+    .query("DELETE FROM users WHERE id = ? ", [id])
     .then(([user]) => {
-      console.log(user);
-      res.json(user);
+      if (user.affectedRows) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error retrieving data from database");
+      res.status(404).send("anything test blabla", err);
     });
 };
 
@@ -165,5 +168,5 @@ module.exports = {
   createUser,
   getUserByEmailWithPasswordAndPassToNext,
   updateUsers,
-  getUserInfo,
+  deleteUsers,
 };
