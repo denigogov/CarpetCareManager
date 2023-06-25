@@ -1,4 +1,6 @@
 const database = require("./database");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const userOrderCount = (req, res) => {
   database
@@ -18,10 +20,9 @@ const userOrderCount = (req, res) => {
 const getAllUsers = (_, res) => {
   database
     .query(
-      "SELECT first_name, last_name,street,phone_number,salary FROM users "
+      "select users.id, first_name, last_name, department_name, salary, street from users inner join departments on users.department_id = departments.id order by users.id asc"
     )
     .then(([user]) => {
-      console.log(user);
       res.json(user);
     })
     .catch((err) => {
@@ -141,6 +142,29 @@ const updateUsers = (req, res) => {
       res.status(500).send("error", err);
     });
 };
+const deleteUsers = (req, res) => {
+  const id = req.params.id;
+
+  // Delete the associated orders
+  const deleteOrdersQuery = "DELETE FROM orders WHERE user_id = ?";
+  database
+    .query(deleteOrdersQuery, [id])
+    .then(() => {
+      // Delete the user
+      const deleteUserQuery = "DELETE FROM users WHERE id = ?";
+      return database.query(deleteUserQuery, [id]);
+    })
+    .then(([user]) => {
+      if (user.affectedRows) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send("Error deleting user", err);
+    });
+};
 
 module.exports = {
   userOrderCount,
@@ -149,4 +173,5 @@ module.exports = {
   createUser,
   getUserByEmailWithPasswordAndPassToNext,
   updateUsers,
+  deleteUsers,
 };

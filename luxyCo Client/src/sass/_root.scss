@@ -1,0 +1,129 @@
+@use "./colors";
+@use "./general";
+
+.navbarContainer {
+  display: flex;
+}
+
+.navbar-left {
+  height: 100vh;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  transition: general.$transition;
+  background-color: colors.$navbar-Primary;
+
+  .logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    align-items: center;
+    background-color: colors.$banner-Primary;
+    height: 140px;
+    cursor: pointer;
+
+    .appLogo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 120px;
+      width: 120px;
+      border: 1px solid colors.$navbar-Primary;
+      border-radius: 50%;
+      transition: general.$transition;
+
+      &:active {
+        transform: scale(0.95);
+        border: 1px solid yellow;
+      }
+
+      img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
+
+  .userLoggedin {
+    font-weight: 300;
+    letter-spacing: general.$spacing;
+    margin-top: -100px;
+  }
+
+  nav {
+    background-color: colors.$background-Primary;
+    border-right: 1px solid colors.$borderLine-Primary;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+
+    transition: general.$transition;
+    ul {
+      text-align: justify;
+      height: 220px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: general.$transition;
+
+      li {
+        border-bottom: 1px solid colors.$borderLine-Primary;
+        padding: 10px;
+        transition: general.$transition;
+
+        &:hover {
+          background-color: colors.$navbar-Primary;
+          color: colors.$banner-Primary;
+        }
+
+        i {
+          font-size: 20px;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+.active {
+  color: colors.$banner-Primary;
+}
+.navLink {
+  color: colors.$font-Primary;
+}
+
+.navbar-topTest {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: colors.$background-Primary;
+}
+
+.navbar-top {
+  display: flex;
+  height: 80px;
+  width: 100%;
+  align-items: center;
+  justify-content: right;
+  padding: 20px;
+  background-color: colors.$banner-Primary;
+
+  i {
+    font-size: 39px;
+    color: colors.$background-Primary;
+    cursor: pointer;
+    transition: general.$transition;
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
+}
+
+.ownername {
+  font-size: 10px;
+}

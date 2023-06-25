@@ -1,0 +1,29 @@
+@use "../colors";
+@use "../general";
+
+.table-container {
+  text-align: center;
+  max-height: 400px; /* Adjust the height as per your requirement */
+  overflow-y: scroll;
+}
+
+table {
+  background-color: #fff;
+  width: 50%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid colors.$borderLine-Primary;
+}
+
+tr:hover {
+  background-color: #e0dbdb36;
+}
+
+.userDeleteIcon {
+  width: 20px;
+  cursor: pointer;
+}

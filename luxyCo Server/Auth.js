@@ -13,7 +13,7 @@ const hashpassword = (req, res, next) => {
   argon2
     .hash(req.body.password, hashingOptions)
     .then((hashedPassword) => {
-      console.log(hashedPassword);
+      // console.log(hashedPassword);
 
       req.body.password = hashedPassword;
       next();
@@ -41,7 +41,12 @@ const verifyPassword = (req, res) => {
 
         // console.log(payload);
 
-        res.send({ token });
+        res.send({
+          token,
+          name: req.user.first_name,
+          id: req.user.id,
+          department: req.user.department_id,
+        });
       } else {
         res.status(401).send("wrong password or username");
       }
@@ -56,7 +61,8 @@ const verifyToken = (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization");
 
-    console.log(authorizationHeader);
+    // console.log(authorizationHeader);
+    // console.log(req);
 
     if (authorizationHeader == null) {
       throw new Error("Authorization header is missing");
