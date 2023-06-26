@@ -1,6 +1,8 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import "../sass/_root.scss";
 import appLogo from "../assets/appLogo.svg";
+import githubIcon from "../assets/githubIcon.svg";
+import linkedInIcon from "../assets/linkedInIcon.svg";
 
 const Root = ({ setToken, userInfo }) => {
   const navigate = useNavigate();
@@ -100,9 +102,29 @@ const Root = ({ setToken, userInfo }) => {
               )}
             </ul>
           </nav>
-          <div className="ownername">
-            <p>Powerd by Gogov</p>
-          </div>
+          <footer id="footer">
+            <div className="footer__icons">
+              <a target="_blank" href="https://github.com/denigogov">
+                <img
+                  className="githubLogo"
+                  src={githubIcon}
+                  alt="github Logo"
+                />
+              </a>
+
+              <a
+                target="_blank"
+                href="https://www.linkedin.com/in/dejan-gogov-571871270/"
+              >
+                <img
+                  className="linkedInLogo"
+                  src={linkedInIcon}
+                  alt="linkedIn Logo"
+                />
+              </a>
+            </div>
+            <p>LuxyCo by Dejan Gogov</p>
+          </footer>
         </div>
         <div className="navbar-topTest">
           <div className="navbar-top">

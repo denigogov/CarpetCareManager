@@ -124,6 +124,22 @@
   }
 }
 
-.ownername {
+footer p {
   font-size: 10px;
+}
+
+.footer__icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
+.githubLogo {
+  width: 20px;
+}
+
+.linkedInLogo {
+  width: 50px;
 }

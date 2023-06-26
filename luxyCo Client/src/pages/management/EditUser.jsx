@@ -8,7 +8,7 @@ const EditUser = ({ token }) => {
       <h4>{apiData.first_name}</h4>
 
       <form>
-        <input type="text" name="test" id="" value={apiData.first_name} />
+        <input type="text" name="test" defaultValue={apiData.first_name} />
       </form>
     </div>
   );
