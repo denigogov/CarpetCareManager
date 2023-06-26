@@ -20,8 +20,10 @@ import Analytics from "./pages/management/Analytics";
 import Expenses from "./pages/management/Expenses";
 import Price from "./pages/management/Price";
 import Inventory from "./pages/management/Inventory";
+import EditUser from "./pages/management/EditUser";
+import DetailsUser from "./pages/management/DetailsUser";
 
-import { fetchAllUsers } from "./api";
+import { fetchSingleUser } from "./api";
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -45,11 +47,15 @@ const App = () => {
 
         {userInfo.department === 2 && (
           <Route path="management" element={<Management />}>
-            <Route
-              path="users"
-              element={<Users token={token} />}
-              // loader={async () => await fetchAllUsers(token)}
-            />
+            <Route path="users" element={<Users token={token} />}>
+              <Route
+                path=":id"
+                element={<EditUser token={token} />}
+                loader={({ params }) => fetchSingleUser({ params }, token)}
+              />
+              <Route path="details" element={<DetailsUser />} />
+            </Route>
+
             <Route path="analytics" element={<Analytics />} />
             <Route path="expenses" element={<Expenses />} />
             <Route path="price" element={<Price />} />

@@ -13,9 +13,11 @@
 //     console.log(err, "Token validation failed (Endpoint: /user/login).");
 //   }
 // };
-export const fetchAllUsers = async (token) => {
+export const fetchSingleUser = async ({ params }, token) => {
   try {
-    const res = await fetch(`http://localhost:4000/user`, {
+    const { id } = params;
+
+    const res = await fetch(`http://localhost:4000/user/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

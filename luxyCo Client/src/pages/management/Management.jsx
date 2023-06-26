@@ -11,40 +11,35 @@ const Management = () => {
     <div className="managment__navbar">
       <div className="managment-container">
         <ul>
-          <NavLink to="users">
-            users
-            <li>
+          <li>
+            <NavLink to="users">
               <img src={userTieIcon} alt="userIcon" />
-            </li>
-          </NavLink>
+              users
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="analytics">
+              <img src={analyticsIcon} alt="analytic icon" /> analytics
+            </NavLink>
+          </li>
 
-          <NavLink to="analytics">
-            analytics
-            <li>
-              <img src={analyticsIcon} alt="analytic icon" />
-            </li>
-          </NavLink>
-
-          <NavLink to="expenses">
-            expenses
-            <li>
+          <li>
+            <NavLink to="expenses">
               <img src={expensesIcon} alt="expenses" />
-            </li>
-          </NavLink>
-
-          <NavLink to="price">
-            price
-            <li>
-              <img src={priceIcon} alt="priceIcon" />
-            </li>
-          </NavLink>
-
-          <NavLink to="inventory">
-            inventory
-            <li>
+              expenses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="price">
+              <img src={priceIcon} alt="priceIcon" /> price
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="inventory">
               <img src={inventory} alt="inventory" />
-            </li>
-          </NavLink>
+              inventory
+            </NavLink>
+          </li>
         </ul>
       </div>
 

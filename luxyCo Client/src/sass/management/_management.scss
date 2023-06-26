@@ -4,10 +4,10 @@
 .managment-container {
   padding: 15px;
   border-bottom: 1px solid colors.$borderLine-Primary;
+
   ul {
     display: flex;
     justify-content: space-around;
-
     li {
       img {
         margin: 0 auto;
