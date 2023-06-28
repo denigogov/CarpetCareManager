@@ -1,0 +1,39 @@
+@use "../colors";
+
+.detailsUser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.detailsUser--title {
+  font-weight: 600;
+  text-align: center;
+  padding: 25px;
+}
+
+.detailsUser--data {
+  display: flex;
+  justify-content: space-around;
+
+  text-align: justify;
+  gap: 60px;
+
+  p {
+    font-weight: 500;
+    display: flex;
+    gap: 20px;
+
+    span {
+      font-weight: 200;
+    }
+  }
+
+  .columnRight,
+  .columnLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+  }
+}

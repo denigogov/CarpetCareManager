@@ -35,7 +35,10 @@ const getUsersById = (req, res) => {
   const id = parseInt(req.params.id);
 
   database
-    .query("select * from users where id = ?", [id])
+    .query(
+      "select * from users inner join departments on users.department_id = departments.id WHERE users.id = ? ",
+      [id]
+    )
     .then(([orders]) => {
       if (orders[0] != null) {
         res.json(orders[0]);

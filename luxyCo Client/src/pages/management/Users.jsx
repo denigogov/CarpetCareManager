@@ -6,12 +6,14 @@ import detailsIcon from "../../assets/detailsIcon.svg";
 import addUserIcon from "../../assets/addUserIcon.svg";
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import useSWR, { useSWRConfig } from "swr";
 
 const Users = ({ token }) => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
+  const [popupOpen, setPopupOpen] = useState(false);
 
   const fetcher = async (url) => {
     const response = await fetch(url, {
@@ -47,8 +49,13 @@ const Users = ({ token }) => {
     }
   };
 
-  if (error) return <h2>{error.message} </h2>;
+  if (error) return <h6>{error.message}</h6>;
   if (isLoading) return <h3>loading...</h3>;
+
+  // Event handler stop bubbling
+  const preventPropagation = (event) => {
+    event.stopPropagation();
+  };
 
   return (
     <div>
@@ -77,15 +84,19 @@ const Users = ({ token }) => {
                   <td>{users.department_name}</td>
 
                   <td>
-                    <img
-                      src={detailsIcon}
-                      alt="user details Icon"
-                      onClick={() => navigate("/management/users/details")}
-                    />
+                    <Link
+                      to={`/management/users/details/${users.id}`}
+                      onClick={() => setPopupOpen((x) => !x)}
+                    >
+                      <img src={detailsIcon} alt="user details Icon" />
+                    </Link>
                   </td>
 
                   <td>
-                    <Link to={users.id.toString()}>
+                    <Link
+                      to={`/management/users/edit/${users.id}`}
+                      onClick={() => setPopupOpen((x) => !x)}
+                    >
                       <img
                         src={editIcon}
                         alt="edit user icon"
@@ -107,9 +118,15 @@ const Users = ({ token }) => {
             })}
           </tbody>
         </table>
-        <main>
-          <Outlet />
-        </main>
+
+        {/* PopUp window with background */}
+        {popupOpen && (
+          <div className="overlay" onClick={() => setPopupOpen((x) => !x)}>
+            <main className="popUp" onClick={preventPropagation}>
+              <Outlet />
+            </main>
+          </div>
+        )}
       </div>
     </div>
   );

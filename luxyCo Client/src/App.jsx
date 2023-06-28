@@ -49,11 +49,15 @@ const App = () => {
           <Route path="management" element={<Management />}>
             <Route path="users" element={<Users token={token} />}>
               <Route
-                path=":id"
+                path="edit/:id"
                 element={<EditUser token={token} />}
                 loader={({ params }) => fetchSingleUser({ params }, token)}
               />
-              <Route path="details" element={<DetailsUser />} />
+              <Route
+                path="details/:id"
+                element={<DetailsUser token={token} />}
+                loader={({ params }) => fetchSingleUser({ params }, token)}
+              />
             </Route>
 
             <Route path="analytics" element={<Analytics />} />
