@@ -20,7 +20,7 @@ const userOrderCount = (req, res) => {
 const getAllUsers = (_, res) => {
   database
     .query(
-      "select users.id, first_name, last_name, department_name, salary, street from users inner join departments on users.department_id = departments.id order by users.id asc"
+      "select users.id, first_name, last_name, department_name, salary, street from users left join departments on users.department_id = departments.id order by users.id asc"
     )
     .then(([user]) => {
       res.json(user);
@@ -36,7 +36,7 @@ const getUsersById = (req, res) => {
 
   database
     .query(
-      "select * from users inner join departments on users.department_id = departments.id WHERE users.id = ? ",
+      "SELECT users.id, first_name, last_name, password, street, phone_number, salary, department_id, department_name FROM users left JOIN departments ON users.department_id = departments.id WHERE users.id = ?",
       [id]
     )
     .then(([orders]) => {
@@ -122,7 +122,7 @@ const updateUsers = (req, res) => {
 
   database
     .query(
-      "UPDATE users SET department_id=? ,first_name =?, last_name=?, password=?, street=?, phone_number=?, salary=?  WHERE id=? ",
+      "UPDATE users SET department_id=?, first_name=?, last_name=?, password=?, street=?, phone_number=?, salary=? WHERE id=?",
       [
         department_id,
         first_name,
@@ -142,7 +142,7 @@ const updateUsers = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).send("error", err);
+      res.status(500).send("error" + err);
     });
 };
 const deleteUsers = (req, res) => {

@@ -57,6 +57,11 @@ const Users = ({ token }) => {
     event.stopPropagation();
   };
 
+  const popupWindow = () => {
+    setPopupOpen((x) => !x);
+    navigate("/management/users/");
+  };
+
   return (
     <div>
       <div className="table-container">
@@ -64,7 +69,13 @@ const Users = ({ token }) => {
           <thead>
             <tr>
               <th>
-                <img src={addUserIcon} alt="create new user icon" />
+                <Link to={`/management/users/addUser/`}>
+                  <img
+                    src={addUserIcon}
+                    alt="create new user icon"
+                    onClick={() => setPopupOpen((x) => !x)}
+                  />
+                </Link>
               </th>
               <th>first name</th>
               <th>last name</th>
@@ -95,7 +106,7 @@ const Users = ({ token }) => {
                   <td>
                     <Link
                       to={`/management/users/edit/${users.id}`}
-                      onClick={() => setPopupOpen((x) => !x)}
+                      onClick={popupWindow}
                     >
                       <img
                         src={editIcon}
@@ -121,7 +132,7 @@ const Users = ({ token }) => {
 
         {/* PopUp window with background */}
         {popupOpen && (
-          <div className="overlay" onClick={() => setPopupOpen((x) => !x)}>
+          <div className="overlay" onClick={popupWindow}>
             <main className="popUp" onClick={preventPropagation}>
               <Outlet />
             </main>

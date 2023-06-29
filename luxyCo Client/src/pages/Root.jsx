@@ -33,55 +33,52 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="dashboard"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : "navLink"
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
                 <li>
                   <i className="bx bx-grid-alt"></i>
                   Dashboard
-                  {/* <span className="tooltip">Dashboard</span> */}{" "}
+                  {/* <span className="tooltip">Dashboard</span> */}
                 </li>
               </NavLink>
 
               <NavLink
                 to="order"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : "navLink"
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
-                {" "}
                 <li>
                   <i className="bx bxs-pen"></i>
                   Order
-                  {/* <span className="tooltip">Order</span> */}{" "}
+                  {/* <span className="tooltip">Order</span> */}
                 </li>
               </NavLink>
 
               <NavLink
                 to="delivery"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : "navLink"
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
-                {" "}
                 <li>
                   <i className="bx bxs-truck"></i>
                   Delivery
-                  {/* <span className="tooltip">Delivery</span> */}{" "}
+                  {/* <span className="tooltip">Delivery</span> */}
                 </li>
               </NavLink>
 
               <NavLink
                 to="contact"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : "navLink"
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
-                {" "}
                 <li>
                   <i className="bx bxs-contact"></i>
                   Contact
-                  {/* <span className="tooltip">Contact</span> */}{" "}
+                  {/* <span className="tooltip">Contact</span> */}
                 </li>
               </NavLink>
 
@@ -89,14 +86,13 @@ const Root = ({ setToken, userInfo }) => {
                 <NavLink
                   to="management"
                   className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : "navLink"
+                    isPending ? "pending" : isActive ? "activeLink" : "navLink"
                   }
                 >
-                  {" "}
                   <li>
                     <i className="bx bxs-folder-open"></i>
                     Management
-                    {/* <span className="tooltip">Management</span> */}{" "}
+                    {/* <span className="tooltip">Management</span> */}
                   </li>
                 </NavLink>
               )}
@@ -129,10 +125,10 @@ const Root = ({ setToken, userInfo }) => {
         <div className="navbar-topTest">
           <div className="navbar-top">
             <i className="bx bx-power-off" onClick={logoutHandler}></i>
-          </div>{" "}
+          </div>
           <Outlet />
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 };

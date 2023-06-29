@@ -1,0 +1,44 @@
+@use "../colors";
+@use "../mixing";
+
+.editUser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.editUser--data {
+  display: flex;
+  gap: 70px;
+}
+
+.editUser--columnLeft,
+.editUser--columnRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  input,
+  select {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+    padding: 5px;
+    border-radius: 25px;
+    border: 1px solid colors.$borderLine-Second;
+
+    &:focus {
+      outline: 4px solid colors.$borderLine-Primary;
+    }
+  }
+}
+.updateUserBtn {
+  @include mixing.button;
+  margin-top: 1rem;
+  padding: 8px 20px;
+}

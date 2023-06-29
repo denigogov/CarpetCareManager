@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import "../../sass/management/_detailsUser.scss";
 
-const DetailsUser = ({ token }) => {
+export const DetailsUser = ({ token }) => {
   const data = useLoaderData(token);
 
   console.log(data);
@@ -34,10 +34,15 @@ const DetailsUser = ({ token }) => {
             </span>
           </p>
           <p>
-            Department: <span>{data.department_name}</span>
+            Department:{" "}
+            <span>
+              {data.department_name
+                ? data.department_name
+                : "no departmen added"}
+            </span>
           </p>
           <p>
-            Salary:{" "}
+            Salary:
             <span>{data.salary ? `${data.salary}$` : "no salary added"}</span>
           </p>
         </div>
@@ -47,27 +52,3 @@ const DetailsUser = ({ token }) => {
 };
 
 export default DetailsUser;
-
-{
-  /* <p>
-First Name: <span style={{ fontWeight: "700" }}>{data.first_name}</span>
-</p>
-<p>
-Last Name: <span style={{ fontWeight: "700" }}>{data.last_name}</span>
-</p>
-<p>
-Adress: <span>{data.street ? data.street : "no adress added"}</span>
-</p>
-<p>
-Phone Number:
-<span>
-  {data.phone_number ? data.phone_number : "no phone number added"}
-</span>
-</p>
-<p>
-Department: <span>{data.department_name}</span>
-</p>
-<p>
-Salary: <span>{data.salary ? data.salary : "no salary added"}</span>
-</p> */
-}

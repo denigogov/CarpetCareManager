@@ -88,9 +88,13 @@
     }
   }
 }
-
 .active {
   color: colors.$banner-Primary;
+}
+
+.activeLink {
+  color: colors.$banner-Primary;
+  background-color: #fff;
 }
 .navLink {
   color: colors.$font-Primary;

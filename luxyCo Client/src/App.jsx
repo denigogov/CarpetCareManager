@@ -15,15 +15,17 @@ import Delivery from "./pages/Delivery";
 import Contact from "./pages/Contact";
 
 import Management from "./pages/management/Management";
-import Users from "./pages/management/Users";
 import Analytics from "./pages/management/Analytics";
 import Expenses from "./pages/management/Expenses";
 import Price from "./pages/management/Price";
 import Inventory from "./pages/management/Inventory";
+
+import Users from "./pages/management/Users";
 import EditUser from "./pages/management/EditUser";
 import DetailsUser from "./pages/management/DetailsUser";
+import CreateUser from "./pages/management/CreateUser";
 
-import { fetchSingleUser } from "./api";
+import { fetchSingleUser, fetchTableDepartment } from "./api";
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -58,6 +60,7 @@ const App = () => {
                 element={<DetailsUser token={token} />}
                 loader={({ params }) => fetchSingleUser({ params }, token)}
               />
+              <Route path="addUser" element={<CreateUser token={token} />} />
             </Route>
 
             <Route path="analytics" element={<Analytics />} />

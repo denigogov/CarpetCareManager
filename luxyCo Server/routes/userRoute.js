@@ -10,7 +10,7 @@ router
   .get("/", verifyToken, database.getAllUsers)
   .get("/:id", verifyToken, database.getUsersById)
   .post("/", verifyToken, hashpassword, validateUsers, database.createUser)
-  .put("/:id", verifyToken, validateUsers, hashpassword, database.updateUsers)
+  .put("/:id", verifyToken, database.updateUsers)
   .delete("/:id", database.deleteUsers);
 
 module.exports = router;
