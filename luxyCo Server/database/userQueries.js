@@ -77,7 +77,7 @@ const createUser = (req, res) => {
       ]
     )
     .then(([result]) => {
-      res.location(`/users/${result.insertId}`).sendStatus(201);
+      res.location(`/user/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);

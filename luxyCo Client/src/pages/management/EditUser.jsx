@@ -2,9 +2,11 @@ import { useLoaderData } from "react-router-dom";
 import "../../sass/management/_editUser.scss";
 import { useEffect, useState } from "react";
 import { fetchTableDepartment } from "../../api";
+import useSWR, { useSWRConfig } from "swr";
 
 const EditUser = ({ token }) => {
   const data = useLoaderData(token);
+  const { mutate } = useSWRConfig();
 
   const [formData, setFormData] = useState(data);
   const [departments, setDepartments] = useState([]);
@@ -46,6 +48,7 @@ const EditUser = ({ token }) => {
       });
 
       if (response.ok) {
+        mutate("http://localhost:4000/user");
         setApiStatusMessage(true);
         throw Error();
       }
