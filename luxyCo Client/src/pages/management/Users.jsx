@@ -33,8 +33,9 @@ const Users = ({ token }) => {
   const deleteUser = async (id, first_name) => {
     try {
       const confirmDelete = confirm(
-        `Please confirm if you want to delete this user ${first_name}`
+        `Please confirm if you want to delete this user ${first_name.toUpperCase()} all data related to the user will be lost.`
       );
+
       if (confirmDelete) {
         await fetch(`http://localhost:4000/user/${id}`, {
           method: "DELETE",
@@ -49,8 +50,8 @@ const Users = ({ token }) => {
     }
   };
 
-  if (error) return <h6>{error.message}</h6>;
-  if (isLoading) return <h3>loading...</h3>;
+  if (error) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (isLoading) return <h3>loading...</h3>; //I need to add loading component!
 
   // Event handler stop bubbling
   const preventPropagation = (event) => {

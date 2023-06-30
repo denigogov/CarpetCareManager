@@ -2,6 +2,12 @@
 
 CarpetCareManager is a carpet cleaning service management app designed to streamline and optimize the operations of carpet cleaning businesses. It provides an intuitive user interface and powerful features to simplify order management, track inventory, and monitor business performance.
 
+**Please note:** The project is currently under development. While it's a work in progress, the provided GIF demonstrates the initial functionality and user interface design.
+
+<div style="text-align:center; padding: 30px;"> 
+<img src="./luxyCo%20Client//src/assets/Recording%202023-06-30%20123141.gif" alt="App gif" width="400px" />
+</div>
+
 ## Purpose
 
 CarpetCareManager aims to:
