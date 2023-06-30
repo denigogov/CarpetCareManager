@@ -1,0 +1,31 @@
+@use "../colors";
+.orderTableContainer {
+  height: 500px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: colors.$banner-Primary;
+  }
+
+  .orderTable {
+    background-color: #fff;
+    border-collapse: collapse;
+    text-align: center;
+
+    th,
+    td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid colors.$borderLine-Primary;
+    }
+
+    tr:hover {
+      background-color: colors.$background-Primary;
+    }
+  }
+}

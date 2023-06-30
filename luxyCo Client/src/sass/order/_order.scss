@@ -1,0 +1,53 @@
+@use "../colors";
+
+.createOrder--nav {
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid colors.$borderLine-Primary;
+
+    input {
+      padding: 10px;
+      border: none;
+      border-radius: 25px;
+
+      &:focus {
+        outline: 1px solid colors.$borderLine-Primary;
+      }
+    }
+
+    li {
+      display: flex;
+      gap: 20px;
+
+      select {
+        padding: 13px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+
+        &:focus {
+          outline: 1px solid colors.$borderLine-Primary;
+        }
+
+        option {
+          margin: 1rem;
+        }
+      }
+    }
+  }
+
+  img {
+    width: 25px;
+  }
+}
+
+.orderSearchInput {
+  text-align: center;
+  padding-left: 25px;
+  background: url("../../assets/search-input-icon.svg") no-repeat left;
+  background-size: 25px;
+  background-color: #fff;
+}

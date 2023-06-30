@@ -10,16 +10,19 @@ import { useState } from "react";
 import Login from "./pages/Login";
 import Root from "./pages/Root";
 import Dashboard from "./pages/Dashboard";
-import Order from "./pages/Order";
+// Order Routes
+import Order from "./pages/order/Order";
+import CreateOrder from "./pages/order/CreateOrder";
+
 import Delivery from "./pages/Delivery";
 import Contact from "./pages/Contact";
-
+// Managment routes!
 import Management from "./pages/management/Management";
 import Analytics from "./pages/management/Analytics";
 import Expenses from "./pages/management/Expenses";
 import Price from "./pages/management/Price";
 import Inventory from "./pages/management/Inventory";
-
+// user routes
 import Users from "./pages/management/Users";
 import EditUser from "./pages/management/EditUser";
 import DetailsUser from "./pages/management/DetailsUser";
@@ -43,7 +46,11 @@ const App = () => {
       >
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="order" element={<Order />} />
+
+        <Route path="order" element={<Order />}>
+          <Route path="createOrder" element={<CreateOrder />} />
+        </Route>
+
         <Route path="delivery" element={<Delivery />} />
         <Route path="contact" element={<Contact />} />
 

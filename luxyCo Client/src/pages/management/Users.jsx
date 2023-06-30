@@ -66,7 +66,7 @@ const Users = ({ token }) => {
   return (
     <div>
       <div className="table-container">
-        <table>
+        <table className="userTable">
           <thead>
             <tr>
               <th>

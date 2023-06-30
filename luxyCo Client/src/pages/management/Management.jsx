@@ -12,30 +12,75 @@ const Management = () => {
       <div className="managment-container">
         <ul>
           <li>
-            <NavLink to="users">
+            <NavLink
+              to="users"
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "activeLink-globaly"
+                  : "navLink"
+              }
+            >
               <img src={userTieIcon} alt="userIcon" />
               users
             </NavLink>
           </li>
           <li>
-            <NavLink to="analytics">
+            <NavLink
+              to="analytics"
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "activeLink-globaly"
+                  : "navLink"
+              }
+            >
               <img src={analyticsIcon} alt="analytic icon" /> analytics
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="expenses">
+            <NavLink
+              to="expenses"
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "activeLink-globaly"
+                  : "navLink"
+              }
+            >
               <img src={expensesIcon} alt="expenses" />
               expenses
             </NavLink>
           </li>
           <li>
-            <NavLink to="price">
+            <NavLink
+              to="price"
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "activeLink-globaly"
+                  : "navLink"
+              }
+            >
               <img src={priceIcon} alt="priceIcon" /> price
             </NavLink>
           </li>
           <li>
-            <NavLink to="inventory">
+            <NavLink
+              to="inventory"
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "activeLink-globaly"
+                  : "navLink"
+              }
+            >
               <img src={inventory} alt="inventory" />
               inventory
             </NavLink>

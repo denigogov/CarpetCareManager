@@ -7,7 +7,7 @@ const CreateUser = ({ token }) => {
   const { mutate } = useSWRConfig();
   const [departments, setDepartments] = useState([]);
   const [userDataStoring, setUserDataStoring] = useState({});
-  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
     const fetchDepartment = async () => {
@@ -45,9 +45,10 @@ const CreateUser = ({ token }) => {
 
         if (res.ok) {
           setErrorMessage(true);
+          return res;
+        } else {
+          setErrorMessage(false);
         }
-
-        return res;
       } catch (error) {
         console.error("Error deleting user", error);
       }
@@ -89,14 +90,17 @@ const CreateUser = ({ token }) => {
             name="password"
             onChange={inputUserForm}
           />
+
           <button className="createUserBtn" onClick={submitCreateUser}>
             create user
           </button>
-          <p style={{ color: "green" }}>
-            {errorMessage
-              ? `${userDataStoring.first_name} successfully added`
-              : ""}
-          </p>
+          {errorMessage && (
+            <p style={{ color: "green" }}>
+              {errorMessage
+                ? `${userDataStoring.first_name} successfully added`
+                : "error user not added, please try again"}
+            </p>
+          )}
         </div>
         <div className="createUserColumn-rigth">
           <label>adress</label>

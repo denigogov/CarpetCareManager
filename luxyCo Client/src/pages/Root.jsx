@@ -14,7 +14,7 @@ const Root = ({ setToken, userInfo }) => {
   };
 
   return (
-    <div className="I need to find way how to store the outlet in the midle of the page without absolut!">
+    <div className="rootContainer">
       <div className="navbarContainer">
         <div className="navbar-left">
           <div className="logo">
@@ -126,7 +126,9 @@ const Root = ({ setToken, userInfo }) => {
           <div className="navbar-top">
             <i className="bx bx-power-off" onClick={logoutHandler}></i>
           </div>
-          <Outlet />
+          <div className="mainOutlet">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
