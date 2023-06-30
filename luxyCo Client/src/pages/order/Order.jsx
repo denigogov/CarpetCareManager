@@ -1,16 +1,35 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useLoaderData } from "react-router-dom";
 import addIcon from "../../assets/addIcon.svg";
 import calendarIcon from "../../assets/calendarIcon.svg";
 import "../../sass/order/_order.scss";
 import OrderView from "../../components/order/OrderView";
+import useSWR, { useSWRConfig } from "swr";
+import { fetchOrdersByData } from "../../api";
+import { useState } from "react";
 
-const Order = () => {
+const Order = ({ token }) => {
+  const [wishDate, setWishDate] = useState("");
+
   const today = new Date();
-
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
-  const formattedDate = year + "-" + month + "-" + day;
+  const formattedDate = `${year}-${month}-${day}`;
+
+  console.log(wishDate);
+
+  const url = `http://localhost:4000/table/orders?date=${wishDate}`;
+  // To Render ERROR ,DATA and WHEN DATA IS LOAD!
+  const { data, error, isLoading } = useSWR(url, () =>
+    fetchOrdersByData(url, token)
+  );
+
+  const inputData = (e) => {
+    setWishDate(e.target.value);
+  };
+
+  if (error) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (isLoading) return <h3>loading...</h3>; //I need to add loading component!
 
   return (
     <div className="order">
@@ -23,7 +42,7 @@ const Order = () => {
                 alt="add new order img"
                 style={{ width: "35px" }}
               />
-              create order
+              add order
             </li>
           </NavLink>
 
@@ -37,7 +56,11 @@ const Order = () => {
 
           <li>
             <img src={calendarIcon} alt="calendar icon" />
-            <input type="date" defaultValue={formattedDate} />
+            <input
+              type="date"
+              defaultValue={formattedDate}
+              onChange={inputData}
+            />
           </li>
 
           <li>
@@ -59,7 +82,7 @@ const Order = () => {
       </nav>
 
       <div className="orderView">
-        <OrderView />
+        <OrderView data={data} />
       </div>
 
       <main>

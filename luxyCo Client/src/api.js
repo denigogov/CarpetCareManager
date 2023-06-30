@@ -55,4 +55,11 @@ export const fetchTableDepartment = async (token) => {
   }
 };
 
-// const data = useLoaderData();
+export const fetchOrdersByData = async (url, token) => {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};

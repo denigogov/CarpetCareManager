@@ -47,7 +47,7 @@ const App = () => {
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
 
-        <Route path="order" element={<Order />}>
+        <Route path="order" element={<Order token={token} />}>
           <Route path="createOrder" element={<CreateOrder />} />
         </Route>
 

@@ -12,6 +12,28 @@ const tableDepartments = (_, res) => {
     });
 };
 
+const tableOrders = (req, res) => {
+  const { date } = req.query;
+
+  database
+    .query(
+      `SELECT orders.id, custumers.first_name, custumers.last_name, custumers.street, status_name, order_date, carpet_pieces,total_price,m2 ,delivery FROM orders
+      inner join users on orders.user_id = users.id 
+      inner join custumers on orders.custumer_id = custumers.id
+      inner join order_status on orders.order_status_id = order_status.id
+      WHERE order_date = ?`,
+      [date]
+    )
+    .then(([orders]) => {
+      res.json(orders);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from the database");
+    });
+};
+
 module.exports = {
   tableDepartments,
+  tableOrders,
 };
