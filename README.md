@@ -27,3 +27,7 @@ This command **installs the necessary dependencies** for both projects and start
 The frontend will be available at `http://localhost:3000/`, while the backend will be accessible at `http://localhost:4001/`.
 
 **Please note** that this setup does not rely on dedicated monorepo tools like Lerna or Yarn Workspaces. It offers a basic monorepo structure and can be expanded upon as the project evolves.
+
+<div style="text-align:center; padding: 20px;" 
+<img src="./luxyCo%20Client//src/assets/Recording%202023-06-30%20123141.gif" alt="App gif" width="400px" />
+</div>
