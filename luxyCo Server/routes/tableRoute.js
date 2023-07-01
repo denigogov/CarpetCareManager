@@ -7,6 +7,7 @@ const { hashpassword, verifyPassword, verifyToken } = require("../Auth");
 
 router
   .get("/departments", verifyToken, database.tableDepartments)
-  .get("/orders/", verifyToken, database.tableOrders);
+  .get("/orders/", verifyToken, database.tableOrders)
+  .get("/orderStatus/", verifyToken, database.tableOrderStatus);
 
 module.exports = router;

@@ -55,11 +55,23 @@ export const fetchTableDepartment = async (token) => {
   }
 };
 
-export const fetchOrdersByData = async (url, token) => {
+export const fetchOrdersByData = async (formattedDate, token) => {
+  const url = `http://localhost:4000/table/orders?date=${formattedDate}`;
+
   const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   return response.json();
+};
+
+export const fetchOrderStatus = async (token) => {
+  const response = await fetch("http://localhost:4000/table/orderStatus", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
 };
