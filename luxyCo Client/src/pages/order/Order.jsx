@@ -12,13 +12,11 @@ import "react-datepicker/dist/react-datepicker.css";
 const Order = ({ token }) => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState("all");
-  const formattedDate = wishDate.toISOString().split("T")[0];
 
-  // BUG BUG BUG === The date its showing -1 day should be 0  with localISOTime its correct but I need to add inside of the fetch fn.
-  const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-  const localISOTime = new Date(Date.now() - tzoffset)
-    .toISOString()
-    .slice(0, -1);
+  // Time calc. because with toISOString I'm couple of hours behind !!
+  const timezoneOffset = wishDate.getTimezoneOffset() * 60000;
+  const adjustedDate = new Date(wishDate.getTime() - timezoneOffset);
+  const formattedDate = adjustedDate.toISOString().slice(0, 10);
 
   const {
     data: orderStatusData,

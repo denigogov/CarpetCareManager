@@ -39,8 +39,6 @@ const App = () => {
   const { token, setToken } = useToken(null);
   const [userInfo, setUserInfo] = useState({});
 
-  console.log(userInfo);
-
   useEffect(() => {
     const validateToken = async () => {
       if (typeof token === "string") {
@@ -70,6 +68,7 @@ const App = () => {
         </Route>
         <Route path="delivery" element={<Delivery />} />
         <Route path="contact" element={<Contact />} />
+
         {userInfo.department === 2 && (
           <Route path="management" element={<Management />}>
             <Route path="users" element={<Users token={token} />}>
@@ -92,6 +91,9 @@ const App = () => {
             <Route path="inventory" element={<Inventory />} />
           </Route>
         )}
+
+        {/* BUG  THIS SHOULD BE ERROR ELEMENT BUT I ADDED BECAUSE PREVENTING ERROR  BUG*/}
+        <Route path="*" element={<p></p>}></Route>
       </Route>
     )
   );

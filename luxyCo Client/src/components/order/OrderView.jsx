@@ -9,6 +9,7 @@ const OrderView = ({ data, orderStatus }) => {
   const totalm2 = status.length
     ? status.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
     : "";
+
   console.log(status);
 
   return (
@@ -28,6 +29,7 @@ const OrderView = ({ data, orderStatus }) => {
                 m<sup>2</sup>
               </th>
               <th>Delivery</th>
+              <th>Created By</th>
             </tr>
           </thead>
           <tbody>
@@ -38,12 +40,17 @@ const OrderView = ({ data, orderStatus }) => {
                 <td>{order.street}</td>
                 <td>{order.status_name}</td>
                 <td>
-                  {new Date(order.order_date).toISOString().split("T")[0]}
+                  {new Date(order.order_date)
+                    .toISOString()
+                    .slice(0, 19)
+                    .replaceAll("-", ".")
+                    .replace("T", " ")}
                 </td>
                 <td>{order.carpet_pieces}</td>
                 <td>{order.total_price} $</td>
                 <td>{order.m2}</td>
                 <td>{order.delivery === 0 ? "no" : "yes"}</td>
+                <td>{order.username ? order.username : "user deleted"}</td>
               </tr>
             ))}
 

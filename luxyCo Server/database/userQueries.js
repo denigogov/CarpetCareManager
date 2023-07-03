@@ -154,24 +154,17 @@ const updateUsers = (req, res) => {
 const deleteUsers = (req, res) => {
   const id = req.params.id;
 
-  // Delete the associated orders
-  const deleteOrdersQuery = "DELETE FROM orders WHERE user_id = ?";
   database
-    .query(deleteOrdersQuery, [id])
-    .then(() => {
-      // Delete the user
-      const deleteUserQuery = "DELETE FROM users WHERE id = ?";
-      return database.query(deleteUserQuery, [id]);
-    })
+    .query("DELETE FROM users WHERE id = ?", [id])
     .then(([user]) => {
-      if (user.affectedRows) {
-        res.sendStatus(200);
-      } else {
+      if (!user.affectedRows) {
         res.sendStatus(404);
+      } else {
+        res.sendStatus(200);
       }
     })
     .catch((err) => {
-      res.status(500).send("Error deleting user", err);
+      res.status(404).send("error deleting the user", err);
     });
 };
 

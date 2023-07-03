@@ -3,7 +3,7 @@ import loginIcon from "../assets/icon-user.svg";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setUserInfo }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -17,7 +17,7 @@ const Login = ({ setToken }) => {
     });
 
     const data = await response.json();
-
+    setUserInfo(data);
     return data.token;
   };
 

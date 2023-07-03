@@ -40,6 +40,9 @@ const verifyPassword = (req, res) => {
         });
         res.send({
           token,
+          id: req.user.id,
+          name: req.user.username,
+          department: req.user.department_id,
         });
       } else {
         res.status(401).send("wrong password or username");
