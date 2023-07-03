@@ -5,7 +5,7 @@ require("dotenv").config();
 const userOrderCount = (req, res) => {
   database
     .query(
-      "SELECT custumers.id, custumers.first_name, custumers.last_name, COUNT(*) AS order_count FROM orders INNER JOIN custumers ON orders.custumer_id = custumers.id GROUP BY custumers.id, custumers.first_name, custumers.last_name HAVING COUNT(*) > 2 "
+      "SELECT custumers.id,  custumers.first_name, custumers.last_name, COUNT(*) AS order_count FROM orders INNER JOIN custumers ON orders.custumer_id = custumers.id GROUP BY custumers.id, custumers.first_name, custumers.last_name HAVING COUNT(*) > 2 "
     )
     .then(([orders]) => {
       console.log(orders);
@@ -20,12 +20,13 @@ const userOrderCount = (req, res) => {
 const getAllUsers = (_, res) => {
   database
     .query(
-      "select users.id, first_name, last_name, department_name, salary, street from users left join departments on users.department_id = departments.id order by users.id asc"
+      "select users.id, username, first_name, last_name, department_name, salary, street from users left join departments on users.department_id = departments.id order by users.id asc"
     )
     .then(([user]) => {
       res.json(user);
     })
     .catch((err) => {
+      F;
       console.error(err);
       res.status(500).send("Error retrieving data from database");
     });
@@ -36,7 +37,7 @@ const getUsersById = (req, res) => {
 
   database
     .query(
-      "SELECT users.id, first_name, last_name, password, street, phone_number, salary, department_id, department_name FROM users left JOIN departments ON users.department_id = departments.id WHERE users.id = ?",
+      "SELECT users.id, username, first_name, last_name, password, street, phone_number, salary, department_id, department_name FROM users left JOIN departments ON users.department_id = departments.id WHERE users.id = ?",
       [id]
     )
     .then(([orders]) => {
@@ -55,6 +56,7 @@ const getUsersById = (req, res) => {
 const createUser = (req, res) => {
   const {
     department_id,
+    username,
     first_name,
     last_name,
     password,
@@ -65,9 +67,10 @@ const createUser = (req, res) => {
 
   database
     .query(
-      "INSERT INTO users(department_id, first_name, last_name, password, street,phone_number,salary) VALUES (?, ?, ?, ?, ?, ? ,?)",
+      "INSERT INTO users(department_id, username,first_name, last_name, password, street,phone_number,salary) VALUES (?, ?, ?, ?, ?, ? ,?,?)",
       [
         department_id,
+        username,
         first_name,
         last_name,
         password,
@@ -81,16 +84,15 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send("Error saving the movie");
+      res.status(500).send("Errora creating new user");
     });
 };
 
 const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
-  const { first_name } = req.body;
-  console.log(first_name);
+  const { username } = req.body;
 
   database
-    .query("SELECT * FROM users WHERE first_name = ?", [first_name])
+    .query("SELECT * FROM users WHERE username = ?", [username])
     .then(([users]) => {
       console.log(users);
       if (users[0] != null) {
@@ -107,10 +109,13 @@ const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
     });
 };
 
+// const sendUserInfo = (req, res, next) => {};
+
 // BUILDING PUT METHOD WITH USERS !!
 const updateUsers = (req, res) => {
   const {
     department_id,
+    username,
     first_name,
     last_name,
     password,
@@ -122,9 +127,10 @@ const updateUsers = (req, res) => {
 
   database
     .query(
-      "UPDATE users SET department_id=?, first_name=?, last_name=?, password=?, street=?, phone_number=?, salary=? WHERE id=?",
+      "UPDATE users SET department_id=?, username=?, first_name=?, last_name=?, password=?, street=?, phone_number=?, salary=? WHERE id=?",
       [
         department_id,
+        username,
         first_name,
         last_name,
         password,
@@ -169,6 +175,35 @@ const deleteUsers = (req, res) => {
     });
 };
 
+const getUserbyIdAndNext = (req, res, next) => {
+  const userId = req.decodedToken.sub ? parseInt(req.decodedToken.sub) : 0;
+
+  database
+    .query("SELECT id, username, department_id FROM users WHERE id = ?", [
+      userId,
+    ])
+    .then(([users]) => {
+      console.log(users);
+      if (users.length != 0) {
+        const user = users[0];
+
+        req.userInfo = {
+          id: user.id,
+          name: user.username,
+          department: user.department_id,
+        };
+
+        next();
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
 module.exports = {
   userOrderCount,
   getAllUsers,
@@ -177,4 +212,5 @@ module.exports = {
   getUserByEmailWithPasswordAndPassToNext,
   updateUsers,
   deleteUsers,
+  getUserbyIdAndNext,
 };

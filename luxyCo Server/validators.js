@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const usersSchema = Joi.object({
   department_id: Joi.number(),
+  username: Joi.string().max(255).required(),
   first_name: Joi.string().max(255).required(),
   last_name: Joi.string().max(255).required(),
   password: Joi.string().min(3).required(),
@@ -13,6 +14,7 @@ const usersSchema = Joi.object({
 const validateUsers = (req, res, next) => {
   const {
     department_id,
+    username,
     first_name,
     last_name,
     password,
@@ -24,6 +26,7 @@ const validateUsers = (req, res, next) => {
   const { error } = usersSchema.validate(
     {
       department_id,
+      username,
       first_name,
       last_name,
       password,

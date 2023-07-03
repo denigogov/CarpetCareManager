@@ -18,7 +18,6 @@ const EditUser = ({ token }) => {
 
       setDepartments(data);
     };
-
     fetchData();
   }, []);
 
@@ -52,8 +51,6 @@ const EditUser = ({ token }) => {
         setApiStatusMessage(true);
         throw Error();
       }
-
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -62,13 +59,23 @@ const EditUser = ({ token }) => {
   return (
     <div className="editUser">
       <div className="editUser--title">
-        <h3>User Details</h3>
+        <h3>User Update</h3>
         <p style={{ color: "#da0063" }}>{data.first_name}</p>
       </div>
 
       <form>
         <div className="editUser--data">
           <div className="editUser--columnLeft">
+            <p>
+              Username:
+              <input
+                type="text"
+                name="username"
+                defaultValue={data.username}
+                onChange={handleInputChange}
+              />
+            </p>
+
             <p>
               First Name:
               <input
@@ -80,7 +87,7 @@ const EditUser = ({ token }) => {
             </p>
 
             <p>
-              Last Name:{" "}
+              Last Name:
               <input
                 type="text"
                 name="last_name"
@@ -132,11 +139,11 @@ const EditUser = ({ token }) => {
                 ))}
               </select>
             </p>
+            <button className="updateUserBtn" onClick={handleFormSubmit}>
+              update
+            </button>
           </div>
         </div>
-        <button className="updateUserBtn" onClick={handleFormSubmit}>
-          update
-        </button>
       </form>
       <p>
         {apiStatusMessage ? (

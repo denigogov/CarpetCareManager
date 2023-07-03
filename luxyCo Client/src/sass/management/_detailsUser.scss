@@ -1,22 +1,20 @@
 @use "../colors";
 
 .detailsUser {
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  gap: 50px;
 }
 
 .detailsUser--title {
   font-weight: 600;
   text-align: center;
-  padding: 25px;
 }
 
 .detailsUser--data {
   display: flex;
-  justify-content: space-around;
-
   text-align: justify;
   gap: 60px;
 
@@ -24,7 +22,7 @@
   .columnLeft {
     display: flex;
     flex-direction: column;
-    gap: 17px;
+    gap: 20px;
 
     p {
       font-weight: 500;

@@ -59,16 +59,26 @@ const CreateUser = ({ token }) => {
   return (
     <div className="createUser">
       <div className="createUser--title">
-        <p>Create new user</p>
+        <h3>Create new user</h3>
       </div>
       <form>
         <div className="createUserColumn-left">
+          <label>
+            username<span className="requiredField">*</span>
+          </label>
+          <input
+            type="text"
+            placeholder="username"
+            name="username"
+            onChange={inputUserForm}
+          />
+
           <label>
             first name<span className="requiredField">*</span>
           </label>
           <input
             type="text"
-            placeholder="username"
+            placeholder="first name"
             name="first_name"
             onChange={inputUserForm}
           />
@@ -90,17 +100,6 @@ const CreateUser = ({ token }) => {
             name="password"
             onChange={inputUserForm}
           />
-
-          <button className="createUserBtn" onClick={submitCreateUser}>
-            create user
-          </button>
-          {errorMessage && (
-            <p style={{ color: "green" }}>
-              {errorMessage
-                ? `${userDataStoring.first_name} successfully added`
-                : "error user not added, please try again"}
-            </p>
-          )}
         </div>
         <div className="createUserColumn-rigth">
           <label>adress</label>
@@ -135,6 +134,16 @@ const CreateUser = ({ token }) => {
           </select>
         </div>
       </form>
+      <button className="createUserBtn" onClick={submitCreateUser}>
+        create user
+      </button>{" "}
+      {errorMessage && (
+        <p style={{ color: "green" }}>
+          {errorMessage
+            ? `${userDataStoring.username} successfully added`
+            : "error user not added, please try again"}
+        </p>
+      )}
     </div>
   );
 };

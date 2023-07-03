@@ -7,13 +7,12 @@ const {
   hashpassword,
   verifyPassword,
   verifyToken,
+
   sendUserInfo,
 } = require("../Auth");
 
-router.post(
-  "/",
-  database.getUserByEmailWithPasswordAndPassToNext,
-  verifyPassword
-);
+router
+  .post("/", database.getUserByEmailWithPasswordAndPassToNext, verifyPassword)
+  .get("/", verifyToken, database.getUserbyIdAndNext, sendUserInfo);
 
 module.exports = router;

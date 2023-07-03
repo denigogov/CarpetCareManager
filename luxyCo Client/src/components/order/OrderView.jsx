@@ -5,6 +5,7 @@ const OrderView = ({ data, orderStatus }) => {
     orderStatus === "all"
       ? data
       : data.filter((order) => order.status_name === orderStatus);
+
   const totalm2 = status.length
     ? status.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
     : "";
@@ -53,12 +54,14 @@ const OrderView = ({ data, orderStatus }) => {
                 <td colSpan="1">{totalm2} m²</td>
               </tr>
             ) : (
-              <div>No order with this status found</div>
+              <tr>
+                <td colSpan="9">No order found</td>
+              </tr>
             )}
           </tbody>
         </table>
       ) : (
-        <div>No orders found for this date</div>
+        ""
       )}
     </div>
   );

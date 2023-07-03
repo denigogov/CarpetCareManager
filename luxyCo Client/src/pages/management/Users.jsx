@@ -30,6 +30,8 @@ const Users = ({ token }) => {
     fetcher
   );
 
+  console.log(data);
+
   const deleteUser = async (id, first_name) => {
     try {
       const confirmDelete = confirm(
@@ -70,14 +72,14 @@ const Users = ({ token }) => {
           <thead>
             <tr>
               <th>
-                <Link to={`/management/users/addUser/`}>
-                  <img
-                    src={addUserIcon}
-                    alt="create new user icon"
-                    onClick={() => setPopupOpen((x) => !x)}
-                  />
+                <Link
+                  to={`/management/users/addUser/`}
+                  onClick={() => setPopupOpen((x) => !x)}
+                >
+                  <img src={addUserIcon} alt="create new user icon" />
                 </Link>
               </th>
+              <th>username</th>
               <th>first name</th>
               <th>last name</th>
               <th>department</th>
@@ -91,6 +93,7 @@ const Users = ({ token }) => {
               return (
                 <tr key={users.id}>
                   <td>{i + 1}</td>
+                  <td>{users.username}</td>
                   <td>{users.first_name}</td>
                   <td>{users.last_name}</td>
                   <td>{users.department_name}</td>

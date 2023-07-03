@@ -3,9 +3,10 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  redirect,
 } from "react-router-dom";
 import useToken from "./useToken";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Login from "./pages/Login";
 import Root from "./pages/Root";
@@ -28,11 +29,29 @@ import EditUser from "./pages/management/EditUser";
 import DetailsUser from "./pages/management/DetailsUser";
 import CreateUser from "./pages/management/CreateUser";
 
-import { fetchSingleUser, fetchTableDepartment } from "./api";
+import {
+  fetchSingleUser,
+  fetchTableDepartment,
+  fetchTokenValidation,
+} from "./api";
 
 const App = () => {
   const { token, setToken } = useToken(null);
   const [userInfo, setUserInfo] = useState({});
+
+  console.log(userInfo);
+
+  useEffect(() => {
+    const validateToken = async () => {
+      if (typeof token === "string") {
+        const userInfos = await fetchTokenValidation(token);
+
+        if (userInfos) setUserInfo(userInfos);
+        else setToken("");
+      }
+    };
+    validateToken();
+  }, []);
 
   if (!token) {
     return <Login setToken={setToken} setUserInfo={setUserInfo} />;
@@ -46,14 +65,11 @@ const App = () => {
       >
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
-
         <Route path="order" element={<Order token={token} />}>
           <Route path="createOrder" element={<CreateOrder />} />
         </Route>
-
         <Route path="delivery" element={<Delivery />} />
         <Route path="contact" element={<Contact />} />
-
         {userInfo.department === 2 && (
           <Route path="management" element={<Management />}>
             <Route path="users" element={<Users token={token} />}>

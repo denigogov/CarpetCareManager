@@ -4,17 +4,19 @@ import "../../sass/management/_detailsUser.scss";
 export const DetailsUser = ({ token }) => {
   const data = useLoaderData(token);
 
-  console.log(data);
-
   return (
     <div className="detailsUser">
       <div className="detailsUser--title">
         <h3>User Details</h3>
-        <p style={{ color: "#da0063" }}>{data.first_name}</p>
+        <p style={{ color: "#da0063" }}>{data.username}</p>
       </div>
 
       <div className="detailsUser--data">
         <div className="columnLeft">
+          <p>
+            Username:
+            <span>{data.username}</span>
+          </p>
           <p>
             First Name:
             <span>{data.first_name}</span>
@@ -34,7 +36,7 @@ export const DetailsUser = ({ token }) => {
             </span>
           </p>
           <p>
-            Department:{" "}
+            Department:
             <span>
               {data.department_name
                 ? data.department_name

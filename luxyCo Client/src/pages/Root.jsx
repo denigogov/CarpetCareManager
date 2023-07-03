@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, redirect } from "react-router-dom";
 import "../sass/_root.scss";
 import appLogo from "../assets/appLogo.svg";
 import githubIcon from "../assets/githubIcon.svg";

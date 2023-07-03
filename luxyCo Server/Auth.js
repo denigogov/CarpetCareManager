@@ -34,18 +34,12 @@ const verifyPassword = (req, res) => {
       //  ifVerified return true or false if the password match return true!
       if (isVerified) {
         // res.send("credentials are valid");
-        const payload = { sub: req.user.id, name: req.user.firstname };
+        const payload = { sub: req.user.id, name: req.user.username };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "9h",
         });
-
-        // console.log(payload);
-
         res.send({
           token,
-          name: req.user.first_name,
-          id: req.user.id,
-          department: req.user.department_id,
         });
       } else {
         res.status(401).send("wrong password or username");
@@ -61,30 +55,38 @@ const verifyToken = (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization");
 
-    // console.log(authorizationHeader);
-    // console.log(req);
-
     if (authorizationHeader == null) {
       throw new Error("Authorization header is missing");
     }
-
     const [type, token] = authorizationHeader.split(" ");
-    console.log(type, token);
 
     if (type !== "Bearer") {
-      throw new Error("Authorization header has not the 'Bearer' type");
+      res.status(401).json({ success: false, payload: "Invalid token" });
+    } else {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+        if (err) {
+          throw new Error("Invalid token");
+        }
+        req.decodedToken = decodedToken;
+        next();
+      });
     }
-    req.payload = jwt.verify(token, process.env.JWT_SECRET);
-
-    next();
   } catch (err) {
     console.log(err);
     res.sendStatus(401);
   }
 };
 
+const sendUserInfo = (req, res) => {
+  res.json({
+    success: true,
+    payload: req.userInfo,
+  });
+};
+
 module.exports = {
   hashpassword,
   verifyPassword,
   verifyToken,
+  sendUserInfo,
 };

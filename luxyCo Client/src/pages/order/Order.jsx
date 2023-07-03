@@ -14,12 +14,18 @@ const Order = ({ token }) => {
   const [orderStatus, setOrderStatus] = useState("all");
   const formattedDate = wishDate.toISOString().split("T")[0];
 
+  // BUG BUG BUG === The date its showing -1 day should be 0  with localISOTime its correct but I need to add inside of the fetch fn.
+  const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+  const localISOTime = new Date(Date.now() - tzoffset)
+    .toISOString()
+    .slice(0, -1);
+
   const {
     data: orderStatusData,
     error: orderStatusError,
     isLoading: orderStatusLoading,
   } = useSWR(["orderStatus", token], () => fetchOrderStatus(token));
-  const url = `http://localhost:4000/table/orders?date=${formattedDate}`;
+
   // To Render ERROR ,DATA and WHEN DATA IS LOAD!
   const { data, error, isLoading } = useSWR([formattedDate, token], () =>
     fetchOrdersByData(formattedDate, token)
@@ -72,9 +78,7 @@ const Order = ({ token }) => {
           <li>
             <select name="" id="" onChange={selectOptions}>
               <option value="all">order by status</option>
-              <option defaultValue="all" selected>
-                all
-              </option>
+              <option defaultValue="all">all</option>
               {orderStatusData.map((status) => {
                 return <option key={status.id}>{status.status_name}</option>;
               })}

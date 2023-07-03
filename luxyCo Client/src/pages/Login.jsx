@@ -3,8 +3,8 @@ import loginIcon from "../assets/icon-user.svg";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const Login = ({ setToken, setUserInfo }) => {
-  const [first_name, setUsername] = useState();
+const Login = ({ setToken }) => {
+  const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
   const loginResponse = async (credentials) => {
@@ -18,19 +18,15 @@ const Login = ({ setToken, setUserInfo }) => {
 
     const data = await response.json();
 
-    // Assuming you have access to the `setUserInfo` function from your component
-    setUserInfo(data);
-
     return data.token;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await loginResponse({
-      first_name,
+      username,
       password,
     });
-
     setToken(token);
   };
 
