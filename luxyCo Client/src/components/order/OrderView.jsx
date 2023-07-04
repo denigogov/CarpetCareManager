@@ -1,20 +1,38 @@
 import "../../sass/order/_orderView.scss";
+import PDFGenerator from "./GeneratePDF";
 
-const OrderView = ({ data, orderStatus }) => {
-  const status =
-    orderStatus === "all"
-      ? data
-      : data.filter((order) => order.status_name === orderStatus);
+const OrderView = ({ data, orderStatus, searchOrder }) => {
+  const search = searchOrder
+    ? data.filter((order) => {
+        const searchValue = searchOrder.toLowerCase();
+        const firstNameMatch = order.first_name
+          .toLowerCase()
+          .includes(searchValue);
+        const lastNameMatch = order.last_name
+          .toLowerCase()
+          .includes(searchValue);
+        const statusMatch = order.status_name
+          .toLowerCase()
+          .includes(searchValue);
+        return (
+          (orderStatus === "all" || order.status_name === orderStatus) &&
+          (firstNameMatch || lastNameMatch || statusMatch)
+        );
+      })
+    : orderStatus === "all"
+    ? data
+    : data.filter((order) => order.status_name === orderStatus);
 
-  const totalm2 = status.length
-    ? status.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
+  const totalm2 = search.length
+    ? search.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
     : "";
 
-  console.log(status);
+  const times = data.map((ie) => ie.order_date);
 
   return (
     <div className="orderTableContainer">
-      {status ? (
+      <div className="buttonContainer"></div>
+      {search ? (
         <table className="orderTable">
           <thead>
             <tr>
@@ -33,7 +51,7 @@ const OrderView = ({ data, orderStatus }) => {
             </tr>
           </thead>
           <tbody>
-            {status.map((order) => (
+            {search.map((order) => (
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{`${order.first_name} ${order.last_name}`}</td>
@@ -59,6 +77,10 @@ const OrderView = ({ data, orderStatus }) => {
                 <th colSpan="6"></th>
                 <th colSpan="1">Total</th>
                 <td colSpan="1">{totalm2} m²</td>
+                <td>
+                  {" "}
+                  <PDFGenerator data={search} />
+                </td>
               </tr>
             ) : (
               <tr>

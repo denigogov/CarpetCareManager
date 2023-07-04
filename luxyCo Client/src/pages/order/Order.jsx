@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const Order = ({ token }) => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState("all");
+  const [searchOrder, setSearchOrder] = useState("");
 
   // Time calc. because with toISOString I'm couple of hours behind !!
   const timezoneOffset = wishDate.getTimezoneOffset() * 60000;
@@ -55,8 +56,9 @@ const Order = ({ token }) => {
           <li>
             <input
               type="search"
-              placeholder="Search Order"
+              placeholder="search for order "
               className="orderSearchInput"
+              onChange={(e) => setSearchOrder(e.target.value)}
             />
           </li>
 
@@ -86,7 +88,11 @@ const Order = ({ token }) => {
       </nav>
 
       <div className="orderView">
-        <OrderView data={data} orderStatus={orderStatus} />
+        <OrderView
+          data={data}
+          orderStatus={orderStatus}
+          searchOrder={searchOrder}
+        />
       </div>
 
       <main>
