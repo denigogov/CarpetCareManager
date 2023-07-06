@@ -5,15 +5,14 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
   const search = searchOrder
     ? data.filter((order) => {
         const searchValue = searchOrder.toLowerCase();
+
         const firstNameMatch = order.first_name
           .toLowerCase()
           .includes(searchValue);
         const lastNameMatch = order.last_name
           .toLowerCase()
           .includes(searchValue);
-        const statusMatch = order.status_name
-          .toLowerCase()
-          .includes(searchValue);
+        const statusMatch = order.street.toLowerCase().includes(searchValue);
         return (
           (orderStatus === "all" || order.status_name === orderStatus) &&
           (firstNameMatch || lastNameMatch || statusMatch)
@@ -26,9 +25,7 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
   const totalm2 = search.length
     ? search.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
     : "";
-
-  const times = data.map((ie) => ie.order_date);
-
+  console.log(search);
   return (
     <div className="orderTableContainer">
       <div className="buttonContainer"></div>
@@ -41,8 +38,8 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
               <th>Address</th>
               <th>Order Status</th>
               <th>Order Date</th>
-              <th>Carpet Pieces</th>
               <th>Total Price</th>
+              <th>Scheduled Date</th>
               <th>
                 m<sup>2</sup>
               </th>
@@ -64,8 +61,18 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
                     .replaceAll("-", ".")
                     .replace("T", " ")}
                 </td>
-                <td>{order.carpet_pieces}</td>
+
                 <td>{order.total_price} $</td>
+                <td>
+                  {order.scheduled_date
+                    ? new Date(
+                        new Date(order.scheduled_date).getTime() +
+                          24 * 60 * 60 * 1000
+                      )
+                        .toISOString()
+                        .slice(0, 10)
+                    : "no scheduled date"}
+                </td>
                 <td>{order.m2}</td>
                 <td>{order.delivery === 0 ? "no" : "yes"}</td>
                 <td>{order.username ? order.username : "user deleted"}</td>
@@ -74,7 +81,7 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
 
             {totalm2 ? (
               <tr>
-                <th colSpan="6"></th>
+                <th colSpan="7"></th>
                 <th colSpan="1">Total</th>
                 <td colSpan="1">{totalm2} m²</td>
                 <td>
@@ -84,7 +91,7 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
               </tr>
             ) : (
               <tr>
-                <td colSpan="9">No order found</td>
+                <td colSpan="11">No order found</td>
               </tr>
             )}
           </tbody>

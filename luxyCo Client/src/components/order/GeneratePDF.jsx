@@ -54,6 +54,9 @@ const PDFGenerator = ({ data }) => {
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
+
+      borderBottom: "1px solid #e0e0e0",
+      padding: 4,
     },
     image: {
       marginLeft: 6,
@@ -146,7 +149,7 @@ const PDFGenerator = ({ data }) => {
     <PDFDownloadLink document={PDFContent} fileName={fileName}>
       {({ blob, url, loading, error }) =>
         loading ? (
-          "Generating PDF..."
+          ""
         ) : (
           <img
             style={{ width: "35px", height: "35px" }}

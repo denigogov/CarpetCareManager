@@ -17,10 +17,26 @@ const tableOrders = (req, res) => {
 
   database
     .query(
-      `SELECT orders.id, users.username, custumers.first_name, custumers.last_name, custumers.street, status_name, CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,  carpet_pieces,total_price,m2 ,delivery FROM orders
+      `SELECT 
+      orders.id, 
+      users.username,
+      customers.first_name,
+      customers.last_name,
+      customers.phone_number,
+      customers.street,
+      status_name,
+      CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
+      total_price , 
+      delivery,
+      scheduled_date,
+      pieces as carpet_pieces,
+      services.service_price,m2 FROM orders
+
       left join users on orders.user_id = users.id 
-      inner join custumers on orders.custumer_id = custumers.id
+      inner join customers on orders.customer_id = customers.id
       inner join order_status on orders.order_status_id = order_status.id
+      INNER JOIN order_services ON orders.orderService_id = order_services.id
+      INNER JOIN services ON order_services.service_id = services.id
       WHERE order_date LIKE CONCAT(?, '%')`,
 
       [date]
@@ -46,8 +62,21 @@ const tableOrderStatus = (_, res) => {
     });
 };
 
+const tableCustomers = (_, res) => {
+  database
+    .query("select * from  customers")
+    .then(([customers]) => {
+      res.json(customers);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
 module.exports = {
   tableDepartments,
   tableOrders,
   tableOrderStatus,
+  tableCustomers,
 };

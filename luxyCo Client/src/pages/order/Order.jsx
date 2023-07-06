@@ -1,18 +1,23 @@
-import { Outlet, NavLink, useLoaderData } from "react-router-dom";
-import addIcon from "../../assets/addIcon.svg";
-import calendarIcon from "../../assets/calendarIcon.svg";
-import "../../sass/order/_order.scss";
-import OrderView from "../../components/order/OrderView";
-import useSWR, { useSWRConfig } from "swr";
-import { fetchOrdersByData, fetchOrderStatus } from "../../api";
+import { Outlet, NavLink, useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import addIcon from "../../assets/addIcon.svg";
+import calendarIcon from "../../assets/calendarIcon.svg";
+import "../../sass/order/_order.scss";
+
+import OrderView from "../../components/order/OrderView";
+import useSWR, { useSWRConfig } from "swr";
+import { fetchOrdersByData, fetchOrderStatus } from "../../api";
 
 const Order = ({ token }) => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState("all");
   const [searchOrder, setSearchOrder] = useState("");
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   // Time calc. because with toISOString I'm couple of hours behind !!
   const timezoneOffset = wishDate.getTimezoneOffset() * 60000;
@@ -38,18 +43,27 @@ const Order = ({ token }) => {
     setOrderStatus(e.target.value);
   };
 
+  const popupWindow = () => {
+    setPopupOpen((x) => !x);
+    navigate("/order");
+  };
+
+  const preventPropagation = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="order">
       <nav className="createOrder--nav">
         <ul>
-          <NavLink to="createOrder">
+          <NavLink to="createOrder" onClick={() => setPopupOpen((x) => !x)}>
             <li>
               <img
                 src={addIcon}
                 alt="add new order img"
                 style={{ width: "35px" }}
               />
-              add order
+              <p>add order</p>
             </li>
           </NavLink>
 
@@ -64,7 +78,11 @@ const Order = ({ token }) => {
 
           <li>
             <img src={calendarIcon} alt="calendar icon" />
-            <DatePicker selected={wishDate} onChange={setWishDate} />
+            <DatePicker
+              selected={wishDate}
+              onChange={setWishDate}
+              closeOnScroll={true}
+            />
           </li>
 
           <li>
@@ -94,10 +112,13 @@ const Order = ({ token }) => {
           searchOrder={searchOrder}
         />
       </div>
-
-      <main>
-        <Outlet />
-      </main>
+      {popupOpen && (
+        <div className="overlay" onClick={popupWindow}>
+          <main className="popUp" onClick={preventPropagation}>
+            <Outlet />
+          </main>
+        </div>
+      )}
     </div>
   );
 };
