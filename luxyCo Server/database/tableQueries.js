@@ -74,9 +74,53 @@ const tableCustomers = (_, res) => {
     });
 };
 
+const tableServices = (_, res) => {
+  database
+    .query("select * from  services")
+    .then(([services]) => {
+      res.json(services);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
+const tableOrderServices = (_, res) => {
+  database
+    .query("select * from  order_services")
+    .then(([orderServices]) => {
+      res.json(orderServices);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
+const postOrderServices = (req, res) => {
+  const { service_id, m2, pieces } = req.body;
+
+  database
+    .query(
+      "INSERT INTO order_services(service_id, m2, pieces) VALUES (?, ?, ?)",
+      [service_id, m2, pieces]
+    )
+    .then(([result]) => {
+      res.location(`/table/orderServices/${result.insertId}`).sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Errora creating new user");
+    });
+};
+
 module.exports = {
   tableDepartments,
   tableOrders,
   tableOrderStatus,
   tableCustomers,
+  tableServices,
+  tableOrderServices,
+  postOrderServices,
 };

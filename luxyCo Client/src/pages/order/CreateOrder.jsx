@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { fetchTableCustomers } from "../../api";
+import {
+  fetchTableCustomers,
+  fetchTableServices,
+  fetchOrderServices,
+} from "../../api";
 import useSWR, { useSWRConfig } from "swr";
+import OrderCreateStepOne from "../../components/order/OrderCreateStepOne";
 
 const CreateOrder = ({ token }) => {
-  const [selectedUser, setSelectedUser] = useState([]);
-  const [matchingCustomers, setMatchingCustomers] = useState([]);
-
   const {
     data: orderStatus,
     error: orderStatusError,
@@ -18,45 +20,38 @@ const CreateOrder = ({ token }) => {
     isLoading: customersLoading,
   } = useSWR(["customer", token], () => fetchTableCustomers(token));
 
+  const {
+    data: services,
+    error: servicesError,
+    isLoading: servicesLoading,
+  } = useSWR(["services", token], () => fetchTableServices(token));
+
+  const {
+    data: orderServices,
+    error: orderServicesError,
+    isLoading: orderServicesLoading,
+  } = useSWR(["orderServices", token], () => fetchOrderServices(token));
+
+  console.log(orderServices);
+
   if (customersError) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (customersLoading) return <h3>loading...</h3>; //I need to add loading component!
-
-  const phone = (e) => {
-    setSelectedUser(e.target.value);
-    setMatchingCustomers(
-      customers.filter((customer) => customer.first_name.includes(selectedUser))
-    );
-  };
-
-  const findId = (id) => {
-    setSelectedUser(id);
-  };
+  if (servicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (orderServicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (customersLoading || servicesLoading || orderServicesLoading)
+    return <h3>loading...</h3>; //I need to add loading component!
 
   return (
-    <div>
-      {matchingCustomers.length > 0 ? (
-        <ul>
-          {matchingCustomers.map((customer) => (
-            <li key={customer.id} onClick={() => findId(customer)}>
-              {customer.first_name} <button>use</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <button>create new custumer</button>
-      )}
-      <input type="text" onChange={phone} />
-
-      {selectedUser.id ? (
+    <div className="createOrder--container">
+      <h3>Create Order</h3>
+      <div className="createOrder--wrap">
         <div>
-          <p>{selectedUser.first_name}</p>
-          <p>{selectedUser.last_name}</p>
-          <p>{selectedUser.street + " " + selectedUser.city}</p>
-          <p>{selectedUser.phone_number}</p>
+          <OrderCreateStepOne
+            services={services}
+            orderServices={orderServices}
+            token={token}
+          />
         </div>
-      ) : (
-        "no selected user"
-      )}
+      </div>
     </div>
   );
 };

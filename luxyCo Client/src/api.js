@@ -78,8 +78,28 @@ export const fetchOrderStatus = async (token) => {
   const data = await response.json();
   return data;
 };
+
 export const fetchTableCustomers = async (token) => {
   const response = await fetch("http://localhost:4000/table/customers", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};
+
+export const fetchTableServices = async (token) => {
+  const response = await fetch("http://localhost:4000/table/services", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};
+export const fetchOrderServices = async (token) => {
+  const response = await fetch("http://localhost:4000/table/orderServices", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -25,7 +25,7 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
   const totalm2 = search.length
     ? search.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
     : "";
-  console.log(search);
+
   return (
     <div className="orderTableContainer">
       <div className="buttonContainer"></div>

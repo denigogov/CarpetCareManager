@@ -1,0 +1,38 @@
+@use "../colors";
+@use "../general";
+@use "../mixing";
+
+.OrderCreateStepOne {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.orderInput--wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  input,
+  select {
+    text-align: center;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid colors.$borderLine-Second;
+
+    &:focus {
+      outline: 4px solid colors.$borderLine-Primary;
+    }
+  }
+}
+.stepOneBtn {
+  @include mixing.button;
+  padding: 13px 45px;
+}
+
+.totalPrice {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
