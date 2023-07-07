@@ -1,0 +1,72 @@
+@use "../colors";
+@use "../general";
+@use "../mixing";
+.addCustomerIcon {
+  width: 20px;
+}
+
+.customerSearchIcon {
+  text-align: center;
+  padding-left: 25px;
+  background: url("../../assets/detailsIcon.svg") no-repeat left;
+  background-size: 25px;
+  background-color: #fff;
+}
+
+.orderStepTwo--container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+
+  input {
+    text-align: center;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid colors.$borderLine-Second;
+
+    &:focus {
+      outline: 4px solid colors.$borderLine-Primary;
+    }
+  }
+}
+
+.OrderCustomersList {
+  overflow-y: scroll;
+  height: 100px;
+  &::-webkit-scrollbar {
+    width: 3px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: colors.$banner-Primary;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+  }
+
+  button {
+    cursor: pointer;
+    margin: 0 10px;
+    background-color: transparent;
+    border: none;
+    color: colors.$borderLine-Second;
+    transition: general.$transition;
+
+    &:hover {
+      color: colors.$font-Primary;
+    }
+  }
+}
+
+.addNewCustomer--container {
+  display: flex;
+  gap: 20px;
+  flex-direction: row-reverse;
+  cursor: pointer;
+}

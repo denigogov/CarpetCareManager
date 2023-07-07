@@ -74,6 +74,23 @@ const tableCustomers = (_, res) => {
     });
 };
 
+const postTableCustomers = (req, res) => {
+  const { first_name, last_name, street, city, phone_number } = req.body;
+
+  database
+    .query(
+      "INSERT INTO customers(first_name, last_name, street, city, phone_number) VALUES (?, ?, ?, ? ,?)",
+      [first_name, last_name, street, city, phone_number]
+    )
+    .then(([customers]) => {
+      res.location(`/table/customers/${customers.insertId}`).sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Errora creating new customer");
+    });
+};
+
 const tableServices = (_, res) => {
   database
     .query("select * from  services")
@@ -123,4 +140,5 @@ module.exports = {
   tableServices,
   tableOrderServices,
   postOrderServices,
+  postTableCustomers,
 };

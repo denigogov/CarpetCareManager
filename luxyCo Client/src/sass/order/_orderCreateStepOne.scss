@@ -28,6 +28,7 @@
 .stepOneBtn {
   @include mixing.button;
   padding: 13px 45px;
+  letter-spacing: general.$spacing;
 }
 
 .totalPrice {

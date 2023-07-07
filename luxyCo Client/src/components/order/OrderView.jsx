@@ -4,7 +4,7 @@ import PDFGenerator from "./GeneratePDF";
 const OrderView = ({ data, orderStatus, searchOrder }) => {
   const search = searchOrder
     ? data.filter((order) => {
-        const searchValue = searchOrder.toLowerCase();
+        const searchValue = searchOrder.toLowerCase().trim();
 
         const firstNameMatch = order.first_name
           .toLowerCase()

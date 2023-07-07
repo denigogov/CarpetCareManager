@@ -10,6 +10,7 @@ router
   .get("/orders/", verifyToken, database.tableOrders)
   .get("/orderStatus/", verifyToken, database.tableOrderStatus)
   .get("/customers", verifyToken, database.tableCustomers)
+  .post("/customers", verifyToken, database.postTableCustomers)
   .get("/services", verifyToken, database.tableServices)
   .get("/orderServices", verifyToken, database.tableOrderServices)
   .post("/orderServices", verifyToken, database.postOrderServices);

@@ -32,8 +32,6 @@ const CreateOrder = ({ token }) => {
     isLoading: orderServicesLoading,
   } = useSWR(["orderServices", token], () => fetchOrderServices(token));
 
-  console.log(orderServices);
-
   if (customersError) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (servicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (orderServicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
@@ -49,6 +47,7 @@ const CreateOrder = ({ token }) => {
             services={services}
             orderServices={orderServices}
             token={token}
+            customers={customers}
           />
         </div>
       </div>

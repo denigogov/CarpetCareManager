@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from "swr";
 import "../../sass/order/_orderCreateStepOne.scss";
 import OrderStepTwo from "./OrderStepTwo";
 
-const OrderCreate = ({ services, orderServices, token }) => {
+const OrderCreate = ({ services, orderServices, token, customers }) => {
   const [servicePrice, setServicePrice] = useState(0);
   const [m2, setm2] = useState(0);
   const [delivery, setDelivery] = useState(false);
@@ -15,13 +15,12 @@ const OrderCreate = ({ services, orderServices, token }) => {
   const takePiecesRef = useRef(null);
 
   const serviceDataStoringRef = useRef({});
+  const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
 
   // Values that I need for STEP 2
-  const orderServiceLastIdNumber = orderServices
-    .map((service) => service.id)
-    .pop();
-  const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
+  const orderServiceLastId = orderServices.map((service) => service.id).pop();
   const totalPrice = delivery ? priceCalculate + 2 : priceCalculate;
+  const customerLastId = customers.map((customer) => customer.id).pop();
   // delivery also
 
   const selectService = (e) => {
@@ -108,7 +107,9 @@ const OrderCreate = ({ services, orderServices, token }) => {
       </form>
 
       <div className="totalPrice">
-        {nextStepMessage && <OrderStepTwo />}
+        {nextStepMessage && (
+          <OrderStepTwo customers={customers} token={token} />
+        )}
         {totalPrice.length > 1 ? "" : <p>price: {totalPrice.toFixed(2)} €</p>}
         {!nextStepMessage && <p className="errorMessage">{error}</p>}
         {!nextStepMessage && (
@@ -117,6 +118,9 @@ const OrderCreate = ({ services, orderServices, token }) => {
           </button>
         )}
       </div>
+
+      {/* I need only for styling view I will delete after styling everything */}
+      {/* <OrderStepTwo customers={customers} token={token} /> */}
     </div>
   );
 };
