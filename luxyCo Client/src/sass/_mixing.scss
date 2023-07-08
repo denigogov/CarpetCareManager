@@ -1,12 +1,16 @@
 @use "./colors";
 @use "./general";
 
-@mixin inputFields($borderColor: colors.$borderLine-Primary) {
+@mixin inputFieldsLogin($borderColor: colors.$borderLine-Primary) {
   border: 1px solid $borderColor;
   border-radius: 10px;
   background-size: 13px;
   background-position: right 10px top 11px;
   padding: 13px 40px;
+
+  &:focus {
+    outline: 1px solid colors.$borderLine-Second;
+  }
 }
 
 @mixin button() {
@@ -26,6 +30,27 @@
   &:active {
     transform: translateY(-3px);
   }
+}
+
+@mixin inputFileds() {
+  text-align: center;
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid colors.$borderLine-Second;
+
+  &:focus {
+    outline: 4px solid colors.$borderLine-Primary;
+  }
+}
+
+@mixin inputFiledsAddIcon() {
+  // add image before this mixing in the component
+  text-align: center;
+  padding-left: 25px;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: 25px;
+  background-color: #fff;
 }
 
 //   @mixin buttonHover($btnHoverColor: colors.$primary-darker) {

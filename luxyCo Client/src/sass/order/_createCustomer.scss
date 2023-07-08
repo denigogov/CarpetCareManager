@@ -1,0 +1,48 @@
+@use "../colors";
+@use "../general";
+@use "../mixing";
+
+.createCustomer--container {
+  padding: 30px;
+  border-left: 1px solid colors.$borderLine-Primary;
+  border-right: 1px solid colors.$borderLine-Primary;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .createCustomerSubTitle {
+    color: colors.$borderLine-Second;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 30px;
+
+    input {
+      @include mixing.inputFileds();
+    }
+  }
+}
+
+.createCustomer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.createCustomer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  button {
+    @include mixing.button();
+    letter-spacing: general.$spacing;
+  }
+}
+
+.createCustomer-left.error input,
+.createCustomer-right.error input {
+  border-color: red;
+}

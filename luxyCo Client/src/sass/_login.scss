@@ -21,13 +21,13 @@
 
     .login__username {
       background: url(../assets/user-input-icon.svg) no-repeat;
-      @include mixing.inputFields;
+      @include mixing.inputFieldsLogin;
       background-color: #fff;
     }
 
     .login__password {
       background: url(../assets/password-input-icon.svg) no-repeat;
-      @include mixing.inputFields;
+      @include mixing.inputFieldsLogin;
       background-color: #fff;
     }
 

@@ -6,11 +6,8 @@
 }
 
 .customerSearchIcon {
-  text-align: center;
-  padding-left: 25px;
-  background: url("../../assets/detailsIcon.svg") no-repeat left;
-  background-size: 25px;
-  background-color: #fff;
+  background: url("../../assets/detailsIcon.svg");
+  @include mixing.inputFiledsAddIcon();
 }
 
 .orderStepTwo--container {

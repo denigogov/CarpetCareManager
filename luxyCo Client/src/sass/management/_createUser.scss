@@ -1,6 +1,6 @@
 @use "../colors";
 @use "../mixing";
-
+@use "../general";
 .createUser {
   display: flex;
   flex-direction: column;
@@ -26,13 +26,7 @@
   input,
   select {
     text-align: center;
-    padding: 10px;
-    border-radius: 25px;
-    border: 1px solid colors.$borderLine-Second;
-
-    &:focus {
-      outline: 4px solid colors.$borderLine-Primary;
-    }
+    @include mixing.inputFileds();
   }
 }
 
@@ -42,5 +36,5 @@
 .createUserBtn {
   @include mixing.button;
   margin-top: 1rem;
-  padding: 8px 20px;
+  letter-spacing: general.$spacing;
 }

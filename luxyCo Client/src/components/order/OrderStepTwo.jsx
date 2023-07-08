@@ -5,26 +5,26 @@ import OrderStepThree from "./OrderStepThree";
 import CreateCustomer from "./CreateCustomer";
 
 const OrderStepTwo = ({ customers, token }) => {
-  const [searchUser, setSearchUser] = useState("");
+  const [searchInputUser, setSearchInputUser] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [createNewCustomer, setCreateNewCustomer] = useState(false);
+  const [newCustomerData, setNewCustomerData] = useState("");
   const [showStepThree, setShowStepThree] = useState(false);
-  const [showNewCustomer, setShowNewCustomer] = useState("");
 
-  const findUser = customers.filter((customer) => {
-    const searchValue = searchUser.toLowerCase().trim();
+  const findCustomer = customers.filter((customer) => {
+    const searchValue = searchInputUser.toLowerCase().trim();
 
     const searchByFirstName = customer.first_name
       .toLowerCase()
       .includes(searchValue);
 
-    const searchByPhoneNumber = customer.phone_number.includes(searchUser);
+    const searchByPhoneNumber = customer.phone_number.includes(searchInputUser);
     const searchByLastName = customer.last_name
       .toLowerCase()
       .includes(searchValue);
 
     return (
-      (searchUser !== "" && searchByFirstName) ||
+      (searchInputUser !== "" && searchByFirstName) ||
       searchByPhoneNumber ||
       searchByLastName
     );
@@ -32,7 +32,7 @@ const OrderStepTwo = ({ customers, token }) => {
 
   const showUser = (customer) => {
     setSelectedUser(customer);
-    setSearchUser("");
+    setSearchInputUser("");
     setCreateNewCustomer(false);
   };
 
@@ -50,17 +50,18 @@ const OrderStepTwo = ({ customers, token }) => {
       <div className="orderStepTwo--container">
         <input
           type="text"
-          value={searchUser}
-          onChange={(e) => setSearchUser(e.target.value)}
+          value={searchInputUser}
+          onChange={(e) => setSearchInputUser(e.target.value)}
           className="customerSearchIcon"
           placeholder="search for user"
+          // disabled={showStepThree}
         />
 
-        {searchUser ? (
-          findUser.length ? (
+        {searchInputUser ? (
+          findCustomer.length ? (
             <div className="OrderCustomersList">
               <ul>
-                {findUser.map((customer) => (
+                {findCustomer.map((customer) => (
                   <li key={customer.id} onClick={() => showUser(customer)}>
                     {customer.first_name + " " + customer.last_name}
                     <button>select</button>
@@ -87,13 +88,13 @@ const OrderStepTwo = ({ customers, token }) => {
             <p>{selectedUser.street + " " + selectedUser.city}</p>
             <p>{selectedUser.phone_number}</p>
           </div>
-        ) : showNewCustomer ? (
+        ) : newCustomerData ? (
           <div>
             <p>
-              {showNewCustomer.first_name + " " + showNewCustomer.last_name}
+              {newCustomerData.first_name + " " + newCustomerData.last_name}
             </p>
-            <p>{showNewCustomer.street + " " + showNewCustomer.city}</p>
-            <p>{showNewCustomer.phone_number}</p>
+            <p>{newCustomerData.street + " " + newCustomerData.city}</p>
+            <p>{newCustomerData.phone_number}</p>
           </div>
         ) : (
           ""
@@ -103,11 +104,11 @@ const OrderStepTwo = ({ customers, token }) => {
         <CreateCustomer
           token={token}
           setCreateNewCustomer={setCreateNewCustomer}
-          setShowNewCustomer={setShowNewCustomer}
+          setNewCustomerData={setNewCustomerData}
           onHandleStepThree={handleStepThree}
         />
       )}
-      {showStepThree || (selectedUser && <OrderStepThree />)}
+      {(showStepThree || selectedUser) && <OrderStepThree />}
     </div>
   );
 };

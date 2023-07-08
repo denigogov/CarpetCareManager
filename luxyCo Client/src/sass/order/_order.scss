@@ -1,4 +1,5 @@
 @use "../colors";
+@use "../mixing";
 
 .createOrder--nav {
   ul {
@@ -9,9 +10,8 @@
     border: 1px solid colors.$borderLine-Primary;
 
     input {
-      padding: 10px;
+      @include mixing.inputFileds();
       border: none;
-      border-radius: 25px;
 
       &:focus {
         outline: 1px solid colors.$borderLine-Primary;
@@ -45,11 +45,8 @@
 }
 
 .orderSearchInput {
-  text-align: center;
-  padding-left: 25px;
-  background: url("../../assets/search-input-icon.svg") no-repeat left;
-  background-size: 25px;
-  background-color: #fff;
+  background: url("../../assets/search-input-icon.svg");
+  @include mixing.inputFiledsAddIcon();
 }
 
 // FROM COMPONENT createOrder

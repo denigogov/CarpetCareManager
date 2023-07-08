@@ -66,79 +66,69 @@ const EditUser = ({ token }) => {
       <form>
         <div className="editUser--data">
           <div className="editUser--columnLeft">
-            <p>
-              Username:
-              <input
-                type="text"
-                name="username"
-                defaultValue={data.username}
-                onChange={handleInputChange}
-              />
-            </p>
+            <label>Username: </label>
+            <input
+              type="text"
+              name="username"
+              defaultValue={data.username}
+              onChange={handleInputChange}
+            />
 
-            <p>
-              First Name:
-              <input
-                type="text"
-                name="first_name"
-                defaultValue={data.first_name}
-                onChange={handleInputChange}
-              />
-            </p>
+            <label>First Name: </label>
+            <input
+              type="text"
+              name="first_name"
+              defaultValue={data.first_name}
+              onChange={handleInputChange}
+            />
 
-            <p>
-              Last Name:
-              <input
-                type="text"
-                name="last_name"
-                defaultValue={data.last_name}
-                onChange={handleInputChange}
-              />
-            </p>
-            <p>
-              Adress:
-              <input
-                type="text"
-                name="street"
-                defaultValue={data.street}
-                onChange={handleInputChange}
-              />
-            </p>
+            <label>Last Name: </label>
+            <input
+              type="text"
+              name="last_name"
+              defaultValue={data.last_name}
+              onChange={handleInputChange}
+            />
+
+            <label>Adress: </label>
+            <input
+              type="text"
+              name="street"
+              defaultValue={data.street}
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className="editUser--columnRight">
-            <p>
-              Phone Number:
-              <input
-                type="text"
-                name="phone_number"
-                defaultValue={data.phone_number}
-                onChange={handleInputChange}
-              />
-            </p>
-            <p>
-              Salary:
-              <input
-                type="text"
-                name="salary"
-                defaultValue={data.salary}
-                onChange={handleInputChange}
-              />
-            </p>
-            <p>
-              Department:
-              <select
-                name="department_id"
-                value={formData.department_id}
-                onChange={handleInputChange}
-              >
-                {departments.map((department, i) => (
-                  <option key={i} value={parseInt(department.id)}>
-                    {department.department_name}
-                  </option>
-                ))}
-              </select>
-            </p>
+            <label>Phone Number: </label>
+            <input
+              type="text"
+              name="phone_number"
+              defaultValue={data.phone_number}
+              onChange={handleInputChange}
+            />
+
+            <label>Salary: </label>
+            <input
+              type="text"
+              name="salary"
+              defaultValue={data.salary}
+              onChange={handleInputChange}
+            />
+
+            <label>Department: </label>
+            <select
+              name="department_id"
+              value={formData.department_id}
+              onChange={handleInputChange}
+            >
+              {departments.map((department, i) => (
+                <option key={i} value={parseInt(department.id)}>
+                  {department.department_name}
+                </option>
+              ))}
+            </select>
+
             <button className="updateUserBtn" onClick={handleFormSubmit}>
               update
             </button>

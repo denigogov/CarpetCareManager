@@ -5,7 +5,7 @@ import useSWR, { useSWRConfig } from "swr";
 const CreateCustomer = ({
   token,
   setCreateNewCustomer,
-  setShowNewCustomer,
+  setNewCustomerData,
   onHandleStepThree,
 }) => {
   const { mutate } = useSWRConfig();
@@ -54,7 +54,7 @@ const CreateCustomer = ({
         if (res.ok) {
           onHandleStepThree();
           setCreateNewCustomer(false);
-          setShowNewCustomer(customerData.current);
+          setNewCustomerData(customerData.current);
           mutate("http://localhost:4000/table/customers", true);
         }
       } catch (error) {
@@ -66,29 +66,39 @@ const CreateCustomer = ({
 
   return (
     <div className="createCustomer--container">
+      <p className="createCustomerSubTitle">Customer Registration</p>
       <form>
         <div className="createCustomer-left">
-          <label>first name*</label>
-          <input type="text" ref={takeFirstName} required />
+          <input
+            type="text"
+            ref={takeFirstName}
+            placeholder="first name*"
+            required
+          />
 
-          <label>last name*</label>
-          <input type="text" ref={takeLastName} required />
-
-          <label>street</label>
-          <input type="text" ref={takeStreet} />
+          <input
+            type="text"
+            ref={takeLastName}
+            placeholder="last name*"
+            required
+          />
+          <input type="text" ref={takeStreet} placeholder="street" />
         </div>
 
-        <div className="createCustomerRight">
-          <label>city</label>
-          <input type="text" ref={takeCity} />
+        <div className="createCustomer-right">
+          <input type="text" ref={takeCity} placeholder="city" />
 
-          <label>phone number*</label>
-          <input type="text" ref={takePhoneNumber} required />
+          <input
+            type="text"
+            ref={takePhoneNumber}
+            required
+            placeholder="phone number*"
+          />
 
           <button onClick={handleAddCustomerForm}>create customer</button>
-          <p className="errorMessage">{error}</p>
         </div>
       </form>
+      <p className="errorMessage">{error}</p>
     </div>
   );
 };
