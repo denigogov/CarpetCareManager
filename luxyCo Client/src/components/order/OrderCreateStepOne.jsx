@@ -3,7 +3,13 @@ import useSWR, { useSWRConfig } from "swr";
 import "../../sass/order/_orderCreateStepOne.scss";
 import OrderStepTwo from "./OrderStepTwo";
 
-const OrderCreate = ({ services, orderServices, token, customers }) => {
+const OrderCreate = ({
+  services,
+  orderServices,
+  token,
+  customers,
+  userInfo,
+}) => {
   const [servicePrice, setServicePrice] = useState(0);
   const [m2, setm2] = useState(0);
   const [delivery, setDelivery] = useState(false);
@@ -20,16 +26,12 @@ const OrderCreate = ({ services, orderServices, token, customers }) => {
   // Values that I need for STEP 2
   const orderServiceLastId = orderServices.map((service) => service.id).pop();
   const totalPrice = delivery ? priceCalculate + 2 : priceCalculate;
-  const customerLastId = customers.map((customer) => customer.id).pop();
-  // delivery also
 
   const selectService = (e) => {
     const selectedService = JSON.parse(e.target.value);
     setServicePrice(selectedService.service_price);
     setServiceTypeId(selectedService.id);
   };
-
-  // console.log(lastIdNumber + 1);
 
   const handleStepOne = (e) => {
     e.preventDefault();
@@ -56,6 +58,8 @@ const OrderCreate = ({ services, orderServices, token, customers }) => {
           },
           body: JSON.stringify(serviceDataStoringRef.current),
         });
+
+        console.log(res);
 
         if (res.ok) {
           mutate("http://localhost:4000/table/orderServices"); // mutate is  Refresh the users data
@@ -101,16 +105,26 @@ const OrderCreate = ({ services, orderServices, token, customers }) => {
         <label>delivery</label>
         <input
           type="checkbox"
-          disabled={nextStepMessage}
           onChange={(e) => setDelivery(e.target.checked)}
         />
       </form>
 
       <div className="totalPrice">
         {nextStepMessage && (
-          <OrderStepTwo customers={customers} token={token} />
+          <OrderStepTwo
+            customers={customers}
+            token={token}
+            totalPrice={totalPrice}
+            orderServiceLastId={orderServiceLastId}
+            delivery={delivery}
+            userInfo={userInfo}
+          />
         )}
-        {totalPrice.length > 1 ? "" : <p>price: {totalPrice.toFixed(2)} €</p>}
+        {totalPrice.length > 1 ? (
+          ""
+        ) : (
+          <p className="totalPriceSum">price: {totalPrice.toFixed(2)} €</p>
+        )}
         {!nextStepMessage && <p className="errorMessage">{error}</p>}
         {!nextStepMessage && (
           <button onClick={handleStepOne} className="stepOneBtn">
@@ -120,7 +134,14 @@ const OrderCreate = ({ services, orderServices, token, customers }) => {
       </div>
 
       {/* I need only for styling view I will delete after styling everything */}
-      {/* <OrderStepTwo customers={customers} token={token} /> */}
+      {/* <OrderStepTwo
+        customers={customers}
+        token={token}
+        totalPrice={totalPrice}
+        orderServiceLastId={orderServiceLastId}
+        delivery={delivery}
+        userInfo={userInfo}
+      /> */}
     </div>
   );
 };

@@ -1,7 +1,15 @@
+import { useState } from "react";
 import "../../sass/order/_orderView.scss";
 import PDFGenerator from "./GeneratePDF";
 
-const OrderView = ({ data, orderStatus, searchOrder }) => {
+const OrderView = ({
+  data,
+  orderStatus,
+  searchOrder,
+
+  handleSelectedOrder,
+}) => {
+  // User to search orders by FirstName, LastName, and Street
   const search = searchOrder
     ? data.filter((order) => {
         const searchValue = searchOrder.toLowerCase().trim();
@@ -12,10 +20,10 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
         const lastNameMatch = order.last_name
           .toLowerCase()
           .includes(searchValue);
-        const statusMatch = order.street.toLowerCase().includes(searchValue);
+        const streetMatch = order.street.toLowerCase().includes(searchValue);
         return (
           (orderStatus === "all" || order.status_name === orderStatus) &&
-          (firstNameMatch || lastNameMatch || statusMatch)
+          (firstNameMatch || lastNameMatch || streetMatch)
         );
       })
     : orderStatus === "all"
@@ -26,6 +34,9 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
     ? search.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
     : "";
 
+  const handleSelectOrder = (order) => {
+    handleSelectedOrder(order);
+  };
   return (
     <div className="orderTableContainer">
       <div className="buttonContainer"></div>
@@ -33,7 +44,7 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
         <table className="orderTable">
           <thead>
             <tr>
-              <th>Order Number</th>
+              <th>Order Id</th>
               <th>Customer</th>
               <th>Address</th>
               <th>Order Status</th>
@@ -43,16 +54,17 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
               <th>
                 m<sup>2</sup>
               </th>
+              <th>Pieces</th>
               <th>Delivery</th>
               <th>Created By</th>
             </tr>
           </thead>
           <tbody>
             {search.map((order) => (
-              <tr key={order.id}>
+              <tr key={order.id} onClick={() => handleSelectOrder(order)}>
                 <td>{order.id}</td>
                 <td>{`${order.first_name} ${order.last_name}`}</td>
-                <td>{order.street}</td>
+                <td>{`${order.street} - ${order.city}`}</td>
                 <td>{order.status_name}</td>
                 <td>
                   {new Date(order.order_date)
@@ -61,7 +73,6 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
                     .replaceAll("-", ".")
                     .replace("T", " ")}
                 </td>
-
                 <td>{order.total_price} $</td>
                 <td>
                   {order.scheduled_date
@@ -74,6 +85,7 @@ const OrderView = ({ data, orderStatus, searchOrder }) => {
                     : "no scheduled date"}
                 </td>
                 <td>{order.m2}</td>
+                <td>{order.pieces}</td>
                 <td>{order.delivery === 0 ? "no" : "yes"}</td>
                 <td>{order.username ? order.username : "user deleted"}</td>
               </tr>

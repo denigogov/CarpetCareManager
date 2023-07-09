@@ -3,13 +3,27 @@ import "../../sass/order/_orderStepTwo.scss";
 import addCustomerIcon from "../../assets/addUserIcon.svg";
 import OrderStepThree from "./OrderStepThree";
 import CreateCustomer from "./CreateCustomer";
+import useSWR, { useSWRConfig } from "swr";
 
-const OrderStepTwo = ({ customers, token }) => {
+const OrderStepTwo = ({
+  customers,
+  token,
+  totalPrice,
+  orderServiceLastId,
+  delivery,
+  userInfo,
+}) => {
   const [searchInputUser, setSearchInputUser] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [createNewCustomer, setCreateNewCustomer] = useState(false);
   const [newCustomerData, setNewCustomerData] = useState("");
   const [showStepThree, setShowStepThree] = useState(false);
+
+  const { mutate } = useSWRConfig();
+
+  // Values That I need to complete the order in step-3 !!
+  const customerLastId = customers.map((customer) => customer.id).pop();
+  const selectedUserId = selectedUser.id;
 
   const findCustomer = customers.filter((customer) => {
     const searchValue = searchInputUser.toLowerCase().trim();
@@ -17,7 +31,6 @@ const OrderStepTwo = ({ customers, token }) => {
     const searchByFirstName = customer.first_name
       .toLowerCase()
       .includes(searchValue);
-
     const searchByPhoneNumber = customer.phone_number.includes(searchInputUser);
     const searchByLastName = customer.last_name
       .toLowerCase()
@@ -38,7 +51,9 @@ const OrderStepTwo = ({ customers, token }) => {
 
   const addNewCustomer = () => {
     setSelectedUser("");
-    setCreateNewCustomer(true);
+    // Toggle the state to open and close create user
+    setCreateNewCustomer(!createNewCustomer);
+    mutate("http://localhost:4000/table/orderServices"); // mutate is  Refresh the users data
   };
 
   const handleStepThree = () => {
@@ -108,7 +123,27 @@ const OrderStepTwo = ({ customers, token }) => {
           onHandleStepThree={handleStepThree}
         />
       )}
-      {(showStepThree || selectedUser) && <OrderStepThree />}
+      {(showStepThree || selectedUser) && (
+        <OrderStepThree
+          customerLastId={customerLastId}
+          selectedUserId={selectedUserId}
+          totalPrice={totalPrice}
+          orderServiceLastId={orderServiceLastId}
+          delivery={delivery}
+          userInfo={userInfo}
+          token={token}
+        />
+      )}
+
+      {/* <OrderStepThree
+        customerLastId={customerLastId}
+        selectedUserId={selectedUserId}
+        totalPrice={totalPrice}
+        orderServiceLastId={orderServiceLastId}
+        delivery={delivery}
+        userInfo={userInfo}
+        token={token}
+      /> */}
     </div>
   );
 };

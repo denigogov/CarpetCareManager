@@ -2,6 +2,7 @@ import { Outlet, NavLink, useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 import addIcon from "../../assets/addIcon.svg";
 import calendarIcon from "../../assets/calendarIcon.svg";
@@ -9,20 +10,24 @@ import "../../sass/order/_order.scss";
 
 import OrderView from "../../components/order/OrderView";
 import useSWR, { useSWRConfig } from "swr";
-import { fetchOrdersByData, fetchOrderStatus } from "../../api";
+import { fetchOrdersByDate, fetchOrderStatus } from "../../api";
+import SelectedOrderInfo from "../../components/order/SelectedOrderInfo";
 
 const Order = ({ token }) => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState("all");
   const [searchOrder, setSearchOrder] = useState("");
   const [popupOpen, setPopupOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const navigate = useNavigate();
 
   // Time calc. because with toISOString I'm couple of hours behind !!
-  const timezoneOffset = wishDate.getTimezoneOffset() * 60000;
-  const adjustedDate = new Date(wishDate.getTime() - timezoneOffset);
-  const formattedDate = adjustedDate.toISOString().slice(0, 10);
+  // const timezoneOffset = wishDate.getTimezoneOffset() * 60000;
+  // const adjustedDate = new Date(wishDate.getTime() - timezoneOffset);
+  // const formattedDate = adjustedDate.toISOString().slice(0, 10);
+
+  const formattedDate = format(wishDate, "yyyy-MM-dd");
 
   const {
     data: orderStatusData,
@@ -30,9 +35,13 @@ const Order = ({ token }) => {
     isLoading: orderStatusLoading,
   } = useSWR(["orderStatus", token], () => fetchOrderStatus(token));
 
-  // To Render ERROR ,DATA and WHEN DATA IS LOAD!
-  const { data, error, isLoading } = useSWR([formattedDate, token], () =>
-    fetchOrdersByData(formattedDate, token)
+  // RENDER ALL DATA BY DATE!!
+  const { data, error, isLoading } = useSWR(
+    [formattedDate, token],
+    () => fetchOrdersByDate(formattedDate, token),
+    {
+      refreshInterval: 5000, // Refresh data every 5 seconds
+    }
   );
 
   if (error) return <h6>{error.message}</h6>; // I need to add personal error messages!
@@ -50,6 +59,10 @@ const Order = ({ token }) => {
 
   const preventPropagation = (e) => {
     e.stopPropagation();
+  };
+
+  const handleSelectedOrder = (data) => {
+    setSelectedOrder(data);
   };
 
   return (
@@ -110,7 +123,9 @@ const Order = ({ token }) => {
           data={data}
           orderStatus={orderStatus}
           searchOrder={searchOrder}
+          handleSelectedOrder={handleSelectedOrder}
         />
+        {selectedOrder && <SelectedOrderInfo selectedOrder={selectedOrder} />}
       </div>
       {popupOpen && (
         <div className="overlay" onClick={popupWindow}>

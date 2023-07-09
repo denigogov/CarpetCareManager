@@ -7,7 +7,7 @@ import {
 import useSWR, { useSWRConfig } from "swr";
 import OrderCreateStepOne from "../../components/order/OrderCreateStepOne";
 
-const CreateOrder = ({ token }) => {
+const CreateOrder = ({ token, userInfo }) => {
   const {
     data: orderStatus,
     error: orderStatusError,
@@ -18,7 +18,9 @@ const CreateOrder = ({ token }) => {
     data: customers,
     error: customersError,
     isLoading: customersLoading,
-  } = useSWR(["customer", token], () => fetchTableCustomers(token));
+  } = useSWR(["customer", token], () => fetchTableCustomers(token), {
+    refreshInterval: 1000, // Refresh data every 1 seconds
+  });
 
   const {
     data: services,
@@ -30,7 +32,9 @@ const CreateOrder = ({ token }) => {
     data: orderServices,
     error: orderServicesError,
     isLoading: orderServicesLoading,
-  } = useSWR(["orderServices", token], () => fetchOrderServices(token));
+  } = useSWR(["orderServices", token], () => fetchOrderServices(token), {
+    refreshInterval: 1000, // Refresh data every 1 seconds
+  });
 
   if (customersError) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (servicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
@@ -48,6 +52,7 @@ const CreateOrder = ({ token }) => {
             orderServices={orderServices}
             token={token}
             customers={customers}
+            userInfo={userInfo}
           />
         </div>
       </div>

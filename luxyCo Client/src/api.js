@@ -58,7 +58,7 @@ export const fetchTableDepartment = async (token) => {
   }
 };
 
-export const fetchOrdersByData = async (formattedDate, token) => {
+export const fetchOrdersByDate = async (formattedDate, token) => {
   const url = `http://localhost:4000/table/orders?date=${formattedDate}`;
 
   const response = await fetch(url, {

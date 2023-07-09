@@ -45,6 +45,7 @@ const Users = ({ token }) => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         mutate("http://localhost:4000/user"); // mutate is  Refresh the users data
       }
     } catch (error) {
