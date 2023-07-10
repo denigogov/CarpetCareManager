@@ -3,8 +3,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../sass/order/_orderStepThree.scss";
 import { format } from "date-fns";
-import useSWR, { useSWRConfig } from "swr";
-import { useNavigate } from "react-router-dom";
 
 const OrderStepThree = ({
   customerLastId,

@@ -1,0 +1,46 @@
+@use "../colors";
+@use "../mixing";
+@use "../general";
+
+.createContact {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  p {
+    color: colors.$borderLine-Second;
+  }
+
+  form {
+    display: flex;
+    gap: 30px;
+
+    .createContact--left,
+    .createContact--right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      padding: 30px;
+    }
+
+    .createContact--left {
+      border-right: 1px solid colors.$borderLine-Primary;
+    }
+    .createContact--right {
+      border-left: 1px solid colors.$borderLine-Primary;
+    }
+
+    input {
+      @include mixing.inputFileds;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  button {
+    @include mixing.button;
+    letter-spacing: general.$spacing;
+  }
+}

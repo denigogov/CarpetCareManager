@@ -64,7 +64,7 @@ const tableOrders = (req, res) => {
       services.service_price,m2  ,pieces FROM orders
 
       left join users on orders.user_id = users.id 
-      inner join customers on orders.customer_id = customers.id
+      left join customers on orders.customer_id = customers.id
       inner join order_status on orders.order_status_id = order_status.id
       INNER JOIN order_services ON orders.orderService_id = order_services.id
       INNER JOIN services ON order_services.service_id = services.id

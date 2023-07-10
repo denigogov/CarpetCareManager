@@ -5,8 +5,8 @@ CarpetCareManager is a carpet cleaning service management app designed to stream
 **Please note:** The project is currently under development. While it's a work in progress, the provided GIF demonstrates the initial functionality and user interface design.
 
 <p align="center">
+
   <img src="./luxyCo%20Client/src/assets/demoApp.gif" alt="App gif" width="500px" />
-</p>
 
 ## Purpose
 

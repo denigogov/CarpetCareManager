@@ -42,7 +42,7 @@ const CreateCustomer = ({
 
     const addCustomer = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/table/customers`, {
+        const res = await fetch(`http://localhost:4000/customer`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const CreateCustomer = ({
           onHandleStepThree();
           setCreateNewCustomer(false);
           setNewCustomerData(customerData.current);
-          mutate("http://localhost:4000/table/customers", true);
+          mutate("http://localhost:4000/customer", true);
         }
       } catch (error) {
         setError("Error creating customer", error);

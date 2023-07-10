@@ -11,11 +11,13 @@ const port = process.env.SERVER_PORT ?? 4001;
 const userRoute = require("./routes/userRoute");
 const loginRoute = require("./routes/loginRoute");
 const tableRoute = require("./routes/tableRoute");
+const customerRoute = require("./routes/customerRoute");
 // const custumerRouter = require("./routes/custumerRoute");
 
 app.use("/user", userRoute);
 app.use("/login", loginRoute);
 app.use("/table", tableRoute);
+app.use("/customer", customerRoute);
 // app.use("/custumer", custumerRouter);
 
 app.listen(port, (err) => {

@@ -60,8 +60,12 @@ const OrderView = ({ data, orderStatus, searchOrder, handleSelectedOrder }) => {
                 <td
                   style={{ cursor: "pointer" }}
                   onClick={() => handleSelectOrder(order)}
-                >{`${order.first_name} ${order.last_name}`}</td>
-                <td>{`${order.street} - ${order.city}`}</td>
+                >{`${
+                  order.first_name ? order.first_name : "customer deleted"
+                } ${order.last_name ? order.last_name : ""}`}</td>
+                <td>{`${order.street ? order.street : ""} - ${
+                  order.city ? order.city : ""
+                }`}</td>
                 <td>{order.status_name}</td>
                 <td>
                   {new Date(order.order_date)

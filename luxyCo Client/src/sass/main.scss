@@ -43,7 +43,7 @@ img {
 
 .errorMessage {
   font-size: 12px;
-  color: colors.$banner-Primary;
+  color: colors.$banner-Primary !important;
 }
 
 .successfulMessage {

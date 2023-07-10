@@ -77,8 +77,8 @@ const App = () => {
 
         {/* CONTACT ROUTE */}
         <Route path="contact" element={<Contact token={token} />}>
-          <Route path="addCustomer" element={<CreateContact />} />
-          <Route path="edit/:id" element={<EditContact />} />
+          <Route path="addCustomer" element={<CreateContact token={token} />} />
+          <Route path="edit/:id" element={<EditContact token={token} />} />
         </Route>
 
         {userInfo.department === 2 && (

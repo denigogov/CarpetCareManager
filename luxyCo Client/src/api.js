@@ -80,7 +80,7 @@ export const fetchOrderStatus = async (token) => {
 };
 
 export const fetchTableCustomers = async (token) => {
-  const response = await fetch("http://localhost:4000/table/customers", {
+  const response = await fetch("http://localhost:4000/customer", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
