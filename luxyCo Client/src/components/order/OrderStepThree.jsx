@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../sass/order/_orderStepThree.scss";
 import { format } from "date-fns";
 import useSWR, { useSWRConfig } from "swr";
+import { useNavigate } from "react-router-dom";
 
 const OrderStepThree = ({
   customerLastId,
@@ -16,7 +17,8 @@ const OrderStepThree = ({
 }) => {
   const [scheduleDate, setScheduleDate] = useState(new Date());
   const [error, setError] = useState("");
-  const { mutate } = useSWRConfig();
+  const [orderSuccessful, setOrderSuccessful] = useState("");
+
   const formattedDate = format(scheduleDate, "yyyy/MM/dd");
 
   const orderValues = {
@@ -39,6 +41,10 @@ const OrderStepThree = ({
           },
           body: JSON.stringify(orderValues),
         });
+
+        if (res.ok) {
+          setOrderSuccessful("Order added. Success!");
+        }
       } catch (error) {
         setError("Error creating order", error);
       }
@@ -54,8 +60,10 @@ const OrderStepThree = ({
           selected={scheduleDate}
           onChange={(date) => setScheduleDate(date)}
           dateFormat="yyyy/MM/dd"
+          disabled={orderSuccessful}
         />
         <button onClick={sendOrder}>create order</button>
+        <p className="successfulMessage">{orderSuccessful}</p>
         <p className="errorMessage">{error}</p>
       </div>
     </div>

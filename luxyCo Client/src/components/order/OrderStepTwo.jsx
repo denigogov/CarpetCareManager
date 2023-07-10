@@ -53,7 +53,7 @@ const OrderStepTwo = ({
     setSelectedUser("");
     // Toggle the state to open and close create user
     setCreateNewCustomer(!createNewCustomer);
-    mutate("http://localhost:4000/table/orderServices"); // mutate is  Refresh the users data
+    mutate("http://localhost:4000/table/orderServices");
   };
 
   const handleStepThree = () => {
@@ -69,7 +69,7 @@ const OrderStepTwo = ({
           onChange={(e) => setSearchInputUser(e.target.value)}
           className="customerSearchIcon"
           placeholder="search for user"
-          // disabled={showStepThree}
+          disabled={selectedUser}
         />
 
         {searchInputUser ? (

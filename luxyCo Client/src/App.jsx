@@ -16,7 +16,11 @@ import Order from "./pages/order/Order";
 import CreateOrder from "./pages/order/CreateOrder";
 
 import Delivery from "./pages/Delivery";
-import Contact from "./pages/Contact";
+
+// Contact Router Component
+import Contact from "./pages/contact/Contact";
+import CreateContact from "./pages/contact/CreateContact";
+import EditContact from "./pages/contact/EditContact";
 // Managment routes!
 import Management from "./pages/management/Management";
 import Analytics from "./pages/management/Analytics";
@@ -70,7 +74,12 @@ const App = () => {
           />
         </Route>
         <Route path="delivery" element={<Delivery />} />
-        <Route path="contact" element={<Contact />} />
+
+        {/* CONTACT ROUTE */}
+        <Route path="contact" element={<Contact token={token} />}>
+          <Route path="addCustomer" element={<CreateContact />} />
+          <Route path="edit/:id" element={<EditContact />} />
+        </Route>
 
         {userInfo.department === 2 && (
           <Route path="management" element={<Management />}>
@@ -95,7 +104,7 @@ const App = () => {
           </Route>
         )}
 
-        {/* BUG  THIS SHOULD BE ERROR ELEMENT BUT I ADDED BECAUSE PREVENTING ERROR  BUG*/}
+        {/* BUG  THIS SHOULD BE ERROR ELEMENT BUT I ADDED BECAUSE PREVENTING ME USER LOGIN ERROR  BUG*/}
         <Route path="*" element={<p></p>}></Route>
       </Route>
     )

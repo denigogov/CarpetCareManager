@@ -21,12 +21,6 @@ const Order = ({ token }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const navigate = useNavigate();
-
-  // Time calc. because with toISOString I'm couple of hours behind !!
-  // const timezoneOffset = wishDate.getTimezoneOffset() * 60000;
-  // const adjustedDate = new Date(wishDate.getTime() - timezoneOffset);
-  // const formattedDate = adjustedDate.toISOString().slice(0, 10);
-
   const formattedDate = format(wishDate, "yyyy-MM-dd");
 
   const {
@@ -35,7 +29,7 @@ const Order = ({ token }) => {
     isLoading: orderStatusLoading,
   } = useSWR(["orderStatus", token], () => fetchOrderStatus(token));
 
-  // RENDER ALL DATA BY DATE!!
+  // RENDER ALL DATA BY DATE!! I added data to be refresh every 5 secound for the user to be able to see all updates in real time and not skipping order
   const { data, error, isLoading } = useSWR(
     [formattedDate, token],
     () => fetchOrdersByDate(formattedDate, token),

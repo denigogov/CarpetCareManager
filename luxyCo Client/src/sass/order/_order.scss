@@ -7,7 +7,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border: 1px solid colors.$borderLine-Primary;
+    border-bottom: 1px solid colors.$borderLine-Primary;
 
     input {
       @include mixing.inputFileds();
@@ -57,7 +57,6 @@
 .createOrder--wrap {
   height: 100%;
   display: flex;
-
   justify-content: space-around;
 
   padding: 20px;

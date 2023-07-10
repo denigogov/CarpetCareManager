@@ -1,0 +1,35 @@
+@use "../colors";
+@use "../mixing";
+
+.contact--nav {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid colors.$borderLine-Primary;
+
+  ul {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    li {
+      color: colors.$font-Primary;
+    }
+  }
+
+  input {
+    @include mixing.inputFileds;
+
+    background: url("../../assets/detailsIcon.svg");
+    @include mixing.inputFiledsAddIcon;
+  }
+
+  img {
+    width: 25px;
+  }
+}
+
+.addCustomerLink {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

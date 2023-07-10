@@ -1,14 +1,7 @@
-import { useState } from "react";
 import "../../sass/order/_orderView.scss";
 import PDFGenerator from "./GeneratePDF";
 
-const OrderView = ({
-  data,
-  orderStatus,
-  searchOrder,
-
-  handleSelectedOrder,
-}) => {
+const OrderView = ({ data, orderStatus, searchOrder, handleSelectedOrder }) => {
   // User to search orders by FirstName, LastName, and Street
   const search = searchOrder
     ? data.filter((order) => {
@@ -37,6 +30,7 @@ const OrderView = ({
   const handleSelectOrder = (order) => {
     handleSelectedOrder(order);
   };
+
   return (
     <div className="orderTableContainer">
       <div className="buttonContainer"></div>
@@ -61,9 +55,12 @@ const OrderView = ({
           </thead>
           <tbody>
             {search.map((order) => (
-              <tr key={order.id} onClick={() => handleSelectOrder(order)}>
+              <tr key={order.id}>
                 <td>{order.id}</td>
-                <td>{`${order.first_name} ${order.last_name}`}</td>
+                <td
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleSelectOrder(order)}
+                >{`${order.first_name} ${order.last_name}`}</td>
                 <td>{`${order.street} - ${order.city}`}</td>
                 <td>{order.status_name}</td>
                 <td>

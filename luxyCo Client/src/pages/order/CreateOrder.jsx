@@ -18,7 +18,7 @@ const CreateOrder = ({ token, userInfo }) => {
     data: customers,
     error: customersError,
     isLoading: customersLoading,
-  } = useSWR(["customer", token], () => fetchTableCustomers(token), {
+  } = useSWR(["customers", token], () => fetchTableCustomers(token), {
     refreshInterval: 1000, // Refresh data every 1 seconds
   });
 
