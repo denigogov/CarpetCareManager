@@ -37,6 +37,7 @@ import {
   fetchSingleUser,
   fetchTableDepartment,
   fetchTokenValidation,
+  fetchSingleCustomer,
 } from "./api";
 
 const App = () => {
@@ -78,7 +79,11 @@ const App = () => {
         {/* CONTACT ROUTE */}
         <Route path="contact" element={<Contact token={token} />}>
           <Route path="addCustomer" element={<CreateContact token={token} />} />
-          <Route path="edit/:id" element={<EditContact token={token} />} />
+          <Route
+            path="edit/:id"
+            element={<EditContact token={token} />}
+            loader={({ params }) => fetchSingleCustomer({ params }, token)}
+          />
         </Route>
 
         {userInfo.department === 2 && (

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   fetchTableCustomers,
   fetchTableServices,
@@ -44,7 +43,7 @@ const CreateOrder = ({ token, userInfo }) => {
 
   return (
     <div className="createOrder--container">
-      <h3>Create Order</h3>
+      <p className="createOrder--title">Create Order</p>
       <div className="createOrder--wrap">
         <div>
           <OrderCreateStepOne

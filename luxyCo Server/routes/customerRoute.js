@@ -7,6 +7,7 @@ const { hashpassword, verifyPassword, verifyToken } = require("../Auth");
 router
   .get("/", verifyToken, database.tableCustomers)
   .post("/", verifyToken, database.createNewCustomer)
+  .get("/:id", verifyToken, database.getCustomerById)
   .put("/:id", verifyToken, database.updateCustomer)
   .delete("/:id", verifyToken, database.deleteCustomer);
 

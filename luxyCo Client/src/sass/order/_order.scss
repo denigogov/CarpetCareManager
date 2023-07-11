@@ -53,6 +53,10 @@
 .createOrder--container {
   text-align: center;
   margin: auto 0;
+
+  .createOrder--title {
+    color: colors.$font-Secound;
+  }
 }
 .createOrder--wrap {
   height: 100%;

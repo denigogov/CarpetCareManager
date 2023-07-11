@@ -11,7 +11,7 @@ import { fetchTableCustomers } from "../../api";
 const Contact = ({ token }) => {
   const [inputSearchCustomer, setInputSearchCustomer] = useState("");
   const [popupOpen, setPopupOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
+
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
 
@@ -20,7 +20,7 @@ const Contact = ({ token }) => {
     error: fetchCustomersError,
     isLoading: fetchCustomersLoading,
   } = useSWR(["fetchCustomers", token], () => fetchTableCustomers(token), {
-    refreshInterval: 5000, // Refresh data every 5 seconds
+    refreshInterval: 1000, // Refresh data every 1 seconds
   });
 
   if (fetchCustomersError) return <h6>{fetchCustomersError.message}</h6>; // I need to add personal error messages!
@@ -51,13 +51,13 @@ const Contact = ({ token }) => {
     navigate("/contact");
   };
 
-  const handleDeleteUser = (id, first_name) => {
-    setSelectedUser({ id, first_name });
+  // Checking if the number already exsite in database for createing new user and update user
 
+  const handleDeleteUser = (id, first_name, last_name) => {
     const deleteCustomer = async () => {
       try {
         const confirmDelete = confirm(
-          `Please confirm if you want to delete this user ${first_name} all data related to the user will be lost.`
+          `Please confirm if you want to delete this user ${first_name} ${last_name} This action cannot be undone.`
         );
 
         if (confirmDelete) {
@@ -76,8 +76,6 @@ const Contact = ({ token }) => {
 
     deleteCustomer();
   };
-
-  console.log(selectedUser);
 
   return (
     <div className="contact--container">
@@ -103,7 +101,7 @@ const Contact = ({ token }) => {
         <ContactView
           filteredCustomerResults={filteredCustomerResults}
           handleDeleteUser={handleDeleteUser}
-          setSelectedUser={setSelectedUser}
+          setPopupOpen={setPopupOpen}
         />
       </div>
       {popupOpen && (

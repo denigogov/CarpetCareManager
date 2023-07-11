@@ -12,6 +12,24 @@ const tableCustomers = (_, res) => {
     });
 };
 
+const getCustomerById = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query("SELECT * FROM customers  WHERE id = ?", [id])
+    .then(([customer]) => {
+      if (customer[0] != null) {
+        res.json(customer[0]);
+      } else {
+        res.status(404).send("Customer Not Found");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
 const createNewCustomer = (req, res) => {
   const { first_name, last_name, street, city, phone_number, postalCode } =
     req.body;
@@ -26,7 +44,7 @@ const createNewCustomer = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send("Errora creating new customer");
+      res.status(500).send("Error creating new customer");
     });
 };
 
@@ -71,6 +89,7 @@ const updateCustomer = (req, res) => {
 
 module.exports = {
   tableCustomers,
+  getCustomerById,
   createNewCustomer,
   deleteCustomer,
   updateCustomer,

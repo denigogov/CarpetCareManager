@@ -15,6 +15,8 @@ const CreateContact = ({ token }) => {
 
   const customerInputData = useRef(null);
 
+  const { data: fetchCustomers } = useSWR(["fetchCustomers", token]);
+
   const handleCusomerForm = (e) => {
     e.preventDefault();
 
@@ -35,6 +37,11 @@ const CreateContact = ({ token }) => {
       return;
     }
 
+    // Checking if the number already exsite in database for createing new user and update user
+    const checkingForUniquePhoneNumber = fetchCustomers.some(
+      (customers) => customers.phone_number === phoneNumberRef.current.value
+    );
+
     const addCustomer = async () => {
       try {
         const res = await fetch(`http://localhost:4000/customer`, {
@@ -50,9 +57,14 @@ const CreateContact = ({ token }) => {
           setSuccessfulMessage(
             `Customer ${firstNameRef.current.value} ${lastNameRef.current.value} added. Success!`
           );
+          // cleaning in case there was some error before !
+          setError("");
         }
-      } catch (error) {
-        setError(`Error creating customer, ${error}`);
+
+        if (checkingForUniquePhoneNumber)
+          throw new Error("phone number already exists");
+      } catch ({ message }) {
+        setError(`Error creating customer, ${message}`);
       }
     };
     addCustomer();
@@ -63,14 +75,44 @@ const CreateContact = ({ token }) => {
       <p>Customer Registration</p>
       <form>
         <div className="createContact--left">
-          <input type="text" placeholder="First Name*" ref={firstNameRef} />
-          <input type="text" placeholder="Last Name*" ref={lastNameRef} />
-          <input type="text" placeholder="Phone Number*" ref={phoneNumberRef} />
+          <input
+            type="text"
+            placeholder="First Name*"
+            ref={firstNameRef}
+            disabled={successfulMessage}
+          />
+          <input
+            type="text"
+            placeholder="Last Name*"
+            ref={lastNameRef}
+            disabled={successfulMessage}
+          />
+          <input
+            type="number"
+            placeholder="Phone Number*"
+            ref={phoneNumberRef}
+            disabled={successfulMessage}
+          />
         </div>
         <div className="createContact--right">
-          <input type="text" placeholder="Adress" ref={adressRef} />
-          <input type="text" placeholder="City" ref={cityRef} />
-          <input type="text" placeholder="Postal Code" ref={postalCodeRef} />
+          <input
+            type="text"
+            placeholder="Adress"
+            ref={adressRef}
+            disabled={successfulMessage}
+          />
+          <input
+            type="text"
+            placeholder="City"
+            ref={cityRef}
+            disabled={successfulMessage}
+          />
+          <input
+            type="text"
+            placeholder="Postal Code"
+            ref={postalCodeRef}
+            disabled={successfulMessage}
+          />
         </div>
       </form>
       <button onClick={handleCusomerForm}>create customer</button>

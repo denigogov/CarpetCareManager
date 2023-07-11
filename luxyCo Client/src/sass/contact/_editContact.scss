@@ -2,7 +2,11 @@
 @use "../mixing";
 @use "../general";
 
-.createContact {
+.customerSubtitle--name {
+  color: colors.$banner-Primary;
+}
+
+.updateCustomer {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,26 +21,35 @@
     display: flex;
     gap: 30px;
 
-    .createContact--left,
-    .createContact--right {
+    .updateCustomer--left,
+    .updateCustomer--right {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-around;
-      gap: 25px;
       padding: 30px;
+
+      label {
+        font-size: 14px;
+        color: colors.$font-Primary;
+        padding: 10px;
+      }
     }
 
-    .createContact--left {
+    .updateCustomer--left {
       border-right: 1px solid colors.$borderLine-Primary;
     }
-    .createContact--right {
+    .updateCustomer--right {
       border-left: 1px solid colors.$borderLine-Primary;
     }
 
     input {
       @include mixing.inputFileds;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &::placeholder {
+        font-size: 10px;
+      }
     }
   }
 
@@ -45,5 +58,3 @@
     letter-spacing: general.$spacing;
   }
 }
-
-// from component editContact
