@@ -102,7 +102,7 @@ const EditUser = ({ token }) => {
           <div className="editUser--columnRight">
             <label>Phone Number: </label>
             <input
-              type="text"
+              type="number"
               name="phone_number"
               defaultValue={data.phone_number}
               onChange={handleInputChange}

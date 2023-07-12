@@ -21,6 +21,7 @@ import Delivery from "./pages/Delivery";
 import Contact from "./pages/contact/Contact";
 import CreateContact from "./pages/contact/CreateContact";
 import EditContact from "./pages/contact/EditContact";
+import DetailsContact from "./pages/contact/DetailsContact";
 // Managment routes!
 import Management from "./pages/management/Management";
 import Analytics from "./pages/management/Analytics";
@@ -33,11 +34,14 @@ import EditUser from "./pages/management/EditUser";
 import DetailsUser from "./pages/management/DetailsUser";
 import CreateUser from "./pages/management/CreateUser";
 
+import ErrorDisplayView from "./components/ErrorDisplayView";
+
 import {
   fetchSingleUser,
   fetchTableDepartment,
   fetchTokenValidation,
   fetchSingleCustomer,
+  fetchCustomerOrders,
 } from "./api";
 
 const App = () => {
@@ -68,7 +72,10 @@ const App = () => {
       >
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="order" element={<Order token={token} />}>
+        <Route
+          path="order"
+          element={<Order token={token} userInfo={userInfo} />}
+        >
           <Route
             path="createOrder"
             element={<CreateOrder token={token} userInfo={userInfo} />}
@@ -83,6 +90,20 @@ const App = () => {
             path="edit/:id"
             element={<EditContact token={token} />}
             loader={({ params }) => fetchSingleCustomer({ params }, token)}
+          />
+
+          <Route
+            path="details/:id"
+            element={<DetailsContact token={token} />}
+            loader={({ params }) => fetchCustomerOrders({ params }, token)}
+            errorElement={
+              // TESTING ERROR ELEMENT TO ADD NAVLINKS
+              <ErrorDisplayView
+                errorMessage="No Orders found for this user"
+                navigateTo1="/dashboard"
+                navigateTo2="/order/createOrder"
+              />
+            }
           />
         </Route>
 

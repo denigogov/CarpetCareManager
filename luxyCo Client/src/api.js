@@ -127,3 +127,22 @@ export const fetchSingleCustomer = async ({ params }, token) => {
     );
   }
 };
+export const fetchCustomerOrders = async ({ params }, token) => {
+  try {
+    const { id } = params;
+    const res = await fetch(`http://localhost:4000/customer/details/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error();
+
+    return data;
+  } catch (error) {
+    throw Error(
+      "Something bad happen!! , Could not find the selected customer, please try later"
+    );
+  }
+};

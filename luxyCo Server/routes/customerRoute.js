@@ -9,6 +9,7 @@ router
   .post("/", verifyToken, database.createNewCustomer)
   .get("/:id", verifyToken, database.getCustomerById)
   .put("/:id", verifyToken, database.updateCustomer)
-  .delete("/:id", verifyToken, database.deleteCustomer);
+  .delete("/:id", verifyToken, database.deleteCustomer)
+  .get("/details/:id", verifyToken, database.getCustomerOrders);
 
 module.exports = router;

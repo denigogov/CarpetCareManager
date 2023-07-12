@@ -2,7 +2,7 @@ const database = require("./database");
 
 const tableCustomers = (_, res) => {
   database
-    .query("select * from  customers ORDER BY id DESC")
+    .query("select * from  customers")
     .then(([customers]) => {
       res.json(customers);
     })
@@ -87,10 +87,32 @@ const updateCustomer = (req, res) => {
     });
 };
 
+const getCustomerOrders = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query(
+      "SELECT customers.first_name, customers.last_name, customers.phone_number, customers.street, customers.city, customers.postalCode, order_services.m2, orders.order_date, orders.total_price, orders.delivery, orders.scheduled_date FROM orders INNER JOIN customers ON customers.id = orders.customer_id INNER JOIN order_services ON order_services.id = orders.orderService_id WHERE customers.id = ?",
+      [id]
+    )
+    .then(([customerOrders]) => {
+      if (customerOrders[0] != null) {
+        res.json(customerOrders);
+      } else {
+        res.status(404).send("CustomerOrders Not Found");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
 module.exports = {
   tableCustomers,
   getCustomerById,
   createNewCustomer,
   deleteCustomer,
   updateCustomer,
+  getCustomerOrders,
 };

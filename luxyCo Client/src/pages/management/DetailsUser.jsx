@@ -32,7 +32,9 @@ export const DetailsUser = ({ token }) => {
           <p>
             Phone Number:
             <span>
-              {data.phone_number ? data.phone_number : "no phone number added"}
+              {data.phone_number
+                ? data.phone_number.match(/.{1,3}/g).join("-")
+                : "no phone number added"}
             </span>
           </p>
           <p>

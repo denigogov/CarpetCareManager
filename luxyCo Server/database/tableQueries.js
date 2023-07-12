@@ -48,8 +48,8 @@ const tableOrders = (req, res) => {
 
   database
     .query(
-      `SELECT 
-      orders.id, 
+      `SELECT
+      orders.id,
       users.username,
       customers.first_name,
       customers.last_name,
@@ -57,19 +57,18 @@ const tableOrders = (req, res) => {
       customers.street,
       status_name,
       CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
-      total_price , 
+      total_price ,
       delivery,
       scheduled_date,city,
       pieces as carpet_pieces,
       services.service_price,m2  ,pieces FROM orders
 
-      left join users on orders.user_id = users.id 
+      left join users on orders.user_id = users.id
       left join customers on orders.customer_id = customers.id
       inner join order_status on orders.order_status_id = order_status.id
       INNER JOIN order_services ON orders.orderService_id = order_services.id
       INNER JOIN services ON order_services.service_id = services.id
-   
-  
+
       WHERE order_date LIKE CONCAT(?, '%')    ORDER BY id DESC;`,
 
       [date]
@@ -83,6 +82,23 @@ const tableOrders = (req, res) => {
     });
 };
 
+const deleteOrders = (req, res) => {
+  const id = req.params.id;
+
+  database
+    .query("DELETE FROM orders WHERE id = ?", [id])
+    .then(([order]) => {
+      if (!order.affectedRows) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch((err) => {
+      res.status(404).send("error deleting the order", err);
+    });
+};
+
 const tableOrderStatus = (_, res) => {
   database
     .query("select * from  order_status")
@@ -92,35 +108,6 @@ const tableOrderStatus = (_, res) => {
     .catch((err) => {
       console.error(err);
       res.status(500).send("Error retrieving data from database");
-    });
-};
-
-const tableCustomers = (_, res) => {
-  database
-    .query("select * from  customers")
-    .then(([customers]) => {
-      res.json(customers);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error retrieving data from database");
-    });
-};
-
-const postTableCustomers = (req, res) => {
-  const { first_name, last_name, street, city, phone_number } = req.body;
-
-  database
-    .query(
-      "INSERT INTO customers(first_name, last_name, street, city, phone_number) VALUES (?, ?, ?, ? ,?)",
-      [first_name, last_name, street, city, phone_number]
-    )
-    .then(([customers]) => {
-      res.location(`/table/customers/${customers.insertId}`).sendStatus(201);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Errora creating new customer");
     });
 };
 
@@ -170,9 +157,8 @@ module.exports = {
   createNewOrder,
   tableOrders,
   tableOrderStatus,
-  tableCustomers,
   tableServices,
   tableOrderServices,
   postOrderServices,
-  postTableCustomers,
+  deleteOrders,
 };

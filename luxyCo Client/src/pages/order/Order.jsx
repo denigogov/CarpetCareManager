@@ -13,7 +13,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { fetchOrdersByDate, fetchOrderStatus } from "../../api";
 import SelectedOrderInfo from "../../components/order/SelectedOrderInfo";
 
-const Order = ({ token }) => {
+const Order = ({ token, userInfo }) => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState("all");
   const [searchOrder, setSearchOrder] = useState("");
@@ -21,6 +21,7 @@ const Order = ({ token }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const navigate = useNavigate();
+  const { mutate } = useSWRConfig();
   const formattedDate = format(wishDate, "yyyy-MM-dd");
 
   const {
@@ -57,6 +58,30 @@ const Order = ({ token }) => {
 
   const handleSelectedOrder = (data) => {
     setSelectedOrder(data);
+  };
+
+  const handleDeleteOrder = (id) => {
+    const deleteOrder = async () => {
+      try {
+        const confirmDelete = confirm(
+          `Please confirm if you want to delete this order with ID ${id} all data from this order will be permanently deleted!`
+        );
+
+        if (confirmDelete) {
+          await fetch(`http://localhost:4000/table/orders/${id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          mutate("http://localhost:4000/table/orders");
+        }
+      } catch (error) {
+        console.error("Error deleting order", error);
+      }
+    };
+
+    deleteOrder();
   };
 
   return (
@@ -118,6 +143,8 @@ const Order = ({ token }) => {
           orderStatus={orderStatus}
           searchOrder={searchOrder}
           handleSelectedOrder={handleSelectedOrder}
+          userInfo={userInfo}
+          handleDeleteOrder={handleDeleteOrder}
         />
         {selectedOrder && <SelectedOrderInfo selectedOrder={selectedOrder} />}
       </div>

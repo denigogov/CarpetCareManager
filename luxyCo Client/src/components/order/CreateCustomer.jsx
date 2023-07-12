@@ -16,6 +16,7 @@ const CreateCustomer = ({
   const takeStreet = useRef(null);
   const takeCity = useRef(null);
   const takePhoneNumber = useRef(null);
+  const takePostalCode = useRef(null);
   const customerData = useRef(null);
 
   const handleAddCustomerForm = (e) => {
@@ -27,6 +28,7 @@ const CreateCustomer = ({
       street: takeStreet.current.value,
       city: takeCity.current.value,
       phone_number: takePhoneNumber.current.value,
+      postalCode: takePostalCode.current.value,
     };
     customerData.current = data;
 
@@ -75,29 +77,27 @@ const CreateCustomer = ({
             placeholder="first name*"
             required
           />
-
           <input
             type="text"
             ref={takeLastName}
             placeholder="last name*"
             required
           />
-          <input type="text" ref={takeStreet} placeholder="street" />
-        </div>
-
-        <div className="createCustomer-right">
-          <input type="text" ref={takeCity} placeholder="city" />
-
           <input
-            type="text"
+            type="number"
             ref={takePhoneNumber}
             required
             placeholder="phone number*"
           />
+        </div>
 
-          <button onClick={handleAddCustomerForm}>create customer</button>
+        <div className="createCustomer-right">
+          <input type="text" ref={takeCity} placeholder="city" />
+          <input type="text" ref={takeStreet} placeholder="street" />
+          <input type="number" ref={takePostalCode} placeholder="postal code" />
         </div>
       </form>
+      <button onClick={handleAddCustomerForm}>create customer</button>
       <p className="errorMessage">{error}</p>
     </div>
   );

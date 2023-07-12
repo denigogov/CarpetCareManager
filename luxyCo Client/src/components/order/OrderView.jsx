@@ -1,7 +1,15 @@
 import "../../sass/order/_orderView.scss";
 import PDFGenerator from "./GeneratePDF";
+import deleteIcon from "../../assets/deleteIcon.svg";
 
-const OrderView = ({ data, orderStatus, searchOrder, handleSelectedOrder }) => {
+const OrderView = ({
+  data,
+  orderStatus,
+  searchOrder,
+  handleSelectedOrder,
+  userInfo,
+  handleDeleteOrder,
+}) => {
   // User to search orders by FirstName, LastName, and Street
   const search = searchOrder
     ? data.filter((order) => {
@@ -51,6 +59,7 @@ const OrderView = ({ data, orderStatus, searchOrder, handleSelectedOrder }) => {
               <th>Pieces</th>
               <th>Delivery</th>
               <th>Created By</th>
+              {userInfo.department === 2 && <th>Delete</th>}
             </tr>
           </thead>
           <tbody>
@@ -89,6 +98,16 @@ const OrderView = ({ data, orderStatus, searchOrder, handleSelectedOrder }) => {
                 <td>{order.pieces}</td>
                 <td>{order.delivery === 0 ? "no" : "yes"}</td>
                 <td>{order.username ? order.username : "user deleted"}</td>
+                {userInfo.department === 2 && (
+                  <td>
+                    <img
+                      src={deleteIcon}
+                      alt="delete icon"
+                      style={{ width: "25px" }}
+                      onClick={() => handleDeleteOrder(order.id)}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
 
@@ -98,7 +117,6 @@ const OrderView = ({ data, orderStatus, searchOrder, handleSelectedOrder }) => {
                 <th colSpan="1">Total</th>
                 <td colSpan="1">{totalm2} m²</td>
                 <td>
-                  {" "}
                   <PDFGenerator data={search} />
                 </td>
               </tr>

@@ -35,9 +35,19 @@ const ContactView = ({
                   <td>{customer.street}</td>
                   <td>{customer.city}</td>
                   <td>{customer.postalCode}</td>
-                  <td>{customer.phone_number}</td>
+                  <td>{customer.phone_number.match(/.{1,3}/g).join("-")}</td>
+
                   <td>
-                    <img src={detailsIcon} alt="customer details icon" />
+                    <Link
+                      to={
+                        `/contact/details/${customer.id}`
+                          ? `/contact/details/${customer.id}`
+                          : `/contact/`
+                      }
+                      onClick={() => setPopupOpen((x) => !x)}
+                    >
+                      <img src={detailsIcon} alt="customer details icon" />
+                    </Link>
                   </td>
 
                   <td>
