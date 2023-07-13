@@ -30,6 +30,7 @@ const Root = ({ setToken, userInfo }) => {
           <div className="userLoggedin">{userInfo.name}</div>
           <nav>
             <ul>
+              {" "}
               <NavLink
                 to="dashboard"
                 className={({ isActive, isPending }) =>
@@ -42,7 +43,6 @@ const Root = ({ setToken, userInfo }) => {
                   {/* <span className="tooltip">Dashboard</span> */}
                 </li>
               </NavLink>
-
               <NavLink
                 to="order"
                 className={({ isActive, isPending }) =>
@@ -55,7 +55,6 @@ const Root = ({ setToken, userInfo }) => {
                   {/* <span className="tooltip">Order</span> */}
                 </li>
               </NavLink>
-
               <NavLink
                 to="delivery"
                 className={({ isActive, isPending }) =>
@@ -68,7 +67,6 @@ const Root = ({ setToken, userInfo }) => {
                   {/* <span className="tooltip">Delivery</span> */}
                 </li>
               </NavLink>
-
               <NavLink
                 to="contact"
                 className={({ isActive, isPending }) =>
@@ -81,7 +79,6 @@ const Root = ({ setToken, userInfo }) => {
                   {/* <span className="tooltip">Contact</span> */}
                 </li>
               </NavLink>
-
               {userInfo.department === 2 && (
                 <NavLink
                   to="management"
@@ -95,9 +92,10 @@ const Root = ({ setToken, userInfo }) => {
                     {/* <span className="tooltip">Management</span> */}
                   </li>
                 </NavLink>
-              )}
+              )}{" "}
             </ul>
           </nav>
+
           <footer id="footer">
             <div className="footer__icons">
               <a target="_blank" href="https://github.com/denigogov">
@@ -124,7 +122,7 @@ const Root = ({ setToken, userInfo }) => {
         </div>
         <div className="navbar-topTest">
           <div className="navbar-top">
-            <i className="bx bx-power-off" onClick={logoutHandler}></i>
+            <i className="bx bx-power-off" onClick={logoutHandler}></i>{" "}
           </div>
           <div className="mainOutlet">
             <Outlet />

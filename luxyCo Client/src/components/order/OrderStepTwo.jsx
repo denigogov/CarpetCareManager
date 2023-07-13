@@ -22,7 +22,8 @@ const OrderStepTwo = ({
   const { mutate } = useSWRConfig();
 
   // Values That I need to complete the order in step-3 !!
-  const customerLastId = customers.map((customer) => customer.id).pop();
+  // taking the last element with SHIFT because In my database Order by id DESC is !! I want user to see the lates created user first!! In the future we can apply filters for user to search by Letters ....
+  const customerLastId = customers.map((customer) => customer.id).shift();
   const selectedUserId = selectedUser.id;
 
   const findCustomer = customers.filter((customer) => {

@@ -76,6 +76,7 @@ const CreateContact = ({ token }) => {
       <form>
         <div className="createContact--left">
           <input
+            pattern="[A-Za-z0-9]+"
             type="text"
             placeholder="First Name*"
             ref={firstNameRef}
@@ -83,6 +84,7 @@ const CreateContact = ({ token }) => {
           />
           <input
             type="text"
+            pattern="[A-Za-z0-9]+"
             placeholder="Last Name*"
             ref={lastNameRef}
             disabled={successfulMessage}
@@ -97,18 +99,21 @@ const CreateContact = ({ token }) => {
         <div className="createContact--right">
           <input
             type="text"
+            pattern="[A-Za-z0-9]+"
             placeholder="Adress"
             ref={adressRef}
             disabled={successfulMessage}
           />
           <input
             type="text"
+            pattern="[A-Za-z0-9]+"
             placeholder="City"
             ref={cityRef}
             disabled={successfulMessage}
           />
           <input
-            type="text"
+            type="number"
+            pattern="[A-Za-z0-9]+"
             placeholder="Postal Code"
             ref={postalCodeRef}
             disabled={successfulMessage}

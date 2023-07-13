@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 import Login from "./pages/Login";
 import Root from "./pages/Root";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 // Order Routes
 import Order from "./pages/order/Order";
 import CreateOrder from "./pages/order/CreateOrder";
@@ -71,7 +71,7 @@ const App = () => {
         element={<Root setToken={setToken} userInfo={userInfo} />}
       >
         <Route index element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard token={token} />} />
         <Route
           path="order"
           element={<Order token={token} userInfo={userInfo} />}

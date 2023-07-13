@@ -103,7 +103,7 @@ const OrderView = ({
                     <img
                       src={deleteIcon}
                       alt="delete icon"
-                      style={{ width: "25px" }}
+                      style={{ width: "24px" }}
                       onClick={() => handleDeleteOrder(order.id)}
                     />
                   </td>

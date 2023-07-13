@@ -15,14 +15,8 @@
   text-align: center;
   input,
   select {
-    text-align: center;
-    padding: 10px;
-    border-radius: 25px;
-    border: 1px solid colors.$borderLine-Second;
-
-    &:focus {
-      outline: 4px solid colors.$borderLine-Primary;
-    }
+    @include mixing.inputFileds;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 .stepOneBtn {

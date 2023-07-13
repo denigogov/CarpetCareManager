@@ -1,0 +1,14 @@
+@use "../colors";
+@use "../mixing";
+@use "../general";
+
+.dashboard--container {
+  height: calc(100vh - 80px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.dashboard--container > div {
+  border: 1px solid colors.$borderLine-Primary;
+}

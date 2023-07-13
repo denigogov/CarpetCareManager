@@ -1,0 +1,65 @@
+@use "../colors";
+@use "../mixing";
+@use "../general";
+
+.calculator--container {
+  // this class is in Dashboard PAGES
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  .calculator--title {
+    color: colors.$font-Secound;
+    text-align: center;
+  }
+}
+
+.calculator-wrap {
+  display: flex;
+  justify-content: space-around;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    input,
+    select {
+      @include mixing.inputFileds;
+
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 17px 50px;
+    }
+
+    label {
+      cursor: pointer;
+      display: flex;
+      gap: 20px;
+    }
+  }
+}
+
+.showPriceCalculator {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid colors.$borderLine-Second;
+  border-radius: 25px;
+  padding: 30px;
+  font-weight: 500;
+
+  .resultTitle--calculator {
+    font-size: 13px;
+    color: colors.$font-Secound;
+  }
+}
+
+.result--calculator {
+  font-size: 30px;
+
+  span {
+    font-size: 16px;
+  }
+}

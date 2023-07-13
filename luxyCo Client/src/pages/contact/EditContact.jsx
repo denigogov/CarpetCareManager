@@ -90,6 +90,7 @@ const EditContact = ({ token }) => {
         <div className="updateCustomer--left">
           <label>first name*</label>
           <input
+            pattern="[A-Za-z0-9]+"
             type="text"
             defaultValue={fethcSingleUserData.first_name}
             ref={firstNameRef}
@@ -98,6 +99,7 @@ const EditContact = ({ token }) => {
           />{" "}
           <label>last name*</label>
           <input
+            pattern="[A-Za-z0-9]+"
             type="text"
             defaultValue={fethcSingleUserData.last_name}
             ref={lastNameRef}
@@ -116,6 +118,7 @@ const EditContact = ({ token }) => {
         <div className="updateCustomer--right">
           <label>adress</label>
           <input
+            pattern="[A-Za-z0-9]+"
             type="text"
             defaultValue={fethcSingleUserData.street}
             ref={adressRef}
@@ -123,6 +126,7 @@ const EditContact = ({ token }) => {
           />
           <label>city</label>
           <input
+            pattern="[A-Za-z0-9]+"
             type="text"
             defaultValue={fethcSingleUserData.city}
             ref={cityRef}
@@ -130,7 +134,8 @@ const EditContact = ({ token }) => {
           />{" "}
           <label>postal code</label>
           <input
-            type="text"
+            pattern="[A-Za-z0-9]+"
+            type="number"
             defaultValue={fethcSingleUserData.postalCode}
             ref={postalCodeRef}
             placeholder="E.g. 10117"

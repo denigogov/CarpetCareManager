@@ -2,7 +2,7 @@ const database = require("./database");
 
 const tableCustomers = (_, res) => {
   database
-    .query("select * from  customers")
+    .query("select * from  customers order by id desc")
     .then(([customers]) => {
       res.json(customers);
     })
