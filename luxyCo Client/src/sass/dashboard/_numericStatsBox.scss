@@ -5,6 +5,12 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  p {
+    color: colors.$font-Primary;
+    border-left: 1px solid colors.$banner-Primary;
+    padding-left: 13px;
+  }
 }
 
 .numerStats--chart {
@@ -16,6 +22,24 @@
   display: flex;
   justify-content: space-between;
   border-bottom: 2px solid colors.$borderLine-Primary;
-  padding: 20px;
-  text-align: center;
+  padding: 15px;
+
+  select {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+
+  .total-subtitle {
+    font-weight: 700;
+  }
+
+  .total--subtitle-value {
+    font-size: 14px;
+  }
 }

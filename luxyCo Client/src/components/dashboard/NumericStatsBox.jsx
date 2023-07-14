@@ -1,29 +1,112 @@
 import "../../sass/dashboard/_numericStatsBox.scss";
-import { Line } from "react-chartjs-2";
-// Don't remove it (chart.js/auto), its required to be imported this is how chart.js works
-import { Chart as chartjs } from "chart.js/auto";
+import NumericStatsView from "./NumericStatsView";
+import { fetchOrderStatisticByDay } from "../../api";
+import useSWR, { useSWRConfig } from "swr";
 
-const NumericStatsBox = ({ chartData, totalM2 }) => {
+const NumericStatsBox = ({ token }) => {
+  const {
+    data: statisticOrderByDay,
+    error: statisticOrderByDayError,
+    isLoading: statisticOrderByDayLoading,
+  } = useSWR(["statisticOrderByDay", token], () =>
+    fetchOrderStatisticByDay(token)
+  );
+  if (statisticOrderByDayError) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (statisticOrderByDayLoading) return <h3>loading...</h3>;
+
+  // Data for CHART JS
+  const orderStatisticTotal = {
+    labels: statisticOrderByDay.map((label) => label.day_of_week),
+    datasets: [
+      {
+        label: "orders counter per day",
+        data: statisticOrderByDay.map((label) => label.total_order_count),
+        backgroundColor: ["rgba(245, 92, 132)"],
+        borderColor: ["rgba(255, 99, 132, 0.6)"],
+        borderWidth: 1,
+        borderRadius: 10,
+      },
+    ],
+    options: {
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  const orderStatisticByMonth = {
+    labels: statisticOrderByDay.map((label) => label.day_of_week),
+    datasets: [
+      {
+        label: "orders counter per day",
+        data: statisticOrderByDay.map(
+          (label) => label.current_month_order_count
+        ),
+        backgroundColor: ["rgba(245, 92, 132)"],
+        borderColor: ["rgba(255, 99, 132, 0.6)"],
+        borderWidth: 1,
+        borderRadius: 10,
+      },
+    ],
+    options: {
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  const totalM2monthly = statisticOrderByDay.reduce(
+    (acc, { current_month_total_m2 }) => acc + +current_month_total_m2,
+    0
+  );
+  const totalM2Year = statisticOrderByDay.reduce(
+    (acc, { total_total_m2 }) => acc + +total_total_m2,
+    0
+  );
+
+  const totalSalesYear = statisticOrderByDay.reduce(
+    (acc, { total_total_price }) => acc + +total_total_price,
+    0
+  );
+  const totalOrderMonthly = statisticOrderByDay.reduce(
+    (acc, { current_month_order_count }) => acc + current_month_order_count,
+    0
+  );
+  const totalOrderYear = statisticOrderByDay.reduce(
+    (acc, { total_order_count }) => acc + total_order_count,
+    0
+  );
+  const totalSalesMonth = statisticOrderByDay.reduce(
+    (acc, { current_month_total_price }) => acc + +current_month_total_price,
+    0
+  );
+
+  const allStatisticCalculated = [
+    {
+      totalM2Year: totalM2Year,
+      totalOrderYear: totalOrderYear,
+      totalSalesYear: totalSalesYear,
+      totalM2monthly: totalM2monthly,
+      totalOrderMonthly: totalOrderMonthly,
+      totalSalesMonth: totalSalesMonth,
+    },
+  ];
+
+  console.log(statisticOrderByDay);
   return (
-    <div className="numericStats--wrap">
-      <div className="numericStats-box--container">
-        <div className="totalM2">
-          <p>Total Area</p>
-          <p>{totalM2[0]}</p>
-        </div>
-        <div className="totalSales">
-          <p>Total Sales</p>
-          <p>10000$</p>
-        </div>
-        <div className="totalOrders">
-          <p>Number of Orders</p>
-          <p>150</p>
-        </div>
-      </div>
-
-      <div className="numerStats--chart">
-        <Line data={chartData} />
-      </div>
+    <div>
+      <NumericStatsView
+        token={token}
+        chartData={orderStatisticTotal}
+        chartData1={orderStatisticByMonth}
+        allStatisticCalculated={allStatisticCalculated}
+      />
     </div>
   );
 };
