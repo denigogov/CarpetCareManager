@@ -12,13 +12,13 @@ const userRoute = require("./routes/userRoute");
 const loginRoute = require("./routes/loginRoute");
 const tableRoute = require("./routes/tableRoute");
 const customerRoute = require("./routes/customerRoute");
-// const custumerRouter = require("./routes/custumerRoute");
+const statisticRoute = require("./routes/statisticRoute");
 
 app.use("/user", userRoute);
 app.use("/login", loginRoute);
 app.use("/table", tableRoute);
 app.use("/customer", customerRoute);
-// app.use("/custumer", custumerRouter);
+app.use("/statistic", statisticRoute);
 
 app.listen(port, (err) => {
   if (err) {

@@ -2,13 +2,27 @@
 @use "../mixing";
 @use "../general";
 
+// .dashboard--container {
+//   height: calc(100vh - 80px);
+//   display: grid;
+//   grid-template-columns: repeat(2, 2fr);
+//   grid-template-rows: repeat(2, 2fr);
+// }
+
+// .dashboard--container > div {
+//   border: 1px solid colors.$borderLine-Primary;
+// }
 .dashboard--container {
+  display: flex;
+  flex-wrap: wrap;
   height: calc(100vh - 80px);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
 }
 
-.dashboard--container > div {
+.numericStats--box,
+.calculator--container,
+.dashboard--3,
+.dashboard--4 {
+  width: 50%;
+  height: 50%;
   border: 1px solid colors.$borderLine-Primary;
 }

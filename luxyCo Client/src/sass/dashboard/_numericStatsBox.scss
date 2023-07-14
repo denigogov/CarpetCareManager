@@ -1,18 +1,21 @@
 @use "../colors";
 @use "../mixing";
 
-.numericStatsBox {
-  //   main container //Location Dashboard page
+.numericStats--wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.numericStatsBox--container {
+.numerStats--chart {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.numericStats-box--container {
   display: flex;
   justify-content: space-between;
   border-bottom: 2px solid colors.$borderLine-Primary;
   padding: 20px;
   text-align: center;
-
-  div {
-    border-right: 2px solid colors.$borderLine-Primary;
-  }
 }

@@ -3,7 +3,7 @@ import { fetchTableServices } from "../../api";
 import "../../sass/dashboard/_calculator.scss";
 import useSWR, { useSWRConfig } from "swr";
 
-const Calculator = ({ token }) => {
+const Calculator = ({ token, chartData }) => {
   const [selectedService, setSelectedService] = useState(0);
   const [delivery, setDelivery] = useState(false);
   const [length, setLength] = useState(0);
@@ -34,6 +34,7 @@ const Calculator = ({ token }) => {
           placeholder="Lenght"
           onChange={(e) => setLength(e.target.value)}
           min="0"
+          step=".01"
         />
 
         <input
@@ -41,6 +42,7 @@ const Calculator = ({ token }) => {
           placeholder="width"
           onChange={(e) => setWidth(e.target.value)}
           min="0"
+          step=".01"
         />
 
         <select onChange={selectService}>

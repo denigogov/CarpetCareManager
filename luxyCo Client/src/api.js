@@ -146,3 +146,15 @@ export const fetchCustomerOrders = async ({ params }, token) => {
     );
   }
 };
+
+// STATISTIC APIS
+
+export const fetchOrderStatisticByDay = async (token) => {
+  const response = await fetch("http://localhost:4000/statistic/ordersByDay", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};

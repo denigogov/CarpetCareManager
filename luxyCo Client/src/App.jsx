@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
   redirect,
+  Navigate,
 } from "react-router-dom";
 import useToken from "./useToken";
 import { useEffect, useState } from "react";
@@ -70,7 +71,7 @@ const App = () => {
         path="/"
         element={<Root setToken={setToken} userInfo={userInfo} />}
       >
-        <Route index element={<Dashboard />} />
+        <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard token={token} />} />
         <Route
           path="order"
@@ -131,7 +132,18 @@ const App = () => {
         )}
 
         {/* BUG  THIS SHOULD BE ERROR ELEMENT BUT I ADDED BECAUSE PREVENTING ME USER LOGIN ERROR  BUG*/}
+        {/* Mistake came from the user info in some point I'm losing the data from USERINFO and that way I have FLICKER PROBLEM with managment I need to fix prevent losing the data !!!!!! vazno */}
         <Route path="*" element={<p></p>}></Route>
+
+        {/* <Route
+          path="*"
+          element={
+            <ErrorDisplayView
+              errorMessage="Page not found"
+              navigateTo1={"order"}
+            />
+          }
+        /> */}
       </Route>
     )
   );
