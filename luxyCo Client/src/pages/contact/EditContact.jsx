@@ -1,13 +1,13 @@
-import { useLoaderData } from "react-router-dom";
-import { useRef, useState } from "react";
-import "../../sass/contact/_editContact.scss";
-import useSWR, { useSWRConfig } from "swr";
+import { useLoaderData } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import '../../sass/contact/_editContact.scss';
+import useSWR, { useSWRConfig } from 'swr';
 
 // styling belong to _createContact.scss  I didn't change anything reuse of the components!!!
 
 const EditContact = ({ token }) => {
-  const [error, setError] = useState("");
-  const [successfulMessage, setSuccessfulMessage] = useState("");
+  const [error, setError] = useState('');
+  const [successfulMessage, setSuccessfulMessage] = useState('');
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -18,9 +18,9 @@ const EditContact = ({ token }) => {
   const customerInputData = useRef(null);
 
   const fethcSingleUserData = useLoaderData(token);
-  const { data: fetchCustomers } = useSWR(["fetchCustomers", token]);
+  const { data: fetchCustomers } = useSWR(['fetchCustomers', token]);
 
-  const handleUpdateInput = (e) => {
+  const handleUpdateInput = e => {
     const customerData = {
       first_name: firstNameRef.current.value,
       last_name: lastNameRef.current.value,
@@ -34,7 +34,7 @@ const EditContact = ({ token }) => {
 
     const { first_name, last_name, phone_number } = customerData;
     if (!first_name || !last_name || !phone_number) {
-      setError("Please fill in all the required fields.");
+      setError('Please fill in all the required fields.');
       return;
     }
     // Checking if the number already exsite in database for updating customer
@@ -44,9 +44,9 @@ const EditContact = ({ token }) => {
 
       if (userChangePhoneNumber) {
         const matchingNumber = fetchCustomers.some(
-          (customers) => customers.phone_number === phoneNumberRef.current.value
+          customers => customers.phone_number === phoneNumberRef.current.value
         );
-        if (matchingNumber) throw new Error("phone number already exists");
+        if (matchingNumber) throw new Error('phone number already exists');
       }
       return userChangePhoneNumber;
     };
@@ -56,9 +56,9 @@ const EditContact = ({ token }) => {
         const res = await fetch(
           `http://localhost:4000/customer/${fethcSingleUserData.id}`,
           {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(customerInputData.current),
@@ -69,7 +69,7 @@ const EditContact = ({ token }) => {
           setSuccessfulMessage(
             `Customer ${firstNameRef.current.value} ${lastNameRef.current.value} update successful`
           );
-          setError("");
+          setError('');
         }
         // this function checking if the number was update or not if it was it cheking in db is the number unique or not !
         checkingForUniquePhoneNumber();
@@ -90,22 +90,22 @@ const EditContact = ({ token }) => {
         <div className="updateCustomer--left">
           <label>first name*</label>
           <input
-            pattern="[A-Za-z0-9]+"
+            pattern="[A-Za-z0-9\s]{3,}"
             type="text"
             defaultValue={fethcSingleUserData.first_name}
             ref={firstNameRef}
             placeholder="Requerd"
             required
-          />{" "}
+          />{' '}
           <label>last name*</label>
           <input
-            pattern="[A-Za-z0-9]+"
+            pattern="[A-Za-z0-9\s]{3,}"
             type="text"
             defaultValue={fethcSingleUserData.last_name}
             ref={lastNameRef}
             placeholder="Requerd"
             required
-          />{" "}
+          />{' '}
           <label>phone number*</label>
           <input
             type="number"
@@ -118,23 +118,24 @@ const EditContact = ({ token }) => {
         <div className="updateCustomer--right">
           <label>adress</label>
           <input
-            pattern="[A-Za-z0-9]+"
             type="text"
             defaultValue={fethcSingleUserData.street}
             ref={adressRef}
             placeholder="E.g. Mozartstraße 42"
+            required
+            pattern="[A-Za-z0-9\s]{3,}"
+            // title="Please enter at least 3 alphanumeric characters"
           />
           <label>city</label>
           <input
-            pattern="[A-Za-z0-9]+"
+            pattern="[A-Za-z0-9\s]{3,}"
             type="text"
             defaultValue={fethcSingleUserData.city}
             ref={cityRef}
             placeholder="E.g. Berlin"
-          />{" "}
+          />{' '}
           <label>postal code</label>
           <input
-            pattern="[A-Za-z0-9]+"
             type="number"
             defaultValue={fethcSingleUserData.postalCode}
             ref={postalCodeRef}

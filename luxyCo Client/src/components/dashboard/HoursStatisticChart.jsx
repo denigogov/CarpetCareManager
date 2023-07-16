@@ -1,0 +1,27 @@
+import { Line } from 'react-chartjs-2';
+// Don't remove it (chart.js/auto), its required to be imported this is how chart.js works
+import { Chart as chartjs } from 'chart.js/auto';
+import '../../sass/dashboard/_customerOrderStat.scss';
+const HoursStatisticChart = ({ statisticOrderByHour }) => {
+  const statisticByMonthChart = {
+    labels: statisticOrderByHour.map(hour => hour.hour_of_day),
+    datasets: [
+      {
+        data: statisticOrderByHour.map(hour => hour.total_orders),
+        label: `Orders Per Hour -- ${new Date().getMonth() + 1}`,
+        backgroundColor: ['rgba(245, 92, 132)'],
+        borderColor: ['rgba(255, 99, 132, 0.6)'],
+        borderWidth: 1,
+        tension: 0.5,
+      },
+    ],
+  };
+
+  return (
+    <div className="perHourChart">
+      <Line data={statisticByMonthChart} />
+    </div>
+  );
+};
+
+export default HoursStatisticChart;

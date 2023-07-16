@@ -1,0 +1,36 @@
+@use '../colors';
+@use '../general';
+
+.customerStat--orders {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  gap: 10px;
+  p {
+    color: colors.$font-Primary;
+    border-left: 1px solid colors.$banner-Primary;
+    padding-left: 13px;
+    text-transform: capitalize;
+  }
+
+  div {
+    &:hover {
+      background-color: white;
+      transition: general.$transition;
+      border-top-right-radius: 20px;
+      border-end-end-radius: 20px;
+    }
+  }
+}
+
+.stat-subTitle--value {
+  font-weight: 700;
+}
+.stat-subTitle {
+  font-size: 14px;
+}
+
+.perHourChart {
+  margin: 0 auto;
+  width: 70%;
+}

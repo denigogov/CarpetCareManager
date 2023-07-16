@@ -1,6 +1,6 @@
-export const fetchTokenValidation = async (token) => {
+export const fetchTokenValidation = async token => {
   try {
-    const res = await fetch("http://localhost:4000/login/", {
+    const res = await fetch('http://localhost:4000/login/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -11,7 +11,7 @@ export const fetchTokenValidation = async (token) => {
     if (data.success === true) return data.payload;
     else return null;
   } catch (err) {
-    console.log(err, "Token validation failed (Endpoint: /login).");
+    console.log(err, 'Token validation failed (Endpoint: /login).');
   }
 };
 
@@ -33,12 +33,12 @@ export const fetchSingleUser = async ({ params }, token) => {
     return data;
   } catch (error) {
     throw Error(
-      "Something bad happen!! , Could not find the all users, please try later"
+      'Something bad happen!! , Could not find the all users, please try later'
     );
   }
 };
 
-export const fetchTableDepartment = async (token) => {
+export const fetchTableDepartment = async token => {
   try {
     const res = await fetch(`http://localhost:4000/table/departments`, {
       headers: {
@@ -53,7 +53,7 @@ export const fetchTableDepartment = async (token) => {
     return data;
   } catch (error) {
     throw Error(
-      "Something bad happen!! , Could not fetch the api , please try later"
+      'Something bad happen!! , Could not fetch the api , please try later'
     );
   }
 };
@@ -69,8 +69,8 @@ export const fetchOrdersByDate = async (formattedDate, token) => {
   return response.json();
 };
 
-export const fetchOrderStatus = async (token) => {
-  const response = await fetch("http://localhost:4000/table/orderStatus", {
+export const fetchOrderStatus = async token => {
+  const response = await fetch('http://localhost:4000/table/orderStatus', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -79,8 +79,8 @@ export const fetchOrderStatus = async (token) => {
   return data;
 };
 
-export const fetchTableCustomers = async (token) => {
-  const response = await fetch("http://localhost:4000/customer", {
+export const fetchTableCustomers = async token => {
+  const response = await fetch('http://localhost:4000/customer', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -89,8 +89,8 @@ export const fetchTableCustomers = async (token) => {
   return data;
 };
 
-export const fetchTableServices = async (token) => {
-  const response = await fetch("http://localhost:4000/table/services", {
+export const fetchTableServices = async token => {
+  const response = await fetch('http://localhost:4000/table/services', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -98,8 +98,8 @@ export const fetchTableServices = async (token) => {
   const data = await response.json();
   return data;
 };
-export const fetchOrderServices = async (token) => {
-  const response = await fetch("http://localhost:4000/table/orderServices", {
+export const fetchOrderServices = async token => {
+  const response = await fetch('http://localhost:4000/table/orderServices', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -123,7 +123,7 @@ export const fetchSingleCustomer = async ({ params }, token) => {
     return data;
   } catch (error) {
     throw Error(
-      "Something bad happen!! , Could not find the selected customer, please try later"
+      'Something bad happen!! , Could not find the selected customer, please try later'
     );
   }
 };
@@ -142,19 +142,58 @@ export const fetchCustomerOrders = async ({ params }, token) => {
     return data;
   } catch (error) {
     throw Error(
-      "Something bad happen!! , Could not find the selected customer, please try later"
+      'Something bad happen!! , Could not find the selected customer, please try later'
     );
   }
 };
 
 // STATISTIC APIS
 
-export const fetchOrderStatisticByDay = async (token) => {
-  const response = await fetch("http://localhost:4000/statistic/ordersByDay", {
+export const fetchOrderStatisticByDay = async token => {
+  const response = await fetch('http://localhost:4000/statistic/ordersByDay', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  const data = await response.json();
+  return data;
+};
+
+export const fetchOrderStatisticByMonth = async token => {
+  const response = await fetch(
+    'http://localhost:4000/statistic/ordersByMonth',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await response.json();
+  return data;
+};
+
+export const fetchOrderStatisticByStatus = async token => {
+  const response = await fetch(
+    'http://localhost:4000/statistic/ordersByStatus',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await response.json();
+  return data;
+};
+
+export const fetchOrderStatisticByHour = async token => {
+  const response = await fetch(
+    'http://localhost:4000/statistic/ordersByHourPerMonth',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   const data = await response.json();
   return data;
 };

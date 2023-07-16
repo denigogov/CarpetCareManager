@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
-import "../../sass/contact/_createContact.scss";
-import useSWR, { useSWRConfig } from "swr";
+import { useRef, useState } from 'react';
+import '../../sass/contact/_createContact.scss';
+import useSWR, { useSWRConfig } from 'swr';
 
 const CreateContact = ({ token }) => {
-  const [error, setError] = useState("");
-  const [successfulMessage, setSuccessfulMessage] = useState("");
+  const [error, setError] = useState('');
+  const [successfulMessage, setSuccessfulMessage] = useState('');
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -15,9 +15,9 @@ const CreateContact = ({ token }) => {
 
   const customerInputData = useRef(null);
 
-  const { data: fetchCustomers } = useSWR(["fetchCustomers", token]);
+  const { data: fetchCustomers } = useSWR(['fetchCustomers', token]);
 
-  const handleCusomerForm = (e) => {
+  const handleCusomerForm = e => {
     e.preventDefault();
 
     const customerData = {
@@ -33,21 +33,21 @@ const CreateContact = ({ token }) => {
 
     const { first_name, last_name, phone_number } = customerData;
     if (!first_name || !last_name || !phone_number) {
-      setError("Please fill in all the required fields.");
+      setError('Please fill in all the required fields.');
       return;
     }
 
     // Checking if the number already exsite in database for createing new user and update user
     const checkingForUniquePhoneNumber = fetchCustomers.some(
-      (customers) => customers.phone_number === phoneNumberRef.current.value
+      customers => customers.phone_number === phoneNumberRef.current.value
     );
 
     const addCustomer = async () => {
       try {
         const res = await fetch(`http://localhost:4000/customer`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(customerInputData.current),
@@ -58,11 +58,11 @@ const CreateContact = ({ token }) => {
             `Customer ${firstNameRef.current.value} ${lastNameRef.current.value} added. Success!`
           );
           // cleaning in case there was some error before !
-          setError("");
+          setError('');
         }
 
         if (checkingForUniquePhoneNumber)
-          throw new Error("phone number already exists");
+          throw new Error('phone number already exists');
       } catch ({ message }) {
         setError(`Error creating customer, ${message}`);
       }
