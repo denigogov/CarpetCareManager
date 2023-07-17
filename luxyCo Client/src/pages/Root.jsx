@@ -1,16 +1,16 @@
-import { Outlet, NavLink, useNavigate, redirect } from "react-router-dom";
-import "../sass/_root.scss";
-import appLogo from "../assets/appLogo.svg";
-import githubIcon from "../assets/githubIcon.svg";
-import linkedInIcon from "../assets/linkedInIcon.svg";
+import { Outlet, NavLink, useNavigate, redirect } from 'react-router-dom';
+import '../sass/_root.scss';
+import appLogo from '../assets/appLogo.svg';
+import githubIcon from '../assets/githubIcon.svg';
+import linkedInIcon from '../assets/linkedInIcon.svg';
 
 const Root = ({ setToken, userInfo }) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    localStorage.removeItem("token");
-    setToken("");
-    navigate("/");
+    localStorage.removeItem('token');
+    setToken('');
+    navigate('/');
   };
 
   return (
@@ -22,19 +22,17 @@ const Root = ({ setToken, userInfo }) => {
               <img
                 src={appLogo}
                 alt="app logo "
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate('/dashboard')}
               />
             </div>
           </div>
-
           <div className="userLoggedin">{userInfo.name}</div>
           <nav>
             <ul>
-              {" "}
               <NavLink
                 to="dashboard"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
+                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
                 }
               >
                 <li>
@@ -46,7 +44,7 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="order"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
+                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
                 }
               >
                 <li>
@@ -58,7 +56,7 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="delivery"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
+                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
                 }
               >
                 <li>
@@ -70,7 +68,7 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="contact"
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
+                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
                 }
               >
                 <li>
@@ -83,7 +81,7 @@ const Root = ({ setToken, userInfo }) => {
                 <NavLink
                   to="management"
                   className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "activeLink" : "navLink"
+                    isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
                   }
                 >
                   <li>
@@ -92,10 +90,9 @@ const Root = ({ setToken, userInfo }) => {
                     {/* <span className="tooltip">Management</span> */}
                   </li>
                 </NavLink>
-              )}{" "}
+              )}
             </ul>
           </nav>
-
           <footer id="footer">
             <div className="footer__icons">
               <a target="_blank" href="https://github.com/denigogov">
@@ -122,7 +119,7 @@ const Root = ({ setToken, userInfo }) => {
         </div>
         <div className="navbar-topTest">
           <div className="navbar-top">
-            <i className="bx bx-power-off" onClick={logoutHandler}></i>{" "}
+            <i className="bx bx-power-off" onClick={logoutHandler}></i>
           </div>
           <div className="mainOutlet">
             <Outlet />

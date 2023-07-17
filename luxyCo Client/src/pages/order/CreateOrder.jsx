@@ -2,22 +2,22 @@ import {
   fetchTableCustomers,
   fetchTableServices,
   fetchOrderServices,
-} from "../../api";
-import useSWR, { useSWRConfig } from "swr";
-import OrderCreateStepOne from "../../components/order/OrderCreateStepOne";
+} from '../../api';
+import useSWR, { useSWRConfig } from 'swr';
+import OrderCreateStepOne from '../../components/order/OrderCreateStepOne';
 
 const CreateOrder = ({ token, userInfo }) => {
   const {
     data: orderStatus,
     error: orderStatusError,
     isLoading: oorderStatusLoading,
-  } = useSWR(["orderStatus", token]);
+  } = useSWR(['orderStatus', token]);
 
   const {
     data: customers,
     error: customersError,
     isLoading: customersLoading,
-  } = useSWR(["customers", token], () => fetchTableCustomers(token), {
+  } = useSWR(['customers', token], () => fetchTableCustomers(token), {
     refreshInterval: 1000, // Refresh data every 1 seconds
   });
 
@@ -25,13 +25,13 @@ const CreateOrder = ({ token, userInfo }) => {
     data: services,
     error: servicesError,
     isLoading: servicesLoading,
-  } = useSWR(["services", token], () => fetchTableServices(token));
+  } = useSWR(['services', token], () => fetchTableServices(token));
 
   const {
     data: orderServices,
     error: orderServicesError,
     isLoading: orderServicesLoading,
-  } = useSWR(["orderServices", token], () => fetchOrderServices(token), {
+  } = useSWR(['orderServices', token], () => fetchOrderServices(token), {
     refreshInterval: 1000, // Refresh data every 1 seconds
   });
 
@@ -53,7 +53,7 @@ const CreateOrder = ({ token, userInfo }) => {
             customers={customers}
             userInfo={userInfo}
           />
-        </div>
+        </div>{' '}
       </div>
     </div>
   );

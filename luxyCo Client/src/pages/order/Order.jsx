@@ -1,34 +1,36 @@
-import { Outlet, NavLink, useLoaderData, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
+import { Outlet, NavLink, useLoaderData, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 
-import addIcon from "../../assets/addIcon.svg";
-import calendarIcon from "../../assets/calendarIcon.svg";
-import "../../sass/order/_order.scss";
+import addIcon from '../../assets/addIcon.svg';
+import calendarIcon from '../../assets/calendarIcon.svg';
+import '../../sass/order/_order.scss';
 
-import OrderView from "../../components/order/OrderView";
-import useSWR, { useSWRConfig } from "swr";
-import { fetchOrdersByDate, fetchOrderStatus } from "../../api";
-import SelectedOrderInfo from "../../components/order/SelectedOrderInfo";
+import OrderView from '../../components/order/OrderView';
+import useSWR, { useSWRConfig } from 'swr';
+import { fetchOrdersByDate, fetchOrderStatus } from '../../api';
+import SelectedOrderInfo from '../../components/order/SelectedOrderInfo';
 
 const Order = ({ token, userInfo }) => {
   const [wishDate, setWishDate] = useState(new Date());
-  const [orderStatus, setOrderStatus] = useState("all");
-  const [searchOrder, setSearchOrder] = useState("");
+  const [orderStatus, setOrderStatus] = useState('all');
+  const [searchOrder, setSearchOrder] = useState('');
   const [popupOpen, setPopupOpen] = useState(false);
+
+  // selected order RENDER THE ORDER INFO !! STILL IN PROGRESS SOME FIELDS NEED TO BE REMOVE FROM THE TABLE AND TO BE ADDED IN SELECTED ORDER INFO
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
-  const formattedDate = format(wishDate, "yyyy-MM-dd");
+  const formattedDate = format(wishDate, 'yyyy-MM-dd');
 
   const {
     data: orderStatusData,
     error: orderStatusError,
     isLoading: orderStatusLoading,
-  } = useSWR(["orderStatus", token], () => fetchOrderStatus(token));
+  } = useSWR(['orderStatus', token], () => fetchOrderStatus(token));
 
   // RENDER ALL DATA BY DATE!! I added data to be refresh every 5 secound for the user to be able to see all updates in real time and not skipping order
   const { data, error, isLoading } = useSWR(
@@ -43,24 +45,24 @@ const Order = ({ token, userInfo }) => {
   if (orderStatusError) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (isLoading || orderStatusLoading) return <h3>loading...</h3>; //I need to add loading component!
 
-  const selectOptions = (e) => {
+  const selectOptions = e => {
     setOrderStatus(e.target.value);
   };
 
   const popupWindow = () => {
-    setPopupOpen((x) => !x);
-    navigate("/order");
+    setPopupOpen(x => !x);
+    navigate('/order');
   };
 
-  const preventPropagation = (e) => {
+  const preventPropagation = e => {
     e.stopPropagation();
   };
 
-  const handleSelectedOrder = (data) => {
+  const handleSelectedOrder = data => {
     setSelectedOrder(data);
   };
 
-  const handleDeleteOrder = (id) => {
+  const handleDeleteOrder = id => {
     const deleteOrder = async () => {
       try {
         const confirmDelete = confirm(
@@ -69,18 +71,17 @@ const Order = ({ token, userInfo }) => {
 
         if (confirmDelete) {
           await fetch(`http://localhost:4000/table/orders/${id}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          mutate("http://localhost:4000/table/orders");
+          mutate('http://localhost:4000/table/orders');
         }
       } catch (error) {
-        console.error("Error deleting order", error);
+        console.error('Error deleting order', error);
       }
     };
-
     deleteOrder();
   };
 
@@ -88,12 +89,12 @@ const Order = ({ token, userInfo }) => {
     <div className="order">
       <nav className="createOrder--nav">
         <ul>
-          <NavLink to="createOrder" onClick={() => setPopupOpen((x) => !x)}>
+          <NavLink to="createOrder" onClick={() => setPopupOpen(x => !x)}>
             <li>
               <img
                 src={addIcon}
                 alt="add new order img"
-                style={{ width: "35px" }}
+                style={{ width: '35px' }}
               />
               <p>add order</p>
             </li>
@@ -104,7 +105,7 @@ const Order = ({ token, userInfo }) => {
               type="search"
               placeholder="search for order "
               className="orderSearchInput"
-              onChange={(e) => setSearchOrder(e.target.value)}
+              onChange={e => setSearchOrder(e.target.value)}
             />
           </li>
 
@@ -118,7 +119,7 @@ const Order = ({ token, userInfo }) => {
           </li>
 
           <li>
-            <select name="" id="">
+            <select>
               <option value="">order by period</option>
               <option value="">week</option>
               <option value="">month</option>
@@ -126,10 +127,10 @@ const Order = ({ token, userInfo }) => {
           </li>
 
           <li>
-            <select name="" id="" onChange={selectOptions}>
+            <select onChange={selectOptions}>
               <option value="all">order by status</option>
               <option defaultValue="all">all</option>
-              {orderStatusData.map((status) => {
+              {orderStatusData.map(status => {
                 return <option key={status.id}>{status.status_name}</option>;
               })}
             </select>
@@ -145,6 +146,7 @@ const Order = ({ token, userInfo }) => {
           handleSelectedOrder={handleSelectedOrder}
           userInfo={userInfo}
           handleDeleteOrder={handleDeleteOrder}
+          setPopupOpen={setPopupOpen}
         />
         {selectedOrder && <SelectedOrderInfo selectedOrder={selectedOrder} />}
       </div>

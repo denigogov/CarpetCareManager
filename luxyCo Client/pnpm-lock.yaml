@@ -28,6 +28,9 @@ dependencies:
   react-pdf:
     specifier: ^7.1.2
     version: 7.1.2(react-dom@18.2.0)(react@18.2.0)
+  react-push-notification:
+    specifier: ^1.5.3
+    version: 1.5.3(react@18.2.0)
   react-router-dom:
     specifier: ^6.13.0
     version: 6.13.0(react-dom@18.2.0)(react@18.2.0)
@@ -2167,6 +2170,14 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-fast-compare: 3.2.2
       warning: 4.0.3
+    dev: false
+
+  /react-push-notification@1.5.3(react@18.2.0):
+    resolution: {integrity: sha512-0RVt28G1bJFXq9VeBK4fSLMGuwSqktCw8pHI/3yIMZDNqoB1D5K70LGJAWbbUvTZWrStZKM4VJKXg62MpYQfuw==}
+    peerDependencies:
+      react: ^16.8.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-router-dom@6.13.0(react-dom@18.2.0)(react@18.2.0):

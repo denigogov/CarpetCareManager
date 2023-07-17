@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from 'react-router-dom';
 
 const DetailsContact = ({ token }) => {
   const fethcSingleUserData = useLoaderData(token);
@@ -6,11 +6,12 @@ const DetailsContact = ({ token }) => {
   console.log(fethcSingleUserData);
   return (
     <div>
-      {fethcSingleUserData.map((order) => {
+      {fethcSingleUserData.map((order, i) => {
         return (
           <ul>
-            <li>
+            <li key={i}>
               <p>{order.order_date}</p>
+              <p>{order.m2}</p>
             </li>
           </ul>
         );

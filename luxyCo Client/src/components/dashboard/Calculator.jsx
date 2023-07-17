@@ -86,7 +86,7 @@ const Calculator = ({ token }) => {
         </div>
       </div>
       <div className="calculator--footer">
-        <p>create new order</p>
+        {/* Placeholder to add content under calculator! */}
       </div>
     </div>
   );
