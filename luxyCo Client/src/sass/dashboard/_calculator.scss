@@ -1,23 +1,23 @@
-@use "../colors";
-@use "../mixing";
-@use "../general";
+@use '../colors';
+@use '../mixing';
+@use '../general';
 
 .calculator--container {
-  // this class is in Dashboard PAGES
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 30px;
-  gap: 20px;
-  .calculator--title {
-    color: colors.$font-Primary;
-    text-align: center;
-  }
+  justify-content: space-around;
+  text-align: center;
+}
+.calculator--title {
+  color: colors.$font-Primary;
+  text-align: center;
 }
 
 .calculator-wrap {
   display: flex;
   justify-content: space-around;
+  padding: 20px;
 
   form {
     display: flex;

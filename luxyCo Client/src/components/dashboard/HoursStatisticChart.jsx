@@ -3,12 +3,17 @@ import { Line } from 'react-chartjs-2';
 import { Chart as chartjs } from 'chart.js/auto';
 import '../../sass/dashboard/_customerOrderStat.scss';
 const HoursStatisticChart = ({ statisticOrderByHour }) => {
+  // Taking out only the name of the month for the line chart
+  const monthName = new Intl.DateTimeFormat(new Date(), {
+    month: 'long',
+  }).format(new Date());
+
   const statisticByMonthChart = {
     labels: statisticOrderByHour.map(hour => hour.hour_of_day),
     datasets: [
       {
         data: statisticOrderByHour.map(hour => hour.total_orders),
-        label: `Orders Per Hour -- ${new Date().getMonth() + 1}`,
+        label: `Orders Per Hour -- ${monthName}`,
         backgroundColor: ['rgba(245, 92, 132)'],
         borderColor: ['rgba(255, 99, 132, 0.6)'],
         borderWidth: 1,

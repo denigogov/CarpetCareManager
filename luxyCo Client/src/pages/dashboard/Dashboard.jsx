@@ -58,7 +58,6 @@ const Dashboard = ({ token }) => {
   )
     return <h3>loading...</h3>;
 
-  console.log(statisticOrderByStatus);
   return (
     <div className="dashboard--container">
       {/* showing total orders.... */}
@@ -69,13 +68,10 @@ const Dashboard = ({ token }) => {
         />
       </div>
 
-      <div className="calculator--container">
-        <p className="calculator--title">
-          Personalized carpet measurement calculator for seamless accuracy.
-        </p>
+      <div className="calculator">
         <Calculator token={token} />
       </div>
-      <div className="dashboard--3">
+      <div className="statisticByMonth">
         <StatisticByMonth statisticOrderByMonth={statisticOrderByMonth} />
       </div>
       <div className="today-statistic--wrap">
