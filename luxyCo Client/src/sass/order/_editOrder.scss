@@ -1,0 +1,41 @@
+@use '../colors';
+@use '../mixing';
+@use '../general';
+
+.editOrderContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+
+  p {
+    color: colors.$borderLine-Second;
+  }
+
+  button {
+    @include mixing.button;
+    letter-spacing: general.$spacing;
+  }
+}
+
+.editOrder--wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 40px;
+}
+
+.editOrder--ownerView,
+.editOrder--userView {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  input,
+  select {
+    @include mixing.inputFileds;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}

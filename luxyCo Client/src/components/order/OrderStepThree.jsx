@@ -19,6 +19,9 @@ const OrderStepThree = ({
 
   const formattedDate = format(scheduleDate, 'yyyy/MM/dd');
 
+  // set user to be able to select date min. today
+  const today = new Date();
+
   const orderValues = {
     customer_id: selectedUserId !== undefined ? selectedUserId : customerLastId,
     user_id: userInfo.id,
@@ -59,6 +62,7 @@ const OrderStepThree = ({
           onChange={date => setScheduleDate(date)}
           dateFormat="yyyy/MM/dd"
           disabled={orderSuccessful}
+          minDate={today}
         />
         <button onClick={sendOrder}>create order</button>
         <p className="successfulMessage">{orderSuccessful}</p>

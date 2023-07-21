@@ -1,21 +1,21 @@
-import "../../sass/management/_users.scss";
+import '../../sass/management/_users.scss';
 // import deleteIcon from "../../assets/deleteIcon.svg";
-import deleteUserIcon from "../../assets/deleteIcon.svg";
-import editIcon from "../../assets/editIcon.svg";
-import detailsIcon from "../../assets/detailsIcon.svg";
-import addUserIcon from "../../assets/addUserIcon.svg";
-import { Outlet, Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import deleteUserIcon from '../../assets/deleteIcon.svg';
+import editIcon from '../../assets/editIcon.svg';
+import detailsIcon from '../../assets/detailsIcon.svg';
+import addUserIcon from '../../assets/addUserIcon.svg';
+import { Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-import useSWR, { useSWRConfig } from "swr";
+import useSWR, { useSWRConfig } from 'swr';
 
-const Users = ({ token }) => {
+const Users = ({ token, userInfo }) => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
   const [popupOpen, setPopupOpen] = useState(false);
 
-  const fetcher = async (url) => {
+  const fetcher = async url => {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ const Users = ({ token }) => {
 
   // To Render ERROR ,DATA and WHEN DATA IS LOAD!
   const { data, error, isLoading } = useSWR(
-    "http://localhost:4000/user",
+    'http://localhost:4000/user',
     fetcher
   );
 
@@ -40,16 +40,16 @@ const Users = ({ token }) => {
 
       if (confirmDelete) {
         await fetch(`http://localhost:4000/user/${id}`, {
-          method: "DELETE",
+          method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        mutate("http://localhost:4000/user"); // mutate is  Refresh the users data
+        mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
       }
     } catch (error) {
-      console.error("Error deleting user", error);
+      console.error('Error deleting user', error);
     }
   };
 
@@ -57,13 +57,13 @@ const Users = ({ token }) => {
   if (isLoading) return <h3>loading...</h3>; //I need to add loading component!
 
   // Event handler stop bubbling
-  const preventPropagation = (event) => {
+  const preventPropagation = event => {
     event.stopPropagation();
   };
 
   const popupWindow = () => {
-    setPopupOpen((x) => !x);
-    navigate("/management/users/");
+    setPopupOpen(x => !x);
+    navigate('/management/users/');
   };
 
   return (
@@ -75,7 +75,7 @@ const Users = ({ token }) => {
               <th>
                 <Link
                   to={`/management/users/addUser/`}
-                  onClick={() => setPopupOpen((x) => !x)}
+                  onClick={() => setPopupOpen(x => !x)}
                 >
                   <img src={addUserIcon} alt="create new user icon" />
                 </Link>
@@ -102,7 +102,7 @@ const Users = ({ token }) => {
                   <td>
                     <Link
                       to={`/management/users/details/${users.id}`}
-                      onClick={() => setPopupOpen((x) => !x)}
+                      onClick={() => setPopupOpen(x => !x)}
                     >
                       <img src={detailsIcon} alt="user details Icon" />
                     </Link>
@@ -121,14 +121,16 @@ const Users = ({ token }) => {
                     </Link>
                   </td>
 
-                  <td>
-                    <img
-                      onClick={() => deleteUser(users.id, users.first_name)}
-                      className="userDeleteIcon"
-                      src={deleteUserIcon}
-                      alt="delete Icon"
-                    />
-                  </td>
+                  {userInfo.id === users.id || (
+                    <td>
+                      <img
+                        onClick={() => deleteUser(users.id, users.first_name)}
+                        className="userDeleteIcon"
+                        src={deleteUserIcon}
+                        alt="delete Icon"
+                      />
+                    </td>
+                  )}
                 </tr>
               );
             })}

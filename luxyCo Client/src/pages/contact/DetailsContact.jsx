@@ -8,8 +8,8 @@ const DetailsContact = ({ token }) => {
     <div>
       {fethcSingleUserData.map((order, i) => {
         return (
-          <ul>
-            <li key={i}>
+          <ul key={i}>
+            <li>
               <p>{order.order_date}</p>
               <p>{order.m2}</p>
             </li>

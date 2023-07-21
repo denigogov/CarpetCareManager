@@ -43,6 +43,7 @@ import {
   fetchTokenValidation,
   fetchSingleCustomer,
   fetchCustomerOrders,
+  fetchOrderById,
 } from './api';
 import EditOrder from './pages/order/EditOrder';
 
@@ -82,8 +83,11 @@ const App = () => {
             path="createOrder"
             element={<CreateOrder token={token} userInfo={userInfo} />}
           />
-
-          <Route path="edit/" element={<EditOrder token={token} />} />
+          <Route
+            path="edit/:id"
+            element={<EditOrder token={token} userInfo={userInfo} />}
+            loader={({ params }) => fetchOrderById({ params }, token)}
+          />
         </Route>
 
         <Route path="delivery" element={<Delivery />} />
@@ -114,7 +118,10 @@ const App = () => {
 
         {userInfo.department === 2 && (
           <Route path="management" element={<Management />}>
-            <Route path="users" element={<Users token={token} />}>
+            <Route
+              path="users"
+              element={<Users token={token} userInfo={userInfo} />}
+            >
               <Route
                 path="edit/:id"
                 element={<EditUser token={token} />}

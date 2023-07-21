@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
-import "../../sass/order/_orderCreateStepOne.scss";
-import OrderStepTwo from "./OrderStepTwo";
+import { useRef, useState } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
+import '../../sass/order/_orderCreateStepOne.scss';
+import OrderStepTwo from './OrderStepTwo';
 
 const OrderCreate = ({
   services,
@@ -15,7 +15,7 @@ const OrderCreate = ({
   const [delivery, setDelivery] = useState(false);
   const [serviceTypeId, setServiceTypeId] = useState(null);
   const [nextStepMessage, setNextStepMessage] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const { mutate } = useSWRConfig();
   const takePiecesRef = useRef(null);
@@ -24,16 +24,16 @@ const OrderCreate = ({
   const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
 
   // Values that I need for STEP 2
-  const orderServiceLastId = orderServices.map((service) => service.id).pop();
+  const orderServiceLastId = orderServices.map(service => service.id).pop();
   const totalPrice = delivery ? priceCalculate + 2 : priceCalculate;
 
-  const selectService = (e) => {
+  const selectService = e => {
     const selectedService = JSON.parse(e.target.value);
     setServicePrice(selectedService.service_price);
     setServiceTypeId(selectedService.id);
   };
 
-  const handleStepOne = (e) => {
+  const handleStepOne = e => {
     e.preventDefault();
 
     const data = {
@@ -44,29 +44,27 @@ const OrderCreate = ({
     serviceDataStoringRef.current = data;
 
     if (!serviceTypeId || !m2 || !takePiecesRef.current.value) {
-      setError("Please fill in all the required fields.");
+      setError('Please fill in all the required fields.');
       return;
     }
 
     const createOrderStepOne = async () => {
       try {
         const res = await fetch(`http://localhost:4000/table/orderServices`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(serviceDataStoringRef.current),
         });
 
-        console.log(res);
-
         if (res.ok) {
-          mutate("http://localhost:4000/table/orderServices"); // mutate is  Refresh the users data
+          mutate('http://localhost:4000/table/orderServices'); // mutate is  Refresh the users data
           setNextStepMessage(true);
         }
       } catch (error) {
-        setError("Error creating order", error);
+        setError('Error creating order', error);
       }
     };
     createOrderStepOne();
@@ -77,7 +75,7 @@ const OrderCreate = ({
       <form className="orderInput--wrap">
         <select onChange={selectService} disabled={nextStepMessage}>
           <option value="">Service Type</option>
-          {services.map((service) => (
+          {services.map(service => (
             <option value={JSON.stringify(service)} key={service.id}>
               {service.service_name}
             </option>
@@ -89,7 +87,7 @@ const OrderCreate = ({
           placeholder="carpet size in m²"
           type="number"
           min="0"
-          onChange={(e) => setm2(e.target.value)}
+          onChange={e => setm2(e.target.value)}
           disabled={nextStepMessage}
         />
 
@@ -103,10 +101,7 @@ const OrderCreate = ({
         />
 
         <label>delivery</label>
-        <input
-          type="checkbox"
-          onChange={(e) => setDelivery(e.target.checked)}
-        />
+        <input type="checkbox" onChange={e => setDelivery(e.target.checked)} />
       </form>
 
       <div className="totalPrice">
@@ -121,7 +116,7 @@ const OrderCreate = ({
           />
         )}
         {totalPrice.length > 1 ? (
-          ""
+          ''
         ) : (
           <p className="totalPriceSum">price: {totalPrice.toFixed(2)} €</p>
         )}

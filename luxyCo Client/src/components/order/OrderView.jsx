@@ -107,7 +107,14 @@ const OrderView = ({
                 <td>{order.delivery === 0 ? 'no' : 'yes'}</td>
                 <td>{order.username ? order.username : 'user deleted'}</td>
                 <td>
-                  <Link to="edit" onClick={() => setPopupOpen(x => !x)}>
+                  <Link
+                    to={
+                      `/order/edit/${order.id}`
+                        ? `/order/edit/${order.id}`
+                        : `/order/`
+                    }
+                    onClick={() => setPopupOpen(x => !x)}
+                  >
                     <img src={updateIcon} alt="update order icon" />
                   </Link>
                 </td>

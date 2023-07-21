@@ -197,3 +197,21 @@ export const fetchOrderStatisticByHour = async token => {
   const data = await response.json();
   return data;
 };
+
+export const fetchOrderById = async ({ params }, token) => {
+  try {
+    const { id } = params;
+    const res = await fetch(`http://localhost:4000/table/orders/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error();
+    return data;
+  } catch (error) {
+    throw Error(
+      'Something bad happen!! , Could not find the selected order, please try later'
+    );
+  }
+};
