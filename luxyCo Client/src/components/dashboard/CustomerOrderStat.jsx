@@ -11,8 +11,6 @@ const CustomerOrderStat = ({ statisticOrderByStatus }) => {
     order => order.order_status_id === 3
   );
 
-  console.log(totalOrderStatusId1);
-
   return (
     <div className="customerStat--orders">
       <div>
@@ -21,19 +19,29 @@ const CustomerOrderStat = ({ statisticOrderByStatus }) => {
       </div>
 
       <div>
-        <p className="stat-subTitle">waiting for delivery</p>
-        <p className="stat-subTitle--value">{totalOrderStatusId3.orders}</p>
-      </div>
-
-      <div>
         <p className="stat-subTitle">waiting for process</p>
         <p className="stat-subTitle--value">{totalOrderStatusId1.orders}</p>
       </div>
 
       <div>
+        <p className="stat-subTitle">waiting for delivery</p>
+        <p className="stat-subTitle--value">{totalOrderStatusId3.orders}</p>
+      </div>
+
+      <div>
         <p className="stat-subTitle">Avg order per Customer</p>
         <p className="stat-subTitle--value">
-          {totalOrderStatusId1.average_order_frequency.substring(0, 4)}
+          {totalOrderStatusId1.average_order_frequency.substring(0, 4)}{' '}
+          <span
+            style={{
+              fontWeight: '300',
+              fontSize: '13px',
+              textTransform: 'lowercase',
+            }}
+          >
+            {' '}
+            orders
+          </span>
         </p>
       </div>
 

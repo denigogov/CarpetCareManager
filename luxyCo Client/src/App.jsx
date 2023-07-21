@@ -67,6 +67,8 @@ const App = () => {
     return <Login setToken={setToken} setUserInfo={setUserInfo} />;
   }
 
+  console.log(userInfo);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route

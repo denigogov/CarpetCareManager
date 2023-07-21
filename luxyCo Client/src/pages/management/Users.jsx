@@ -30,8 +30,6 @@ const Users = ({ token, userInfo }) => {
     fetcher
   );
 
-  console.log(data);
-
   const deleteUser = async (id, first_name) => {
     try {
       const confirmDelete = confirm(
@@ -113,11 +111,7 @@ const Users = ({ token, userInfo }) => {
                       to={`/management/users/edit/${users.id}`}
                       onClick={popupWindow}
                     >
-                      <img
-                        src={editIcon}
-                        alt="edit user icon"
-                        // onClick={() => navigate("/management/users/edit")}
-                      />
+                      <img src={editIcon} alt="edit user icon" />
                     </Link>
                   </td>
 

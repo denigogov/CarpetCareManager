@@ -15,7 +15,7 @@ const EditOrderOwnerView = ({
       <label>m²</label>
       <input type="number" defaultValue={fetchOrderById.m2} ref={m2Ref} />
       <label>Delivery</label>
-      <select ref={deliveryRef}>
+      <select ref={deliveryRef} defaultValue={fetchOrderById.delivery}>
         <option value="1">Yes</option>
         <option value="0">No</option>
       </select>
