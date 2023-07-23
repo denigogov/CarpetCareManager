@@ -1,0 +1,32 @@
+@use '../colors';
+@use '../mixing';
+@use '../general';
+
+.details-viewTable {
+  height: 450px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: colors.$banner-Primary;
+  }
+
+  @include mixing.table;
+}
+
+.detailsView--container {
+  width: 100%;
+  padding: 10px;
+  height: 100%;
+}
+
+.details--calculation {
+  border-top: 1px solid colors.$borderLine-Second;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+}

@@ -132,7 +132,7 @@ const updateOrder = (req, res) => {
 
 const getOrderById = (req, res) => {
   const id = parseInt(req.params.id);
-
+  // Converting the date to be +2 hours because of the ISO String problem
   database
     .query(
       `SELECT

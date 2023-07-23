@@ -61,14 +61,12 @@ const App = () => {
       }
     };
     validateToken();
-  }, []);
+  }, [token]);
 
   if (!token) {
     return <Login setToken={setToken} setUserInfo={setUserInfo} />;
   }
-
   console.log(userInfo);
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route

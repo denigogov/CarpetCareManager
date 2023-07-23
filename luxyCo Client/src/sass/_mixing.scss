@@ -1,5 +1,5 @@
-@use "./colors";
-@use "./general";
+@use './colors';
+@use './general';
 
 @mixin inputFieldsLogin($borderColor: colors.$borderLine-Primary) {
   border: 1px solid $borderColor;

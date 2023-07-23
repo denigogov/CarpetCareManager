@@ -1,14 +1,14 @@
-const database = require("./database");
+const database = require('./database');
 
 const tableCustomers = (_, res) => {
   database
-    .query("select * from  customers order by id desc")
+    .query('select * from  customers order by id desc')
     .then(([customers]) => {
       res.json(customers);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
-      res.status(500).send("Error retrieving data from database");
+      res.status(500).send('Error retrieving data from database');
     });
 };
 
@@ -16,17 +16,17 @@ const getCustomerById = (req, res) => {
   const id = parseInt(req.params.id);
 
   database
-    .query("SELECT * FROM customers  WHERE id = ?", [id])
+    .query('SELECT * FROM customers  WHERE id = ?', [id])
     .then(([customer]) => {
       if (customer[0] != null) {
         res.json(customer[0]);
       } else {
-        res.status(404).send("Customer Not Found");
+        res.status(404).send('Customer Not Found');
       }
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
-      res.status(500).send("Error retrieving data from database");
+      res.status(500).send('Error retrieving data from database');
     });
 };
 
@@ -36,15 +36,15 @@ const createNewCustomer = (req, res) => {
 
   database
     .query(
-      "INSERT INTO customers(first_name, last_name, street, city, phone_number, postalCode) VALUES (?, ?, ?, ? ,?, ?)",
+      'INSERT INTO customers(first_name, last_name, street, city, phone_number, postalCode) VALUES (?, ?, ?, ? ,?, ?)',
       [first_name, last_name, street, city, phone_number, postalCode]
     )
     .then(([customers]) => {
       res.location(`/table/customers/${customers.insertId}`).sendStatus(201);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
-      res.status(500).send("Error creating new customer");
+      res.status(500).send('Error creating new customer');
     });
 };
 
@@ -52,7 +52,7 @@ const deleteCustomer = (req, res) => {
   const id = req.params.id;
 
   database
-    .query("DELETE FROM customers WHERE id = ?", [id])
+    .query('DELETE FROM customers WHERE id = ?', [id])
     .then(([customer]) => {
       if (!customer.affectedRows) {
         res.sendStatus(404);
@@ -60,8 +60,8 @@ const deleteCustomer = (req, res) => {
         res.sendStatus(200);
       }
     })
-    .catch((err) => {
-      res.status(404).send("error deleting the customer", err);
+    .catch(err => {
+      res.status(404).send('error deleting the customer', err);
     });
 };
 
@@ -72,17 +72,17 @@ const updateCustomer = (req, res) => {
 
   database
     .query(
-      "UPDATE customers SET first_name=?, last_name=?, street=?, city=?, phone_number=?,postalCode=? WHERE id=?",
+      'UPDATE customers SET first_name=?, last_name=?, street=?, city=?, phone_number=?,postalCode=? WHERE id=?',
       [first_name, last_name, street, city, phone_number, postalCode, id]
     )
     .then(([customer]) => {
       if (!customer.affectedRows) {
-        res.status(404).send("error happen, please try again!");
+        res.status(404).send('error happen, please try again!');
       } else {
         res.sendStatus(200);
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send(err);
     });
 };
@@ -90,21 +90,36 @@ const updateCustomer = (req, res) => {
 const getCustomerOrders = (req, res) => {
   const id = parseInt(req.params.id);
 
+  // Converting the date to be +2 hours because of the ISO String problem
   database
     .query(
-      "SELECT customers.first_name, customers.last_name, customers.phone_number, customers.street, customers.city, customers.postalCode, order_services.m2, orders.order_date, orders.total_price, orders.delivery, orders.scheduled_date FROM orders INNER JOIN customers ON customers.id = orders.customer_id INNER JOIN order_services ON order_services.id = orders.orderService_id WHERE customers.id = ?",
+      `SELECT customers.first_name, customers.last_name,
+      order_services.m2,  
+      
+      CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
+      orders.total_price, 
+      orders.delivery, 
+      orders.scheduled_date,
+      services.service_name,
+      pieces
+      FROM orders 
+      INNER JOIN customers ON customers.id = orders.customer_id 
+      INNER JOIN order_services ON order_services.id = orders.orderService_id
+      INNER JOIN services on services.id = service_id
+      WHERE customers.id = ?
+      order by order_date DESC`,
       [id]
     )
     .then(([customerOrders]) => {
       if (customerOrders[0] != null) {
         res.json(customerOrders);
       } else {
-        res.status(404).send("CustomerOrders Not Found");
+        res.status(404).send('CustomerOrders Not Found');
       }
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
-      res.status(500).send("Error retrieving data from database");
+      res.status(500).send('Error retrieving data from database');
     });
 };
 

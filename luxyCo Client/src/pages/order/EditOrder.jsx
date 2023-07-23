@@ -94,9 +94,9 @@ const EditOrder = ({ token, userInfo }) => {
 
   return (
     <div className="editOrderContainer">
-      <p>Update Customer</p>
+      <p>Update Order</p>
       <p className="customerSubtitle--name">
-        order number - {fetchOrderById.id}
+        Order ID: <span style={{ fontWeight: '600' }}>{fetchOrderById.id}</span>
       </p>
 
       <div

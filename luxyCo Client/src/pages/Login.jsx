@@ -18,6 +18,8 @@ const Login = ({ setToken, setUserInfo }) => {
         body: JSON.stringify(credentials),
       });
       const data = await response.json();
+
+      console.log(data);
       if (!response.ok) {
         throw new Error();
       }
