@@ -57,9 +57,9 @@ const NumericStatsView = ({
 
       <div className="numerStats--chart">
         {selectedOption === 'MonthlyStats' ? (
-          <Line data={chartData} />
-        ) : (
           <Line data={chartData1} />
+        ) : (
+          <Line data={chartData} />
         )}
       </div>
     </div>

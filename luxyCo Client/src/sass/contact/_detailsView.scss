@@ -22,6 +22,9 @@
   width: 100%;
   padding: 10px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .details--calculation {
@@ -29,4 +32,10 @@
   padding: 20px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
+}
+
+.datePicker--contactDetails {
+  @include mixing.inputFileds;
+  padding: 7px;
 }

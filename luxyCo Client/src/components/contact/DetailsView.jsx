@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../../sass/contact/_detailsView.scss';
+import { tr } from 'date-fns/locale';
 
 const DetailsView = ({ fetchCustomerOrders, setTotalPrice, setTotalM2 }) => {
   /**
@@ -8,7 +9,7 @@ const DetailsView = ({ fetchCustomerOrders, setTotalPrice, setTotalM2 }) => {
    * @returns: Formated date as the example  "2023.07.16 01:13:22.000Z"
    */
   const formatedDate = dateToTransform => {
-    return new Date(new Date(dateToTransform).getTime() + 24 * 60 * 60 * 1000)
+    return new Date(new Date(dateToTransform))
       .toISOString()
       .replaceAll('-', '.')
       .replace('T', ' ');
@@ -60,6 +61,14 @@ const DetailsView = ({ fetchCustomerOrders, setTotalPrice, setTotalM2 }) => {
               );
             })}
           </tbody>
+
+          {!fetchCustomerOrders.length && (
+            <>
+              <tr>
+                <td colSpan="11">No order found</td>
+              </tr>
+            </>
+          )}
         </table>
       </div>
     </div>
