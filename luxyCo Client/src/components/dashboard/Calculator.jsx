@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { fetchTableServices } from '../../api';
 import '../../sass/dashboard/_calculator.scss';
 import useSWR, { useSWRConfig } from 'swr';
+import LoadingView from '../LoadingView';
 
 const Calculator = ({ token }) => {
   const [selectedService, setSelectedService] = useState(0);
@@ -16,7 +17,7 @@ const Calculator = ({ token }) => {
   } = useSWR(['services', token], () => fetchTableServices(token));
 
   if (servicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (servicesLoading) return <h3>loading...</h3>; //I need to add loading component!
+  if (servicesLoading) return <LoadingView />; //I need to add loading component!
 
   const selectService = e => {
     setSelectedService(JSON.parse(e.target.value));

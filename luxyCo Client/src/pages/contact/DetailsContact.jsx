@@ -4,14 +4,8 @@ import { useState } from 'react';
 import DetailsPDFCustomer from './DetailsPDFCustomer';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import {
-  Document,
-  Page,
-  View,
-  Text,
-  StyleSheet,
-  PDFDownloadLink,
-} from '@react-pdf/renderer';
+
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import downloadIcon from '../../assets/downloadIcon.svg';
 
 const DetailsContact = ({ token }) => {
@@ -22,9 +16,6 @@ const DetailsContact = ({ token }) => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-
-  // console.log(startDate, 'start');
-  // console.log(endDate, 'end');
 
   const handleChange = ([newStartDate, newEndDate]) => {
     setStartDate(newStartDate);
@@ -42,8 +33,9 @@ const DetailsContact = ({ token }) => {
     return isAfterStartDate && isBeforeEndDate;
   });
 
-  console.log(fetchCustomerOrders);
-
+  const customerName = fetchCustomerOrders.map(order => {
+    return `${order.first_name} ${order.last_name}`;
+  });
   return (
     <div className="detailsView--container">
       <DetailsView
@@ -84,9 +76,12 @@ const DetailsContact = ({ token }) => {
               document={
                 <DetailsPDFCustomer
                   orders={endDate ? filteredOrders : fetchCustomerOrders}
+                  totalPrice={totalPrice}
+                  totalM2={totalM2}
+                  customerName={customerName}
                 />
               }
-              fileName="customer_orders.pdf"
+              fileName={`customer_orders ${customerName[0]}.pdf`}
             >
               {({ blob, url, loading, error }) =>
                 loading ? (

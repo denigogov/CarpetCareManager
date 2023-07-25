@@ -1,7 +1,10 @@
+import LoadingView from '../components/LoadingView';
+
 const Delivery = () => {
   return (
     <div>
-      <h3>Delivery</h3>
+      <p>building in progress, please check later</p>
+      <LoadingView />
     </div>
   );
 };

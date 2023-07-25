@@ -5,6 +5,7 @@ import {
 } from '../../api';
 import useSWR, { useSWRConfig } from 'swr';
 import OrderCreateStepOne from '../../components/order/OrderCreateStepOne';
+import LoadingView from '../../components/LoadingView';
 
 const CreateOrder = ({ token, userInfo }) => {
   const {
@@ -39,7 +40,7 @@ const CreateOrder = ({ token, userInfo }) => {
   if (servicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (orderServicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (customersLoading || servicesLoading || orderServicesLoading)
-    return <h3>loading...</h3>; //I need to add loading component!
+    return <LoadingView />; //I need to add loading component!
 
   return (
     <div className="createOrder--container">

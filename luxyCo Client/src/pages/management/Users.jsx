@@ -7,6 +7,7 @@ import addUserIcon from '../../assets/addUserIcon.svg';
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import LoadingView from '../../components/LoadingView';
 
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -52,7 +53,7 @@ const Users = ({ token, userInfo }) => {
   };
 
   if (error) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (isLoading) return <h3>loading...</h3>; //I need to add loading component!
+  if (isLoading) return <LoadingView />; //I need to add loading component!
 
   // Event handler stop bubbling
   const preventPropagation = event => {

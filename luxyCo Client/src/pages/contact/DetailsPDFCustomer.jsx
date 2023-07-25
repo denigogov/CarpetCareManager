@@ -1,13 +1,16 @@
-import appLogo from '../../assets/appLogoPNG.png';
-
 import {
+  PDFDownloadLink,
   Document,
   Page,
-  View,
   Text,
+  View,
+  Image,
   StyleSheet,
-  PDFDownloadLink,
 } from '@react-pdf/renderer';
+import appLogo from '../../assets/appLogoPNG.png';
+
+const thermalPrinterWidth = 80; // in mm
+const logoWidth = 20; // fit the logo within the paper width
 
 const styles = StyleSheet.create({
   page: {
@@ -16,7 +19,7 @@ const styles = StyleSheet.create({
     padding: '5mm', // padding around the content
   },
   title: {
-    fontSize: 10,
+    fontSize: 13,
     marginBottom: 10,
     fontWeight: 'bold',
   },
@@ -36,14 +39,14 @@ const styles = StyleSheet.create({
   tableCell: {
     flex: 1,
     padding: 2,
-    fontSize: 6,
+    fontSize: 10,
     textAlign: 'center',
   },
   tableHeader: {
     backgroundColor: '#f0f0f0',
     color: '#333',
     fontWeight: 'bold',
-    fontSize: 8,
+    fontSize: 11,
   },
   logoContainer: {
     marginTop: 5,
@@ -57,8 +60,8 @@ const styles = StyleSheet.create({
   },
   image: {
     marginLeft: 6,
-    // width: `${logoWidth}mm`,
-    // height: `${logoWidth}mm`,
+    width: `${logoWidth}mm`,
+    height: `${logoWidth}mm`,
   },
   logoText: {
     fontSize: 8,
@@ -72,25 +75,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const DetailsPDFCustomer = ({ orders }) => {
+const DetailsPDFCustomer = ({ orders, totalPrice, totalM2, customerName }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.logoContainer}>
-          {/* <Image style={styles.image} src={appLogo} /> */}
+          <Image style={styles.image} src={appLogo} />
           <View style={styles.logoText}>
             <Text style={styles.textBold}>LuxyCo</Text>
             <Text>9955 Bald Hill Ave.</Text>
-            <Text>Saint Albans, NY 11412</Text>
+            <Text>Saint Albans, Karlsruhe 69213</Text>
           </View>
+          <Text style={styles.title}>Customer Orders Report</Text>
+          <Text style={styles.title}>{customerName[0]}</Text>
         </View>
-        <Text style={styles.title}>Customer Orders Report</Text>
+
         <View style={styles.table}>
           {/* Table header */}
           <View style={[styles.tableRow, styles.tableHeader]}>
-            <Text style={styles.tableCell}>Order Number</Text>
-            <Text style={styles.tableCell}>Order Date</Text>
-            <Text style={styles.tableCell}>Services</Text>
+            <Text style={styles.tableCell}>Orders</Text>
+            <Text style={[styles.tableCell, styles.widerTableCell]}>
+              Order Date
+            </Text>
+            <Text style={[styles.tableCell, styles.widerTableCell]}>
+              Services
+            </Text>
             <Text style={styles.tableCell}>Carpet Pieces</Text>
             <Text style={styles.tableCell}>m²</Text>
             <Text style={styles.tableCell}>Total Price</Text>
@@ -100,13 +109,15 @@ const DetailsPDFCustomer = ({ orders }) => {
           {orders.map((order, i) => (
             <View key={i} style={styles.tableRow}>
               <Text style={styles.tableCell}>{i + 1}</Text>
-              <Text style={styles.tableCell}>{order.service_name}</Text>
-              <Text style={styles.tableCell}>
+              <Text style={[styles.tableCell, styles.widerTableCell]}>
                 {new Date(order.order_date)
                   .toISOString()
                   .slice(0, 19)
                   .replaceAll('-', '.')
                   .replace('T', ' ')}
+              </Text>
+              <Text style={[styles.tableCell, styles.widerTableCell]}>
+                {order.service_name}
               </Text>
               <Text style={styles.tableCell}>{order.pieces}</Text>
               <Text style={styles.tableCell}>{order.m2}</Text>
@@ -117,6 +128,9 @@ const DetailsPDFCustomer = ({ orders }) => {
             </View>
           ))}
         </View>
+
+        <Text style={styles.tableCell}>Total Price: {totalPrice} €</Text>
+        <Text style={styles.tableCell}>Total Size: {totalM2} m² </Text>
       </Page>
     </Document>
   );

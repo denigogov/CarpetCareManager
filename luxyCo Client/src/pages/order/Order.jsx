@@ -12,6 +12,7 @@ import OrderView from '../../components/order/OrderView';
 import useSWR, { useSWRConfig } from 'swr';
 import { fetchOrdersByDate, fetchOrderStatus } from '../../api';
 import SelectedOrderInfo from '../../components/order/SelectedOrderInfo';
+import LoadingView from '../../components/LoadingView';
 
 const Order = ({ token, userInfo }) => {
   const [wishDate, setWishDate] = useState(new Date());
@@ -43,7 +44,7 @@ const Order = ({ token, userInfo }) => {
 
   if (error) return <h6>{error.message}</h6>; // I need to add personal error messages!
   if (orderStatusError) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (isLoading || orderStatusLoading) return <h3>loading...</h3>; //I need to add loading component!
+  if (isLoading || orderStatusLoading) return <LoadingView />; //I need to add loading component!
 
   const selectOptions = e => {
     setOrderStatus(e.target.value);

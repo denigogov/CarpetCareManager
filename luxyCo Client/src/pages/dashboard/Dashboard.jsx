@@ -12,6 +12,7 @@ import StatisticByMonth from '../../components/dashboard/StatisticByMonth';
 import StatisticByServices from '../../components/dashboard/CustomerOrderStat';
 import HoursStatisticChart from '../../components/dashboard/HoursStatisticChart';
 import CustomerOrderStat from '../../components/dashboard/CustomerOrderStat';
+import LoadingView from '../../components/LoadingView';
 
 const Dashboard = ({ token }) => {
   const {
@@ -56,7 +57,7 @@ const Dashboard = ({ token }) => {
     statisticOrderByStatusLoading ||
     statisticOrderByHourLoading
   )
-    return <h3>loading...</h3>;
+    return <LoadingView />;
 
   return (
     <div className="dashboard--container">
