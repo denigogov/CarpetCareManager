@@ -108,7 +108,7 @@ const EditContact = ({ token }) => {
           />{' '}
           <label>phone number*</label>
           <input
-            type="number"
+            type="tel"
             defaultValue={fethcSingleUserData.phone_number}
             ref={phoneNumberRef}
             placeholder="Requerd"

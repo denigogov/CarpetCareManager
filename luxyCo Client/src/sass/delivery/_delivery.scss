@@ -1,0 +1,19 @@
+@use '../colors';
+
+.delivery--container {
+  height: calc(100vh - 80px);
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.delivery__container--scan {
+  display: grid;
+  border: 1px solid colors.$borderLine-Primary;
+}
+
+.delivery--scan {
+  border-bottom: 2px solid colors.$borderLine-Primary;
+  display: grid;
+  align-content: center;
+}

@@ -215,3 +215,21 @@ export const fetchOrderById = async ({ params }, token) => {
     );
   }
 };
+
+// Fetching orders by id .... I'm not fetching the ID from params !
+export const fetchOrdersById = async (id, token) => {
+  try {
+    const res = await fetch(`http://localhost:4000/table/orders/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error();
+    return data;
+  } catch (error) {
+    throw Error(
+      'Something bad happen!! , Could not find the selected order, please try later'
+    );
+  }
+};

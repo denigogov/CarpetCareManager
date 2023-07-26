@@ -16,7 +16,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Order from './pages/order/Order';
 import CreateOrder from './pages/order/CreateOrder';
 
-import Delivery from './pages/Delivery';
+import Delivery from './pages/delivery/Delivery';
 
 // Contact Router Component
 import Contact from './pages/contact/Contact';
@@ -66,7 +66,7 @@ const App = () => {
   if (!token) {
     return <Login setToken={setToken} setUserInfo={setUserInfo} />;
   }
-  console.log(userInfo);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route
@@ -90,7 +90,7 @@ const App = () => {
           />
         </Route>
 
-        <Route path="delivery" element={<Delivery />} />
+        <Route path="/delivery" element={<Delivery token={token} />} />
 
         {/* CONTACT ROUTE */}
         <Route path="contact" element={<Contact token={token} />}>

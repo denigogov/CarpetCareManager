@@ -90,7 +90,7 @@ const CreateContact = ({ token }) => {
             disabled={successfulMessage}
           />
           <input
-            type="number"
+            type="tel"
             placeholder="Phone Number*"
             ref={phoneNumberRef}
             disabled={successfulMessage}

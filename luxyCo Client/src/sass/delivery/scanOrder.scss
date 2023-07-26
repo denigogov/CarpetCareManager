@@ -1,0 +1,39 @@
+@use '../colors';
+@use '../mixing';
+@use '../general';
+.scanOrder--title {
+  text-align: center;
+
+  h3 {
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    color: colors.$font-Primary;
+  }
+
+  p {
+    font-weight: 300;
+    color: colors.$font-Secound;
+    font-size: 13px;
+  }
+}
+
+.scanOrder--wrap {
+  display: grid;
+  gap: 20px;
+
+  form {
+    padding: 10px;
+    text-align: center;
+
+    input {
+      @include mixing.inputFileds;
+    }
+
+    button {
+      @include mixing.button;
+      letter-spacing: general.$spacing;
+      padding: 5px;
+    }
+  }
+}

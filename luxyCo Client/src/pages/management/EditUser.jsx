@@ -1,8 +1,8 @@
-import { useLoaderData } from "react-router-dom";
-import "../../sass/management/_editUser.scss";
-import { useEffect, useState } from "react";
-import { fetchTableDepartment } from "../../api";
-import useSWR, { useSWRConfig } from "swr";
+import { useLoaderData } from 'react-router-dom';
+import '../../sass/management/_editUser.scss';
+import { useEffect, useState } from 'react';
+import { fetchTableDepartment } from '../../api';
+import useSWR, { useSWRConfig } from 'swr';
 
 const EditUser = ({ token }) => {
   const data = useLoaderData(token);
@@ -21,33 +21,33 @@ const EditUser = ({ token }) => {
     fetchData();
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    const convertedValue = name === "department_id" ? parseInt(value) : value;
+    const convertedValue = name === 'department_id' ? parseInt(value) : value;
 
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name]: convertedValue,
     }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async e => {
     e.preventDefault();
 
     const { id, department_name, ...requestData } = formData;
 
     try {
       const response = await fetch(`http://localhost:4000/user/${id}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(requestData),
       });
 
       if (response.ok) {
-        mutate("http://localhost:4000/user");
+        mutate('http://localhost:4000/user');
         setApiStatusMessage(true);
         throw Error();
       }
@@ -60,7 +60,7 @@ const EditUser = ({ token }) => {
     <div className="editUser">
       <div className="editUser--title">
         <h3>User Update</h3>
-        <p style={{ color: "#da0063" }}>{data.first_name}</p>
+        <p style={{ color: '#da0063' }}>{data.first_name}</p>
       </div>
 
       <form>
@@ -102,7 +102,7 @@ const EditUser = ({ token }) => {
           <div className="editUser--columnRight">
             <label>Phone Number: </label>
             <input
-              type="number"
+              type="tel"
               name="phone_number"
               defaultValue={data.phone_number}
               onChange={handleInputChange}
@@ -137,13 +137,13 @@ const EditUser = ({ token }) => {
       </form>
       <p>
         {apiStatusMessage ? (
-          <p style={apiStatusMessage ? { color: "#8FD14F" } : { color: "red" }}>
+          <p style={apiStatusMessage ? { color: '#8FD14F' } : { color: 'red' }}>
             {apiStatusMessage
-              ? "update successful"
-              : "update faild, please try again"}
+              ? 'update successful'
+              : 'update faild, please try again'}
           </p>
         ) : (
-          ""
+          ''
         )}
       </p>
     </div>

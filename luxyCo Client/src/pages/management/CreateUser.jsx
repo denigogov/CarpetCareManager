@@ -1,7 +1,7 @@
-import { useSWRConfig } from "swr";
-import "../../sass/management/_createUser.scss";
-import { useEffect, useState } from "react";
-import { fetchTableDepartment } from "../../api";
+import { useSWRConfig } from 'swr';
+import '../../sass/management/_createUser.scss';
+import { useEffect, useState } from 'react';
+import { fetchTableDepartment } from '../../api';
 
 const CreateUser = ({ token }) => {
   const { mutate } = useSWRConfig();
@@ -17,31 +17,31 @@ const CreateUser = ({ token }) => {
     fetchDepartment();
   }, []);
 
-  const inputUserForm = (e) => {
+  const inputUserForm = e => {
     e.preventDefault();
     const { name, value } = e.target;
-    const convertedValue = name === "department_id" ? parseInt(value) : value;
+    const convertedValue = name === 'department_id' ? parseInt(value) : value;
 
-    setUserDataStoring((prevState) => ({
+    setUserDataStoring(prevState => ({
       ...prevState,
       [name]: convertedValue,
     }));
   };
 
-  const submitCreateUser = (e) => {
+  const submitCreateUser = e => {
     e.preventDefault();
 
     const createUser = async () => {
       try {
         const res = await fetch(`http://localhost:4000/user/`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(userDataStoring),
         });
-        mutate("http://localhost:4000/user"); // mutate is  Refresh the users data
+        mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
 
         if (res.ok) {
           setErrorMessage(true);
@@ -50,7 +50,7 @@ const CreateUser = ({ token }) => {
           setErrorMessage(false);
         }
       } catch (error) {
-        console.error("Error deleting user", error);
+        console.error('Error deleting user', error);
       }
     };
     createUser();
@@ -111,7 +111,7 @@ const CreateUser = ({ token }) => {
           />
           <label>phone number</label>
           <input
-            type="text"
+            type="tel"
             placeholder="E.g +49 222 222 222"
             name="phone_number"
             onChange={inputUserForm}
@@ -136,12 +136,12 @@ const CreateUser = ({ token }) => {
       </form>
       <button className="createUserBtn" onClick={submitCreateUser}>
         create user
-      </button>{" "}
+      </button>{' '}
       {errorMessage && (
-        <p style={{ color: "green" }}>
+        <p style={{ color: 'green' }}>
           {errorMessage
             ? `${userDataStoring.username} successfully added`
-            : "error user not added, please try again"}
+            : 'error user not added, please try again'}
         </p>
       )}
     </div>
