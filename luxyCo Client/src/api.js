@@ -228,8 +228,6 @@ export const fetchOrdersById = async (id, token) => {
     if (!res.ok) throw new Error();
     return data;
   } catch (error) {
-    throw Error(
-      'Something bad happen!! , Could not find the selected order, please try later'
-    );
+    throw new Error('Could not find the selected order, please try later');
   }
 };

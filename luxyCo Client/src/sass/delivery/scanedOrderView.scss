@@ -1,0 +1,77 @@
+@use '../mixing';
+@use '../colors';
+@use '../general';
+
+.scanedOrderView__container {
+  position: relative;
+  height: 100%;
+
+  .closeBtn {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    padding: 10px;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: general.$transition;
+
+    &:hover {
+      color: colors.$banner-Primary;
+    }
+  }
+}
+
+.scanedOrderView {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+// split on 2 rows
+.orderScan__wrap {
+  text-align: justify;
+  display: flex;
+  justify-content: space-around;
+
+  p {
+    color: colors.$font-Primary;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  span {
+    color: colors.$font-Primary;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  select {
+    @include mixing.inputFileds;
+    padding: 3px;
+  }
+
+  button {
+    @include mixing.button;
+    padding: 7px;
+    letter-spacing: general.$spacing;
+  }
+}
+
+.orderScan-detailsLeft,
+.orderScan-detailsRight {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.orderScan__customer-personalData {
+  p {
+    font-weight: 500;
+    color: colors.$font-Primary;
+  }
+}

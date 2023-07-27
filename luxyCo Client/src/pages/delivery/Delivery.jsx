@@ -1,6 +1,7 @@
 import LoadingView from '../../components/LoadingView';
 import '../../sass/delivery/_delivery.scss';
 import ScanOrder from '../../components/delivery/ScanOrder';
+import { useState } from 'react';
 
 const Delivery = ({ token }) => {
   return (

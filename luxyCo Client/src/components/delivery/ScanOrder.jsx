@@ -7,11 +7,19 @@ const ScanOrder = ({ token }) => {
   const [scanedOrderId, setScanedOrderId] = useState('');
   const [orderId, setOrderId] = useState(null);
   const [fetchedOrderById, setFetchedOrderById] = useState(null);
+  const [error, setError] = useState('');
 
+  // Fetching the order by ID
   useEffect(() => {
     const fetchOrderById = async () => {
-      const data = await fetchOrdersById(orderId, token);
-      setFetchedOrderById(data);
+      try {
+        if (orderId) {
+          const data = await fetchOrdersById(orderId, token);
+          setFetchedOrderById(data);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
     };
     fetchOrderById();
   }, [orderId, token]);
@@ -24,14 +32,19 @@ const ScanOrder = ({ token }) => {
 
   const handleClose = () => {
     setFetchedOrderById(null);
+    setOrderId(null);
+    // cleaning the error!
+    setError('');
   };
 
   return (
     <div className="scanOrder--wrap">
       {fetchedOrderById ? (
-        <div>
-          <ScanedOrderView fetchedOrderById={fetchedOrderById} />{' '}
-          <button onClick={handleClose}>close</button>
+        <div className="scanedOrderView__container">
+          <button className="closeBtn" onClick={handleClose}>
+            &times;
+          </button>
+          <ScanedOrderView fetchedOrderById={fetchedOrderById} token={token} />
         </div>
       ) : (
         <div>
@@ -48,6 +61,8 @@ const ScanOrder = ({ token }) => {
               onChange={e => setScanedOrderId(e.target.value)}
             />
           </form>
+
+          <p className="errorMessage">{error}</p>
         </div>
       )}
     </div>

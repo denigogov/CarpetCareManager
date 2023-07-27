@@ -7,7 +7,6 @@
   h3 {
     font-weight: 600;
     letter-spacing: 1px;
-
     color: colors.$font-Primary;
   }
 
@@ -19,8 +18,9 @@
 }
 
 .scanOrder--wrap {
-  display: grid;
-  gap: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 
   form {
     padding: 10px;
@@ -28,12 +28,6 @@
 
     input {
       @include mixing.inputFileds;
-    }
-
-    button {
-      @include mixing.button;
-      letter-spacing: general.$spacing;
-      padding: 5px;
     }
   }
 }

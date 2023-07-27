@@ -19,12 +19,15 @@ const OrderView = ({
         const searchValue = searchOrder.toLowerCase().trim();
 
         const firstNameMatch = order.first_name
-          .toLowerCase()
-          .includes(searchValue);
+          ? order.first_name.toLowerCase().includes(searchValue)
+          : '';
+
         const lastNameMatch = order.last_name
-          .toLowerCase()
-          .includes(searchValue);
-        const streetMatch = order.street.toLowerCase().includes(searchValue);
+          ? order.last_name.toLowerCase().includes(searchValue)
+          : '';
+        const streetMatch = order.street
+          ? order.street.toLowerCase().includes(searchValue)
+          : '';
         return (
           (orderStatus === 'all' || order.status_name === orderStatus) &&
           (firstNameMatch || lastNameMatch || streetMatch)

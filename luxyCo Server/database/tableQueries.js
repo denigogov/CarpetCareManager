@@ -232,6 +232,27 @@ const postOrderServices = (req, res) => {
     });
 };
 
+const updateOrderStatus = (req, res) => {
+  const { order_status_id } = req.body;
+  const id = req.params.id;
+
+  database
+    .query(`UPDATE orders SET  order_status_id=? WHERE orders.id=?`, [
+      order_status_id,
+      id,
+    ])
+    .then(([order]) => {
+      if (!order.affectedRows) {
+        res.status(404).send('error happen, please try again!');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+};
+
 module.exports = {
   tableDepartments,
   createNewOrder,
@@ -243,4 +264,5 @@ module.exports = {
   deleteOrders,
   getOrderById,
   updateOrder,
+  updateOrderStatus,
 };
