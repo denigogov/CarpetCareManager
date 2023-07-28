@@ -1,0 +1,7 @@
+@use '../colors';
+@use '../mixing';
+@use '../general';
+
+.table-searchOrderView {
+  @include mixing.table;
+}

@@ -110,7 +110,7 @@ const App = () => {
               <ErrorDisplayView
                 errorMessage="No Orders found for this user"
                 navigateTo1="/dashboard"
-                navigateTo2="/order/createOrder"
+                navigateTo2="/order"
               />
             }
           />

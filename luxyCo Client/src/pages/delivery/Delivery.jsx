@@ -1,7 +1,8 @@
 import LoadingView from '../../components/LoadingView';
 import '../../sass/delivery/_delivery.scss';
 import ScanOrder from '../../components/delivery/ScanOrder';
-import { useState } from 'react';
+import SearchOrderNav from '../../components/delivery/SearchOrderNav';
+import SearchOrderView from '../../components/delivery/SearchOrderView';
 
 const Delivery = ({ token }) => {
   return (
@@ -13,7 +14,10 @@ const Delivery = ({ token }) => {
 
         <div>something other</div>
       </div>
-      <div>rigth</div>
+      <div className="searchOrderNav">
+        <SearchOrderNav />
+        <SearchOrderView />
+      </div>
     </div>
   );
 };
