@@ -4,10 +4,15 @@ import '../../sass/delivery/_searchOrderNav.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const SearchOrderNav = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-
+const SearchOrderNav = ({
+  setStartDate,
+  setEndDate,
+  startDate,
+  endDate,
+  orderStatus,
+  setSearchByStatus,
+  setInputSearchValue,
+}) => {
   const handleChange = ([newStartDate, newEndDate]) => {
     setStartDate(newStartDate);
     setEndDate(newEndDate);
@@ -22,6 +27,7 @@ const SearchOrderNav = () => {
               type="search"
               placeholder="search for order"
               className="input-search"
+              onChange={e => setInputSearchValue(e.target.value)}
             />
           </li>
 
@@ -83,15 +89,16 @@ const SearchOrderNav = () => {
               startDate={startDate}
               endDate={endDate}
               monthsShown={2}
-              maxDate={new Date()}
+              format={'yyyy-MM-dd'}
             />
           </li>
 
           <li>
-            <select>
-              <option value="">search by status</option>
-              <option value="">search by status</option>
-              <option value="">search by status</option>
+            <select onChange={e => setSearchByStatus(e.target.value)}>
+              <option value="all">search by status</option>
+              {orderStatus.map(status => {
+                return <option key={status.id}>{status.status_name}</option>;
+              })}
             </select>
           </li>
         </ul>

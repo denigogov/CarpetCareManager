@@ -3,7 +3,7 @@ import '../../sass/delivery/scanOrder.scss';
 import { fetchOrdersById } from '../../api';
 import ScanedOrderView from './ScanedOrderView';
 
-const ScanOrder = ({ token }) => {
+const ScanOrder = ({ token, orderStatus }) => {
   const [scanedOrderId, setScanedOrderId] = useState('');
   const [orderId, setOrderId] = useState(null);
   const [fetchedOrderById, setFetchedOrderById] = useState(null);
@@ -44,7 +44,11 @@ const ScanOrder = ({ token }) => {
           <button className="closeBtn" onClick={handleClose}>
             &times;
           </button>
-          <ScanedOrderView fetchedOrderById={fetchedOrderById} token={token} />
+          <ScanedOrderView
+            fetchedOrderById={fetchedOrderById}
+            token={token}
+            orderStatus={orderStatus}
+          />
         </div>
       ) : (
         <div>

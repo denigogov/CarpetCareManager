@@ -48,7 +48,8 @@ const tableOrders = (req, res) => {
 
   database
     .query(
-      `SELECT
+      `
+      SELECT
       orders.id,
       users.username,
       customers.first_name,
@@ -135,7 +136,8 @@ const getOrderById = (req, res) => {
   // Converting the date to be +2 hours because of the ISO String problem
   database
     .query(
-      `SELECT
+      `
+    SELECT
     orders.id,
     users.username,
     customers.first_name,
@@ -147,7 +149,7 @@ const getOrderById = (req, res) => {
     CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
     total_price ,
     delivery,
-    scheduled_date,
+    CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date,
     city,
     postalCode,
     pieces as carpet_pieces,
@@ -253,6 +255,39 @@ const updateOrderStatus = (req, res) => {
     });
 };
 
+const orderScheduledDate = (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  database
+    .query(
+      `
+      SELECT 
+      orders.id,
+      first_name,
+      last_name,
+      m2,
+      pieces,
+      total_price,
+      status_name,
+      service_name,
+      CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date
+      FROM orders 
+      inner join customers on orders.customer_id = customers.id
+      inner join order_services on orderService_id = order_services.id
+      inner join services on services.id = order_services.service_id
+      inner join order_status on order_status_id = order_status.id
+      WHERE scheduled_date BETWEEN  ? AND ? `,
+      [startDate, endDate]
+    )
+    .then(([orders]) => {
+      res.json(orders);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error retrieving order from the database');
+    });
+};
+
 module.exports = {
   tableDepartments,
   createNewOrder,
@@ -265,4 +300,5 @@ module.exports = {
   getOrderById,
   updateOrder,
   updateOrderStatus,
+  orderScheduledDate,
 };

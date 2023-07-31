@@ -1,8 +1,8 @@
-import { Outlet, NavLink, useLoaderData, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 
 import addIcon from '../../assets/addIcon.svg';
 import calendarIcon from '../../assets/calendarIcon.svg';

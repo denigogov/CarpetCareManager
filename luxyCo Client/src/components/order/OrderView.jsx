@@ -94,7 +94,7 @@ const OrderView = ({
                     .replace('T', ' ')}
                 </td>
 
-                <td>{order.total_price} $</td>
+                <td>{order.total_price} €</td>
                 <td>
                   {order.scheduled_date
                     ? new Date(

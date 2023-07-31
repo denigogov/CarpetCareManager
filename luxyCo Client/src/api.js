@@ -69,6 +69,27 @@ export const fetchOrdersByDate = async (formattedDate, token) => {
   return response.json();
 };
 
+export const fetchOrdersBySchedueledDate = async (
+  startDate,
+  endDate,
+  token
+) => {
+  try {
+    const url = `http://localhost:4000/table/orders/scheduled/?startDate=${startDate}&endDate=${endDate}`;
+
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error();
+    return data;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
 export const fetchOrderStatus = async token => {
   const response = await fetch('http://localhost:4000/table/orderStatus', {
     headers: {
@@ -216,7 +237,7 @@ export const fetchOrderById = async ({ params }, token) => {
   }
 };
 
-// Fetching orders by id .... I'm not fetching the ID from params !
+// Fetching orders by id ...
 export const fetchOrdersById = async (id, token) => {
   try {
     const res = await fetch(`http://localhost:4000/table/orders/${id}`, {

@@ -2,8 +2,9 @@ import '../../sass/delivery/scanedOrderView.scss';
 import useSWR, { useSWRConfig } from 'swr';
 import LoadingView from '../LoadingView';
 import { useRef, useState } from 'react';
+import { fetchOrderStatus } from '../../api';
 
-const ScanedOrderView = ({ fetchedOrderById, token }) => {
+const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
   const [orderStatusId, setOrderStatusId] = useState(null);
   const [error, setError] = useState('');
   const [updateSuccessful, setUpdateSuccessful] = useState('');
@@ -16,18 +17,11 @@ const ScanedOrderView = ({ fetchedOrderById, token }) => {
       .replace('T', ' ');
   };
 
-  const {
-    data: orderStatus,
-    error: orderStatusError,
-    isLoading: orderStatusLoading,
-  } = useSWR(['orderStatus', token]);
-
-  if (orderStatusError) return <h6>{error.message}</h6>;
-  if (orderStatusLoading) return <LoadingView />;
-
-  const filteredStatus = orderStatus.filter(
-    status => status.status_name !== fetchedOrderById.status_name
-  );
+  const filteredStatus = orderStatus
+    ? orderStatus.filter(
+        status => status.status_name !== fetchedOrderById.status_name
+      )
+    : '';
 
   const handleUpdateStatus = e => {
     const updateOrderStatus = async () => {
@@ -43,8 +37,6 @@ const ScanedOrderView = ({ fetchedOrderById, token }) => {
             body: JSON.stringify({ order_status_id: orderStatusId }),
           }
         );
-
-        console.log(res);
 
         if (res.ok) {
           setUpdateSuccessful('Order updated. Success!');
@@ -106,13 +98,15 @@ const ScanedOrderView = ({ fetchedOrderById, token }) => {
                 <option value={fetchedOrderById.order_status_id}>
                   {fetchedOrderById.status_name}
                 </option>
-                {filteredStatus.map((status, i) => {
-                  return (
-                    <option key={i} value={status.id}>
-                      {status.status_name}
-                    </option>
-                  );
-                })}
+                {filteredStatus
+                  ? filteredStatus.map((status, i) => {
+                      return (
+                        <option key={i} value={status.id}>
+                          {status.status_name}
+                        </option>
+                      );
+                    })
+                  : ''}
               </select>
             </span>
           </p>
