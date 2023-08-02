@@ -89,7 +89,6 @@ const SearchOrderNav = ({
               startDate={startDate}
               endDate={endDate}
               monthsShown={2}
-              format={'yyyy-MM-dd'}
             />
           </li>
 

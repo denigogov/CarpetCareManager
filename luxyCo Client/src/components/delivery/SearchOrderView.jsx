@@ -72,7 +72,6 @@ const SearchOrderView = ({
               : ''}
             {filterData.length < 1 ? (
               <tr>
-                {' '}
                 <td colSpan="8"> no orders found</td>
               </tr>
             ) : (

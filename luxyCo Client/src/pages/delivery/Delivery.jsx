@@ -5,7 +5,7 @@ import SearchOrderNav from '../../components/delivery/SearchOrderNav';
 import SearchOrderView from '../../components/delivery/SearchOrderView';
 import useSWR, { useSWRConfig } from 'swr';
 import { fetchOrderStatus, fetchOrdersBySchedueledDate } from '../../api';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const Delivery = ({ token }) => {
   const [startDate, setStartDate] = useState(new Date());
@@ -13,8 +13,15 @@ const Delivery = ({ token }) => {
   const [searchByStatus, setSearchByStatus] = useState('all');
   const [inputSearchValue, setInputSearchValue] = useState('');
 
-  const formattedDate = date => {
-    return new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
+  // const formattedDate = date => {
+  //   return new Date(new Date(date)).toISOString().slice(0, 10);
+  // };
+
+  const formattedDateLocal = date => {
+    if (!date || !(date instanceof Date)) {
+      return '';
+    }
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
       .toISOString()
       .slice(0, 10);
   };
@@ -32,8 +39,8 @@ const Delivery = ({ token }) => {
     isLoading: ordersBySchedueledDateLoading,
   } = useSWR(['ordersByScheduledDate', token, startDate, endDate], () =>
     fetchOrdersBySchedueledDate(
-      formattedDate(startDate),
-      formattedDate(endDate),
+      formattedDateLocal(startDate),
+      formattedDateLocal(endDate),
       token
     )
   );

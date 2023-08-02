@@ -1,6 +1,8 @@
 import '../../sass/dashboard/_customerOrderStat.scss';
 
 const CustomerOrderStat = ({ statisticOrderByStatus }) => {
+  console.log(statisticOrderByStatus);
+
   const totalOrderStatusId1 = statisticOrderByStatus.find(
     order => order.order_status_id === 1
   );
@@ -15,23 +17,29 @@ const CustomerOrderStat = ({ statisticOrderByStatus }) => {
     <div className="customerStat--orders">
       <div>
         <p className="stat-subTitle">in progress</p>
-        <p className="stat-subTitle--value">{totalOrderStatusId2.orders}</p>
+        <p className="stat-subTitle--value">
+          {totalOrderStatusId2?.orders ?? 0}
+        </p>
       </div>
 
       <div>
         <p className="stat-subTitle">waiting for process</p>
-        <p className="stat-subTitle--value">{totalOrderStatusId1.orders}</p>
+        <p className="stat-subTitle--value">
+          {totalOrderStatusId1?.orders ?? 0}
+        </p>
       </div>
 
       <div>
         <p className="stat-subTitle">waiting for delivery</p>
-        <p className="stat-subTitle--value">{totalOrderStatusId3.orders}</p>
+        <p className="stat-subTitle--value">
+          {totalOrderStatusId3?.orders ?? 0}
+        </p>
       </div>
 
       <div>
         <p className="stat-subTitle">Avg order per Customer</p>
         <p className="stat-subTitle--value">
-          {totalOrderStatusId1.average_order_frequency.substring(0, 4)}{' '}
+          {totalOrderStatusId1?.average_order_frequency.substring(0, 4) ?? 0}{' '}
           <span
             style={{
               fontWeight: '300',
@@ -48,7 +56,7 @@ const CustomerOrderStat = ({ statisticOrderByStatus }) => {
       <div>
         <p className="stat-subTitle">Avg Ordering Time</p>
         <p className="stat-subTitle--value">
-          {totalOrderStatusId1.average_ordering_time.substring(0, 4)}
+          {totalOrderStatusId1?.average_ordering_time.substring(0, 4) ?? 0}
           <span
             style={{
               fontWeight: '300',
