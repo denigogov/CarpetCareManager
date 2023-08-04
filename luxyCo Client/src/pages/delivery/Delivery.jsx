@@ -3,7 +3,7 @@ import '../../sass/delivery/_delivery.scss';
 import ScanOrder from '../../components/delivery/ScanOrder';
 import SearchOrderNav from '../../components/delivery/SearchOrderNav';
 import SearchOrderView from '../../components/delivery/SearchOrderView';
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR from 'swr';
 import { fetchOrderStatus, fetchOrdersBySchedueledDate } from '../../api';
 import { useState } from 'react';
 
@@ -12,10 +12,6 @@ const Delivery = ({ token }) => {
   const [endDate, setEndDate] = useState(new Date());
   const [searchByStatus, setSearchByStatus] = useState('all');
   const [inputSearchValue, setInputSearchValue] = useState('');
-
-  // const formattedDate = date => {
-  //   return new Date(new Date(date)).toISOString().slice(0, 10);
-  // };
 
   const formattedDateLocal = date => {
     if (!date || !(date instanceof Date)) {
@@ -59,7 +55,7 @@ const Delivery = ({ token }) => {
           <ScanOrder token={token} orderStatus={orderStatus} />
         </div>
 
-        <div>something other</div>
+        <div>something else</div>
       </div>
       <div className="searchOrderNav">
         <SearchOrderNav

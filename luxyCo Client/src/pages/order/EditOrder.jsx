@@ -20,7 +20,7 @@ const EditOrder = ({ token, userInfo }) => {
   const orderUpdateDataRef = useRef(null);
 
   const formatedDate = new Date(
-    new Date(fetchOrderById.scheduled_date).getTime() + 24 * 60 * 60 * 1000
+    new Date(fetchOrderById.scheduled_date).getTime()
   )
     .toISOString()
     .slice(0, 10);
@@ -60,8 +60,6 @@ const EditOrder = ({ token, userInfo }) => {
     };
 
     orderUpdateDataRef.current = updatedData;
-
-    console.log(updatedData);
 
     const updateOrder = async () => {
       try {

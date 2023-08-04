@@ -1,8 +1,6 @@
 import '../../sass/dashboard/_customerOrderStat.scss';
 
 const CustomerOrderStat = ({ statisticOrderByStatus }) => {
-  console.log(statisticOrderByStatus);
-
   const totalOrderStatusId1 = statisticOrderByStatus.find(
     order => order.order_status_id === 1
   );

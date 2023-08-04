@@ -60,8 +60,7 @@ const orderStatPerStatus = (_, res) => {
       COUNT(*) AS orders
   FROM
       carpet.orders
-  WHERE
-      DATE_FORMAT(order_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+  
   GROUP BY
       order_status_id;
   `
