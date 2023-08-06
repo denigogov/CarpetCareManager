@@ -10,6 +10,7 @@ import { useState } from 'react';
 import LoadingView from '../../components/LoadingView';
 
 import useSWR, { useSWRConfig } from 'swr';
+import ErrorDisplayView from '../../components/ErrorDisplayView';
 
 const Users = ({ token, userInfo }) => {
   const navigate = useNavigate();
@@ -52,7 +53,14 @@ const Users = ({ token, userInfo }) => {
     }
   };
 
-  if (error) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (error)
+    return (
+      <ErrorDisplayView
+        errorMessage={error.message}
+        navigateTo1="/dashboard"
+        navigateTo2="/order"
+      />
+    ); // I need to add personal error messages!
   if (isLoading) return <LoadingView />; //I need to add loading component!
 
   // Event handler stop bubbling

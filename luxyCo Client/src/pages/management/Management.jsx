@@ -1,10 +1,10 @@
-import { Outlet, NavLink } from "react-router-dom";
-import "../../sass/management/_management.scss";
-import userTieIcon from "../../assets/userTieIcon.svg";
-import analyticsIcon from "../../assets/analyticsIcon.svg";
-import expensesIcon from "../../assets/expensesIcon.svg";
-import priceIcon from "../../assets/priceIcon.svg";
-import inventory from "../../assets/inventory.svg";
+import { Outlet, NavLink } from 'react-router-dom';
+import '../../sass/management/_management.scss';
+import userTieIcon from '../../assets/userTieIcon.svg';
+import analyticsIcon from '../../assets/analyticsIcon.svg';
+import expensesIcon from '../../assets/expensesIcon.svg';
+import priceIcon from '../../assets/priceIcon.svg';
+import inventory from '../../assets/inventory.svg';
 
 const Management = () => {
   return (
@@ -16,10 +16,10 @@ const Management = () => {
               to="users"
               className={({ isActive, isPending }) =>
                 isPending
-                  ? "pending"
+                  ? 'pending'
                   : isActive
-                  ? "activeLink-globaly"
-                  : "navLink"
+                  ? 'activeLink-globaly'
+                  : 'navLink'
               }
             >
               <img src={userTieIcon} alt="userIcon" />
@@ -31,10 +31,10 @@ const Management = () => {
               to="analytics"
               className={({ isActive, isPending }) =>
                 isPending
-                  ? "pending"
+                  ? 'pending'
                   : isActive
-                  ? "activeLink-globaly"
-                  : "navLink"
+                  ? 'activeLink-globaly'
+                  : 'navLink'
               }
             >
               <img src={analyticsIcon} alt="analytic icon" /> analytics
@@ -46,10 +46,10 @@ const Management = () => {
               to="expenses"
               className={({ isActive, isPending }) =>
                 isPending
-                  ? "pending"
+                  ? 'pending'
                   : isActive
-                  ? "activeLink-globaly"
-                  : "navLink"
+                  ? 'activeLink-globaly'
+                  : 'navLink'
               }
             >
               <img src={expensesIcon} alt="expenses" />
@@ -61,10 +61,10 @@ const Management = () => {
               to="price"
               className={({ isActive, isPending }) =>
                 isPending
-                  ? "pending"
+                  ? 'pending'
                   : isActive
-                  ? "activeLink-globaly"
-                  : "navLink"
+                  ? 'activeLink-globaly'
+                  : 'navLink'
               }
             >
               <img src={priceIcon} alt="priceIcon" /> price
@@ -75,10 +75,10 @@ const Management = () => {
               to="inventory"
               className={({ isActive, isPending }) =>
                 isPending
-                  ? "pending"
+                  ? 'pending'
                   : isActive
-                  ? "activeLink-globaly"
-                  : "navLink"
+                  ? 'activeLink-globaly'
+                  : 'navLink'
               }
             >
               <img src={inventory} alt="inventory" />

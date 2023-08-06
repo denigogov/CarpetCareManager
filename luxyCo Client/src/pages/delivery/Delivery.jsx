@@ -46,8 +46,6 @@ const Delivery = ({ token }) => {
   if (ordersBySchedueledDateLoading || orderStatusLoading)
     return <LoadingView />;
 
-  console.log(ordersBySchedueledDate);
-
   return (
     <div className="delivery--container">
       <div className="delivery__container--scan">

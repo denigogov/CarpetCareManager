@@ -3,6 +3,7 @@ import { fetchTableServices } from '../../api';
 import '../../sass/dashboard/_calculator.scss';
 import useSWR, { useSWRConfig } from 'swr';
 import LoadingView from '../LoadingView';
+import ErrorDisplayView from '../ErrorDisplayView';
 
 const Calculator = ({ token }) => {
   const [selectedService, setSelectedService] = useState(0);
@@ -16,16 +17,33 @@ const Calculator = ({ token }) => {
     isLoading: servicesLoading,
   } = useSWR(['services', token], () => fetchTableServices(token));
 
-  if (servicesError) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (servicesError)
+    return (
+      <ErrorDisplayView
+        errorMessage={'torta'}
+        navigateTo1="/dashboard"
+        navigateTo2="/order"
+      />
+    );
   if (servicesLoading) return <LoadingView />; //I need to add loading component!
 
   const selectService = e => {
     setSelectedService(JSON.parse(e.target.value));
   };
 
+  const deliveryPrice = services
+    .filter(service => {
+      return service.service_name === 'Delivery';
+    })
+    .map(service => service.service_price);
+
   const totalM2 = length * width;
   const price = totalM2 ? totalM2 * selectedService : 0.0;
-  const totalPrice = delivery ? price + 2 : price;
+  const totalPrice = delivery ? price + +deliveryPrice[0] : price;
+
+  const serviceWithOutDelivery = services.filter(
+    service => service.service_name !== 'Delivery'
+  );
 
   return (
     <div className="calculator--container">
@@ -52,7 +70,7 @@ const Calculator = ({ token }) => {
 
           <select onChange={selectService}>
             <option>Service Type</option>
-            {services.map(service => (
+            {serviceWithOutDelivery.map(service => (
               <option
                 value={JSON.stringify(service.service_price)}
                 key={service.id}

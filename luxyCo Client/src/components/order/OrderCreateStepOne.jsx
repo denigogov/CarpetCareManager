@@ -23,9 +23,19 @@ const OrderCreate = ({
   const serviceDataStoringRef = useRef({});
   const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
 
+  const filteredServices = services.filter(
+    service => service.service_name !== 'Delivery'
+  );
+
+  const deliveryPrice = services
+    .filter(service => service.service_name === 'Delivery')
+    .map(service => service.service_price);
+
   // Values that I need for STEP 2
   const orderServiceLastId = orderServices.map(service => service.id).pop();
-  const totalPrice = delivery ? priceCalculate + 2 : priceCalculate;
+  const totalPrice = delivery
+    ? priceCalculate + +deliveryPrice[0]
+    : priceCalculate;
 
   const selectService = e => {
     const selectedService = JSON.parse(e.target.value);
@@ -75,7 +85,7 @@ const OrderCreate = ({
       <form className="orderInput--wrap">
         <select onChange={selectService} disabled={nextStepMessage}>
           <option value="">Service Type</option>
-          {services.map(service => (
+          {filteredServices.map(service => (
             <option value={JSON.stringify(service)} key={service.id}>
               {service.service_name}
             </option>

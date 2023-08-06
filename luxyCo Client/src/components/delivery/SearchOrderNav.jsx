@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import '../../sass/delivery/_searchOrderNav.scss';
 
 import DatePicker from 'react-datepicker';

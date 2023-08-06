@@ -13,7 +13,7 @@ import StatisticByServices from '../../components/dashboard/CustomerOrderStat';
 import HoursStatisticChart from '../../components/dashboard/HoursStatisticChart';
 import CustomerOrderStat from '../../components/dashboard/CustomerOrderStat';
 import LoadingView from '../../components/LoadingView';
-
+import ErrorDisplayView from '../../components/ErrorDisplayView';
 const Dashboard = ({ token }) => {
   const {
     data: statisticOrderByDay,
@@ -47,10 +47,20 @@ const Dashboard = ({ token }) => {
     fetchOrderStatisticByHour(token)
   );
 
-  if (statisticOrderByDayError) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (statisticOrderByHourError) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (statisticOrderByMonthError) return <h6>{error.message}</h6>; // I need to add personal error messages!
-  if (statisticOrderByStatusError) return <h6>{error.message}</h6>; // I need to add personal error messages!
+  if (
+    statisticOrderByDayError ||
+    statisticOrderByHourError ||
+    statisticOrderByMonthError ||
+    statisticOrderByStatusError
+  )
+    return (
+      <ErrorDisplayView
+        errorMessage={'faild to fetch'}
+        navigateTo1="/dashboard"
+        navigateTo2="/order"
+      />
+    );
+
   if (
     statisticOrderByDayLoading ||
     statisticOrderByMonthLoading ||

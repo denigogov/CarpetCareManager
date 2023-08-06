@@ -91,13 +91,17 @@ export const fetchOrdersBySchedueledDate = async (
 };
 
 export const fetchOrderStatus = async token => {
-  const response = await fetch('http://localhost:4000/table/orderStatus', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch('http://localhost:4000/table/orderStatus', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 export const fetchTableCustomers = async token => {
@@ -237,7 +241,7 @@ export const fetchOrderById = async ({ params }, token) => {
   }
 };
 
-// Fetching orders by id ...
+// Fetching orders by id ... I have 2 with the same endPoint but they are returning something different and they are made for different purpose
 export const fetchOrdersById = async (id, token) => {
   try {
     const res = await fetch(`http://localhost:4000/table/orders/${id}`, {
