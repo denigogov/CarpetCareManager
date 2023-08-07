@@ -6,7 +6,28 @@ import expensesIcon from '../../assets/expensesIcon.svg';
 import priceIcon from '../../assets/priceIcon.svg';
 import inventory from '../../assets/inventory.svg';
 
-const Management = () => {
+import useSWR from 'swr';
+import ErrorDisplayView from '../../components/ErrorDisplayView';
+import { fetchTableServices } from '../../api';
+import LoadingView from '../../components/LoadingView';
+
+const Management = ({ token }) => {
+  const {
+    data: services,
+    error: servicesError,
+    isLoading: servicesLoading,
+  } = useSWR(['tableServices', token], () => fetchTableServices(token));
+
+  if (servicesError)
+    return (
+      <ErrorDisplayView
+        errorMessage={error.message}
+        navigateTo1="/dashboard"
+        navigateTo2="/order"
+      />
+    );
+  if (servicesLoading) return <LoadingView />;
+
   return (
     <div className="managment__navbar">
       <div className="managment-container">

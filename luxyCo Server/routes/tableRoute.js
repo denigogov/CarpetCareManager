@@ -18,6 +18,7 @@ router
   .get('/orderStatus', verifyToken, database.tableOrderStatus)
   .put('/orderStatus/:id', verifyToken, database.updateOrderStatus)
   .get('/services', verifyToken, database.tableServices)
+  .put('/services/:id', database.updateTableServices)
   .get('/orderServices', verifyToken, database.tableOrderServices)
   .post('/orderServices', verifyToken, database.postOrderServices);
 

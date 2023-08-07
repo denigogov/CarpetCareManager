@@ -123,6 +123,27 @@ export const fetchTableServices = async token => {
   const data = await response.json();
   return data;
 };
+
+export const fetchTableServicesUpdate = async ({ params }, token) => {
+  try {
+    const { id } = params;
+    const res = await fetch(`http://localhost:4000/customer/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error();
+
+    return data;
+  } catch (error) {
+    throw Error(
+      'Something bad happen!! , Could not find the selected customer, please try later'
+    );
+  }
+};
+
 export const fetchOrderServices = async token => {
   const response = await fetch('http://localhost:4000/table/orderServices', {
     headers: {

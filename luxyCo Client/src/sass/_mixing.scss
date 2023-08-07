@@ -86,6 +86,7 @@
     }
 
     tr:hover {
+      transition: general.$transition;
       background-color: colors.$background-Primary;
     }
   }

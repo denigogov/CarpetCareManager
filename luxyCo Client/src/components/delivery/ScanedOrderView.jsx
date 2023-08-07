@@ -1,8 +1,5 @@
 import '../../sass/delivery/scanedOrderView.scss';
-import useSWR, { useSWRConfig } from 'swr';
-import LoadingView from '../LoadingView';
 import { useRef, useState } from 'react';
-import { fetchOrderStatus } from '../../api';
 
 const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
   const [orderStatusId, setOrderStatusId] = useState(null);

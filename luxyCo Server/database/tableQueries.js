@@ -205,6 +205,27 @@ const tableServices = (_, res) => {
     });
 };
 
+const updateTableServices = (req, res) => {
+  const { service_price, service_name } = req.body;
+  const id = req.params.id;
+
+  database
+    .query(
+      `update services set service_name = ? ,service_price = ? where id = ?`,
+      [service_name, service_price, id]
+    )
+    .then(([service]) => {
+      if (!service.affectedRows) {
+        res.status(404).send('error happen, please try again!');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+};
+
 const tableOrderServices = (_, res) => {
   database
     .query('select * from  order_services')
@@ -301,4 +322,5 @@ module.exports = {
   updateOrder,
   updateOrderStatus,
   orderScheduledDate,
+  updateTableServices,
 };
