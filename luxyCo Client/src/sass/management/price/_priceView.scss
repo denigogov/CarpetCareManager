@@ -35,5 +35,31 @@
       background-color: colors.$button-Secoundary;
       padding: 7px 20px;
     }
+
+    .updateBtn {
+      background-color: colors.$button-Primary;
+    }
+  }
+}
+
+.showMessage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  .success {
+    border-left: 5px solid colors.$success;
+    padding: 5px;
+    background-color: #1e8fff11;
+    border-radius: 0 20px 20px 0;
+  }
+
+  .error {
+    border-left: 5px solid colors.$error;
+    padding: 5px;
+    background-color: #da006219;
+    border-radius: 0 20px 20px 0;
   }
 }

@@ -226,6 +226,23 @@ const updateTableServices = (req, res) => {
     });
 };
 
+const deleteTableServices = (req, res) => {
+  const id = req.params.id;
+
+  database
+    .query('DELETE FROM services WHERE id = ?', [id])
+    .then(([services]) => {
+      if (!services.affectedRows) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(404).send('error deleting the service', err);
+    });
+};
+
 const tableOrderServices = (_, res) => {
   database
     .query('select * from  order_services')
@@ -323,4 +340,5 @@ module.exports = {
   updateOrderStatus,
   orderScheduledDate,
   updateTableServices,
+  deleteTableServices,
 };

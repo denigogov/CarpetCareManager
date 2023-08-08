@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../../sass/management/price/_priceView.scss';
+import deleteUserIcon from '../../../assets/deleteIcon.svg';
 
 const PriceView = ({
   tableServices,
@@ -7,8 +8,22 @@ const PriceView = ({
   setServiceName,
   setServicePrice,
   handleUpdateOrder,
+  success,
+  errorMessage,
+  setSuccess,
+  setDeleteService,
+  handleDeleteService,
 }) => {
   const [editService, setEditService] = useState(false);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   const handleEditClick = service => {
     setEditService(service);
@@ -21,6 +36,11 @@ const PriceView = ({
   const handleUpdateClick = () => {
     handleUpdateOrder();
     setEditService(false);
+  };
+
+  const handleDeleteClick = service => {
+    handleDeleteService();
+    setDeleteService(service);
   };
 
   return (
@@ -67,16 +87,37 @@ const PriceView = ({
               </td>
               <td>
                 {editService === service ? (
-                  <button onClick={handleUpdateClick}>update</button>
+                  <button className="updateBtn" onClick={handleUpdateClick}>
+                    update
+                  </button>
                 ) : (
                   <button onClick={() => handleEditClick(service)}>edit</button>
                 )}
               </td>
-              <td>remove</td>
+              <td>
+                <img
+                  src={deleteUserIcon}
+                  alt="delete service icon"
+                  onClick={() => handleDeleteClick(service)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div className="showMessage">
+        {errorMessage && (
+          <p className="errorMessage error">
+            <strong>Warning !</strong> {errorMessage}
+          </p>
+        )}
+        {success && (
+          <p className="successfulMessage success">
+            <strong>Success !</strong> {success}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

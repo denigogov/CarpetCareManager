@@ -1,13 +1,16 @@
 import useSWR, { useSWRConfig } from 'swr';
+import { useState } from 'react';
 import LoadingView from '../../components/LoadingView';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
 import PriceView from '../../components/management/price/PriceView';
-import { useEffect, useState } from 'react';
 
 const Price = ({ token }) => {
   const [selectedService, setSelectedService] = useState(null);
   const [serviceName, setServiceName] = useState('');
   const [servicePrice, setServicePrice] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState('');
+  const [deleteService, setDeleteService] = useState(null);
 
   const { mutate } = useSWRConfig();
 
@@ -17,13 +20,18 @@ const Price = ({ token }) => {
     isLoading: servicesLoading,
   } = useSWR(['tableServices', token]);
 
-  const handleUpdateOrder = () => {
+  // POST REQUEST
+  const handleUpdateOrder = async () => {
     const sendUpdate = {
       service_name: serviceName,
       service_price: servicePrice,
     };
 
-    const updateOrderStatus = async () => {
+    const confirmDelete = confirm(
+      `Please confirm if you want to update this service ${selectedService.service_name}.`
+    );
+
+    if (confirmDelete) {
       try {
         const res = await fetch(
           `http://localhost:4000/table/services/${selectedService.id}`,
@@ -38,17 +46,46 @@ const Price = ({ token }) => {
         );
 
         if (res.ok) {
-          // handle response
+          mutate(`http://localhost:4000/table/services`);
+          setSuccess('service updated');
+          setErrorMessage('');
         } else {
           throw new Error();
         }
       } catch (error) {
-        // setError(`Error Updating Order ${error}`);
-        console.error('madafaka');
+        setErrorMessage(`update faild, please try again ${error}`);
       }
-    };
+    }
+  };
 
-    updateOrderStatus();
+  // DELETE REQUEST
+  const handleDeleteService = async () => {
+    const confirmDelete = confirm(
+      `Please confirm if you want to delete this service ${deleteService.service_name}.`
+    );
+
+    if (confirmDelete) {
+      try {
+        const res = await fetch(
+          `http://localhost:4000/table/services/${deleteService.id}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          mutate(`http://localhost:4000/table/services`);
+          setSuccess('service deleted'), setErrorMessage('');
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        setErrorMessage(`delete faild ${error}`);
+      }
+    }
   };
 
   if (servicesError)
@@ -69,6 +106,11 @@ const Price = ({ token }) => {
         setSelectedService={setSelectedService}
         setServiceName={setServiceName}
         setServicePrice={setServicePrice}
+        errorMessage={errorMessage}
+        success={success}
+        setSuccess={setSuccess}
+        setDeleteService={setDeleteService}
+        handleDeleteService={handleDeleteService}
       />
     </div>
   );
