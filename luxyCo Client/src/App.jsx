@@ -7,11 +7,12 @@ import {
   Navigate,
 } from 'react-router-dom';
 import useToken from './useToken';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Login from './pages/Login';
 import Root from './pages/Root';
-import Dashboard from './pages/dashboard/Dashboard';
+// import Dashboard from './pages/dashboard/Dashboard';
+
 // Order Routes
 import Order from './pages/order/Order';
 import CreateOrder from './pages/order/CreateOrder';
@@ -27,7 +28,7 @@ import DetailsContact from './pages/contact/DetailsContact';
 import Management from './pages/management/Management';
 import Analytics from './pages/management/Analytics';
 import Expenses from './pages/management/Expenses';
-import Price from './pages/management/Price';
+import Price from './pages/management/Price/Price';
 import Inventory from './pages/management/Inventory';
 // user routes
 import Users from './pages/management/Users';
@@ -36,6 +37,7 @@ import DetailsUser from './pages/management/DetailsUser';
 import CreateUser from './pages/management/CreateUser';
 
 import ErrorDisplayView from './components/ErrorDisplayView';
+const LazyDashboard = React.lazy(() => import('./pages/dashboard/Dashboard'));
 
 import {
   fetchSingleUser,
@@ -46,6 +48,9 @@ import {
   fetchOrderById,
 } from './api';
 import EditOrder from './pages/order/EditOrder';
+
+import AddService from './pages/management/Price/AddService';
+import LoadingView from './components/LoadingView';
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -74,7 +79,16 @@ const App = () => {
         element={<Root setToken={setToken} userInfo={userInfo} />}
       >
         <Route index element={<Navigate to="dashboard" />} />
-        <Route path="dashboard" element={<Dashboard token={token} />} />
+        {/* <Route path="dashboard" element={<Dashboard token={token} />} /> */}
+        {/* JUST FOR TESTING PURPOSE IT SHOULD SPEED UP THE APP!!!! NEW NEW NEW  */}
+        <Route
+          path="dashboard"
+          element={
+            <React.Suspense fallback={<LoadingView />}>
+              <LazyDashboard token={token} />{' '}
+            </React.Suspense>
+          }
+        />
         <Route
           path="order"
           element={<Order token={token} userInfo={userInfo} />}
@@ -137,7 +151,11 @@ const App = () => {
 
             <Route path="analytics" element={<Analytics />} />
             <Route path="expenses" element={<Expenses />} />
-            <Route path="price" element={<Price token={token} />} />
+
+            <Route path="price" element={<Price token={token} />}>
+              <Route path="addService" element={<AddService token={token} />} />
+            </Route>
+
             <Route path="inventory" element={<Inventory />} />
           </Route>
         )}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { fetchTableServices } from '../../api';
 import '../../sass/dashboard/_calculator.scss';
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR from 'swr';
 import LoadingView from '../LoadingView';
 import ErrorDisplayView from '../ErrorDisplayView';
 
@@ -20,7 +20,7 @@ const Calculator = ({ token }) => {
   if (servicesError)
     return (
       <ErrorDisplayView
-        errorMessage={'torta'}
+        errorMessage={'error Test'}
         navigateTo1="/dashboard"
         navigateTo2="/order"
       />
@@ -33,7 +33,7 @@ const Calculator = ({ token }) => {
 
   const deliveryPrice = services
     .filter(service => {
-      return service.service_name === 'Delivery';
+      return service.id === 4;
     })
     .map(service => service.service_price);
 
@@ -41,9 +41,7 @@ const Calculator = ({ token }) => {
   const price = totalM2 ? totalM2 * selectedService : 0.0;
   const totalPrice = delivery ? price + +deliveryPrice[0] : price;
 
-  const serviceWithOutDelivery = services.filter(
-    service => service.service_name !== 'Delivery'
-  );
+  const serviceWithOutDelivery = services.filter(service => service.id !== 4);
 
   return (
     <div className="calculator--container">

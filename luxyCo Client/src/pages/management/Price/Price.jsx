@@ -1,8 +1,8 @@
 import useSWR, { useSWRConfig } from 'swr';
-import { useState } from 'react';
-import LoadingView from '../../components/LoadingView';
-import ErrorDisplayView from '../../components/ErrorDisplayView';
-import PriceView from '../../components/management/price/PriceView';
+import { useEffect, useState } from 'react';
+import LoadingView from '../../../components/LoadingView';
+import ErrorDisplayView from '../../../components/ErrorDisplayView';
+import PriceView from '../../../components/management/price/PriceView';
 
 const Price = ({ token }) => {
   const [selectedService, setSelectedService] = useState(null);
@@ -10,7 +10,6 @@ const Price = ({ token }) => {
   const [servicePrice, setServicePrice] = useState();
   const [errorMessage, setErrorMessage] = useState('');
   const [success, setSuccess] = useState('');
-  const [deleteService, setDeleteService] = useState(null);
 
   const { mutate } = useSWRConfig();
 
@@ -27,11 +26,11 @@ const Price = ({ token }) => {
       service_price: servicePrice,
     };
 
-    const confirmDelete = confirm(
+    const confirmUpdate = confirm(
       `Please confirm if you want to update this service ${selectedService.service_name}.`
     );
 
-    if (confirmDelete) {
+    if (confirmUpdate) {
       try {
         const res = await fetch(
           `http://localhost:4000/table/services/${selectedService.id}`,
@@ -58,36 +57,6 @@ const Price = ({ token }) => {
     }
   };
 
-  // DELETE REQUEST
-  const handleDeleteService = async () => {
-    const confirmDelete = confirm(
-      `Please confirm if you want to delete this service ${deleteService.service_name}.`
-    );
-
-    if (confirmDelete) {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/table/services/${deleteService.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (res.ok) {
-          mutate(`http://localhost:4000/table/services`);
-          setSuccess('service deleted'), setErrorMessage('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setErrorMessage(`delete faild ${error}`);
-      }
-    }
-  };
-
   if (servicesError)
     return (
       <ErrorDisplayView
@@ -101,6 +70,7 @@ const Price = ({ token }) => {
   return (
     <div>
       <PriceView
+        token={token}
         handleUpdateOrder={handleUpdateOrder}
         tableServices={services}
         setSelectedService={setSelectedService}
@@ -109,8 +79,7 @@ const Price = ({ token }) => {
         errorMessage={errorMessage}
         success={success}
         setSuccess={setSuccess}
-        setDeleteService={setDeleteService}
-        handleDeleteService={handleDeleteService}
+        setErrorMessage={setErrorMessage}
       />
     </div>
   );

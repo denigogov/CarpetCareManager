@@ -17,18 +17,18 @@ const OrderCreate = ({
   const [nextStepMessage, setNextStepMessage] = useState(false);
   const [error, setError] = useState('');
 
+  console.log(services);
+
   const { mutate } = useSWRConfig();
   const takePiecesRef = useRef(null);
 
   const serviceDataStoringRef = useRef({});
   const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
 
-  const filteredServices = services.filter(
-    service => service.service_name !== 'Delivery'
-  );
+  const filteredServices = services.filter(service => service.id !== 4);
 
   const deliveryPrice = services
-    .filter(service => service.service_name === 'Delivery')
+    .filter(service => service.id === 4)
     .map(service => service.service_price);
 
   // Values that I need for STEP 2

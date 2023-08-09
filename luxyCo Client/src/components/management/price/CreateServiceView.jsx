@@ -1,0 +1,46 @@
+import { useRef } from 'react';
+import PriceSubmitMessage from './PriceSubmitMessage';
+import '../../../sass/management/price/_createServiceView.scss';
+
+const CreateServiceView = ({ handleCreateService, success, errorMessage }) => {
+  const serviceName = useRef(null);
+  const servicePrice = useRef(null);
+
+  const handleCreateServiceClick = e => {
+    const inputData = {
+      service_name: serviceName.current.value,
+      service_price: servicePrice.current.value,
+    };
+    e.preventDefault();
+    handleCreateService(inputData);
+  };
+
+  return (
+    <div className="createService">
+      <p>Crete New Service</p>
+
+      <form>
+        <input
+          ref={serviceName}
+          type="text"
+          name="serviceName"
+          required
+          placeholder="service name"
+        />
+
+        <input
+          ref={servicePrice}
+          type="number"
+          min="0"
+          step=".01"
+          placeholder="service price"
+        />
+
+        <button onClick={handleCreateServiceClick}>submit</button>
+      </form>
+      <PriceSubmitMessage success={success} errorMessage={errorMessage} />
+    </div>
+  );
+};
+
+export default CreateServiceView;

@@ -68,7 +68,7 @@ const tableOrders = (req, res) => {
       left join customers on orders.customer_id = customers.id
       inner join order_status on orders.order_status_id = order_status.id
       INNER JOIN order_services ON orders.orderService_id = order_services.id
-      INNER JOIN services ON order_services.service_id = services.id
+      left JOIN services ON order_services.service_id = services.id
 
       WHERE order_date LIKE CONCAT(?, '%')    ORDER BY id DESC;`,
 
@@ -162,7 +162,7 @@ const getOrderById = (req, res) => {
     left join customers on orders.customer_id = customers.id
     inner join order_status on orders.order_status_id = order_status.id
     INNER JOIN order_services ON orders.orderService_id = order_services.id
-    INNER JOIN services ON order_services.service_id = services.id
+    left JOIN services ON order_services.service_id = services.id
 
     WHERE orders.id = ?  `,
 
@@ -255,6 +255,23 @@ const tableOrderServices = (_, res) => {
     });
 };
 
+const createNewService = (req, res) => {
+  const { service_name, service_price } = req.body;
+
+  database
+    .query('INSERT INTO services( service_name, service_price) VALUES (?, ?)', [
+      service_name,
+      service_price,
+    ])
+    .then(([service]) => {
+      res.location(`/table/services/${service.insertId}`).sendStatus(201);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error creating new order');
+    });
+};
+
 const postOrderServices = (req, res) => {
   const { id, service_id, m2, pieces } = req.body;
 
@@ -268,7 +285,7 @@ const postOrderServices = (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(500).send('Errora creating new user');
+      res.status(500).send('Error creating new values');
     });
 };
 
@@ -310,9 +327,9 @@ const orderScheduledDate = (req, res) => {
       service_name,
       CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date
       FROM orders 
-      inner join customers on orders.customer_id = customers.id
+      left join customers on orders.customer_id = customers.id
       inner join order_services on orderService_id = order_services.id
-      inner join services on services.id = order_services.service_id
+      left join services on services.id = order_services.service_id
       inner join order_status on order_status_id = order_status.id
       WHERE scheduled_date BETWEEN  ? AND ? `,
       [startDate, endDate]
@@ -341,4 +358,5 @@ module.exports = {
   orderScheduledDate,
   updateTableServices,
   deleteTableServices,
+  createNewService,
 };

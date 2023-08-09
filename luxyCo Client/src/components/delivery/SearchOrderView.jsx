@@ -52,13 +52,14 @@ const SearchOrderView = ({
                     <tr key={order.id}>
                       <td>{order.id}</td>
                       <td>
-                        {order.first_name} {order.last_name}
+                        {order?.first_name ?? 'custumer not exist'}{' '}
+                        {order.last_name}
                       </td>
-                      <td>{order.m2}</td>
-                      <td>{order.pieces}</td>
-                      <td>{order.total_price}</td>
-                      <td>{order.service_name}</td>
-                      <td>{order.status_name}</td>
+                      <td>{order?.m2 ?? 'no m² added'}</td>
+                      <td>{order?.pieces ?? 'no pieces added'}</td>
+                      <td>{order?.total_price ?? 'no price added'}</td>
+                      <td>{order?.service_name ?? 'service  not exist'}</td>
+                      <td>{order?.status_name ?? 'status not exist'}</td>
                       <td>
                         {order.scheduled_date
                           ? new Date(order.scheduled_date)
