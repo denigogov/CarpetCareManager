@@ -277,3 +277,32 @@ export const fetchOrdersById = async (id, token) => {
     throw new Error('Could not find the selected order, please try later');
   }
 };
+
+export const fetchTableInventory = async token => {
+  try {
+    const res = await fetch('http://localhost:4000/table/inventory', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    return data;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+export const fetchTableInventoryCategories = async token => {
+  try {
+    const res = await fetch('http://localhost:4000/table/inventorycategories', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    return data;
+  } catch (err) {
+    console.error(err.message);
+  }
+};

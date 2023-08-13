@@ -24,6 +24,10 @@ router
   .delete('/services/:id', verifyToken, database.deleteTableServices)
 
   .get('/orderServices', verifyToken, database.tableOrderServices)
-  .post('/orderServices', verifyToken, database.postOrderServices);
+  .post('/orderServices', verifyToken, database.postOrderServices)
+
+  .get('/inventory', verifyToken, database.tableInventory)
+
+  .get('/inventorycategories', verifyToken, database.tableInvetoryCategories);
 
 module.exports = router;

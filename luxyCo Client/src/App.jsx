@@ -11,10 +11,13 @@ import React, { useEffect, useState } from 'react';
 
 import Login from './pages/Login';
 import Root from './pages/Root';
+
 // import Dashboard from './pages/dashboard/Dashboard';
+const LazyDashboard = React.lazy(() => import('./pages/dashboard/Dashboard'));
 
 // Order Routes
 import Order from './pages/order/Order';
+import EditOrder from './pages/order/EditOrder';
 import CreateOrder from './pages/order/CreateOrder';
 
 import Delivery from './pages/delivery/Delivery';
@@ -28,16 +31,23 @@ import DetailsContact from './pages/contact/DetailsContact';
 import Management from './pages/management/Management';
 import Analytics from './pages/management/Analytics';
 import Expenses from './pages/management/Expenses';
+
+// Price Route
 import Price from './pages/management/Price/Price';
-import Inventory from './pages/management/Inventory';
+import AddService from './pages/management/Price/AddService';
+
+// Inventory Route
+
+import Inventory from './pages/management/inventory/Inventory';
+
 // user routes
 import Users from './pages/management/Users';
 import EditUser from './pages/management/EditUser';
 import DetailsUser from './pages/management/DetailsUser';
 import CreateUser from './pages/management/CreateUser';
 
+import LoadingView from './components/LoadingView';
 import ErrorDisplayView from './components/ErrorDisplayView';
-const LazyDashboard = React.lazy(() => import('./pages/dashboard/Dashboard'));
 
 import {
   fetchSingleUser,
@@ -47,10 +57,6 @@ import {
   fetchCustomerOrders,
   fetchOrderById,
 } from './api';
-import EditOrder from './pages/order/EditOrder';
-
-import AddService from './pages/management/Price/AddService';
-import LoadingView from './components/LoadingView';
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -85,7 +91,7 @@ const App = () => {
           path="dashboard"
           element={
             <React.Suspense fallback={<LoadingView />}>
-              <LazyDashboard token={token} />{' '}
+              <LazyDashboard token={token} />
             </React.Suspense>
           }
         />
@@ -156,7 +162,7 @@ const App = () => {
               <Route path="addService" element={<AddService token={token} />} />
             </Route>
 
-            <Route path="inventory" element={<Inventory />} />
+            <Route path="inventory" element={<Inventory token={token} />} />
           </Route>
         )}
 

@@ -1,0 +1,57 @@
+@use '../../colors';
+@use '../../mixing';
+@use '../../general';
+
+.inventory-navBar {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid colors.$borderLine-Primary;
+  border-bottom: 1px solid colors.$borderLine-Primary;
+  color: colors.$font-Secound;
+  font-size: 12px;
+  padding: 20px;
+
+  p,
+  input,
+  select {
+    background-color: #fff !important;
+    border: 1px solid colors.$borderLine-Primary;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: center;
+
+    &:focus {
+      outline: 1px solid colors.$borderLine-Primary;
+    }
+  }
+
+  select {
+    background: url('../../../assets/eyeView.svg') no-repeat left center;
+    background-size: 15px;
+    padding-left: 20px;
+  }
+
+  input {
+    background: url('../../../assets/search-input-icon.svg') no-repeat left
+      center;
+    padding-left: 20px;
+    background-size: 20px;
+  }
+
+  p {
+    font-size: 13px;
+    padding: 13px;
+
+    &:nth-child(3) {
+      background: url('../../../assets/addIcon.svg') no-repeat left center;
+      padding-left: 30px;
+      background-size: 20px;
+    }
+
+    &:nth-child(4) {
+      background: url('../../../assets/downloadIcon.svg') no-repeat left center;
+      padding-left: 35px;
+      background-size: 20px;
+    }
+  }
+}

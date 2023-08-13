@@ -343,6 +343,37 @@ const orderScheduledDate = (req, res) => {
     });
 };
 
+// TABLE INVENTORY
+
+const tableInventory = (_, res) => {
+  database
+    .query(
+      `SELECT inventory.id,inventory_categories.id as category_id, article_number,article_name,details,quantity,location,price,date_entry,category_name FROM carpet.inventory
+    inner join inventory_categories on category_id = inventory_categories.id`
+    )
+    .then(([inventory]) => {
+      res.json(inventory);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error retrieving inventory from database');
+    });
+};
+
+const tableInvetoryCategories = (_, res) => {
+  database
+    .query(`SELECT * from inventory_categories`)
+    .then(([categories]) => {
+      res.json(categories);
+    })
+    .catch(err => {
+      console.error(err);
+      res
+        .status(500)
+        .send('Error retrieving inventory categories from database');
+    });
+};
+
 module.exports = {
   tableDepartments,
   createNewOrder,
@@ -359,4 +390,6 @@ module.exports = {
   updateTableServices,
   deleteTableServices,
   createNewService,
+  tableInventory,
+  tableInvetoryCategories,
 };
