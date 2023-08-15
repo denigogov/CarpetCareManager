@@ -1,4 +1,4 @@
-const PriceSubmitMessage = ({ success, errorMessage }) => {
+const ApiSendRequestMessage = ({ success, errorMessage }) => {
   return (
     <div>
       <div className="showMessage">
@@ -17,4 +17,4 @@ const PriceSubmitMessage = ({ success, errorMessage }) => {
   );
 };
 
-export default PriceSubmitMessage;
+export default ApiSendRequestMessage;

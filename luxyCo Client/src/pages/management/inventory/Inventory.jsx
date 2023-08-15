@@ -3,21 +3,18 @@ import {
   fetchTableInventoryCategories,
 } from '../../../api';
 import useSWR from 'swr';
-
 import ErrorDisplayView from '../../../components/ErrorDisplayView';
 import LoadingView from '../../../components/LoadingView';
 import InventoryNavBar from '../../../components/management/inventory/InventoryNavBar';
 import InventoryTableView from '../../../components/management/inventory/InventoryTableView';
-import { randomNumber } from '../../../randomNumber';
 import { useState } from 'react';
 import InventoryPDF from '../../../components/management/inventory/InventoryPDF';
 import { PDFViewer } from '@react-pdf/renderer';
+import PrintLabelsWithQR from '../../../components/PrintLabelWithQR';
 
 const Inventory = ({ token }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchedValue, setSearchedValue] = useState('');
-
-  // const randomString = randomNumber(10);
 
   const formatedDate = dateToTransform => {
     return new Date(new Date(dateToTransform))
@@ -77,7 +74,9 @@ const Inventory = ({ token }) => {
         inventory={filteredInventory}
         formatedDate={formatedDate}
       />
-      {/* <PDFViewer>
+
+      {/* TO VIEW THE PDF ... JUST FOR EDIT  */}
+      {/* <PDFViewer style={{ width: '100%', height: '100vh' }}>
         <InventoryPDF inventory={filteredInventory} />
       </PDFViewer> */}
     </div>

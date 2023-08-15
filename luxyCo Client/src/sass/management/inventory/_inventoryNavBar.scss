@@ -11,9 +11,9 @@
   font-size: 12px;
   padding: 20px;
 
-  p,
-  input,
-  select {
+  .inv-nav,
+  .searchInventory,
+  .selectCat--inventory {
     background-color: #fff !important;
     border: 1px solid colors.$borderLine-Primary;
     border-radius: 7px;
@@ -25,28 +25,22 @@
     }
   }
 
-  select {
+  .selectCat--inventory {
     background: url('../../../assets/eyeView.svg') no-repeat left center;
     background-size: 15px;
     padding-left: 20px;
   }
 
-  input {
+  .searchInventory {
     background: url('../../../assets/search-input-icon.svg') no-repeat left
       center;
     padding-left: 20px;
     background-size: 20px;
   }
 
-  p {
+  .inv-nav {
     font-size: 13px;
     padding: 13px;
-
-    &:nth-child(3) {
-      background: url('../../../assets/addIcon.svg') no-repeat left center;
-      padding-left: 30px;
-      background-size: 20px;
-    }
 
     &:nth-child(4) {
       background: url('../../../assets/downloadIcon.svg') no-repeat left center;
@@ -54,4 +48,15 @@
       background-size: 20px;
     }
   }
+
+  img {
+    width: 20px;
+  }
+}
+
+.inventoryLink {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+  color: colors.$font-Secound;
 }

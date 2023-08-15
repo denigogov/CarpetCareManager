@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import PriceSubmitMessage from './PriceSubmitMessage';
 import '../../../sass/management/price/_createServiceView.scss';
+import ApiSendRequestMessage from '../../ApiSendRequestMessage';
 
 const CreateServiceView = ({ handleCreateService, success, errorMessage }) => {
   const serviceName = useRef(null);
@@ -26,6 +26,7 @@ const CreateServiceView = ({ handleCreateService, success, errorMessage }) => {
           name="serviceName"
           required
           placeholder="service name"
+          disabled={success}
         />
 
         <input
@@ -34,11 +35,13 @@ const CreateServiceView = ({ handleCreateService, success, errorMessage }) => {
           min="0"
           step=".01"
           placeholder="service price"
+          disabled={success}
         />
 
-        <button onClick={handleCreateServiceClick}>submit</button>
+        {!success && <button onClick={handleCreateServiceClick}>submit</button>}
       </form>
-      <PriceSubmitMessage success={success} errorMessage={errorMessage} />
+
+      <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
     </div>
   );
 };

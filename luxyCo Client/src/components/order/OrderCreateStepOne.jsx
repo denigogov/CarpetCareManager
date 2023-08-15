@@ -137,16 +137,6 @@ const OrderCreate = ({
           </button>
         )}
       </div>
-
-      {/* I need only for styling view I will delete after styling everything */}
-      {/* <OrderStepTwo
-        customers={customers}
-        token={token}
-        totalPrice={totalPrice}
-        orderServiceLastId={orderServiceLastId}
-        delivery={delivery}
-        userInfo={userInfo}
-      /> */}
     </div>
   );
 };

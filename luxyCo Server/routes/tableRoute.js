@@ -27,6 +27,7 @@ router
   .post('/orderServices', verifyToken, database.postOrderServices)
 
   .get('/inventory', verifyToken, database.tableInventory)
+  .post('/inventory', database.createNewInventory)
 
   .get('/inventorycategories', verifyToken, database.tableInvetoryCategories);
 

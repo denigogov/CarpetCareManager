@@ -57,6 +57,7 @@ import {
   fetchCustomerOrders,
   fetchOrderById,
 } from './api';
+import CreateInventory from './pages/management/inventory/CreateInventory';
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -162,7 +163,12 @@ const App = () => {
               <Route path="addService" element={<AddService token={token} />} />
             </Route>
 
-            <Route path="inventory" element={<Inventory token={token} />} />
+            <Route path="inventory" element={<Inventory token={token} />}>
+              <Route
+                path="add-inventory"
+                element={<CreateInventory token={token} />}
+              />
+            </Route>
           </Route>
         )}
 

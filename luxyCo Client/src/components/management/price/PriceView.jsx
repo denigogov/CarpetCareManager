@@ -4,7 +4,7 @@ import '../../../sass/management/price/_priceView.scss';
 import useSWR, { useSWRConfig } from 'swr';
 import deleteUserIcon from '../../../assets/deleteIcon.svg';
 import addIcon from '../../../assets/addIcon.svg';
-import PriceSubmitMessage from './PriceSubmitMessage';
+import ApiSendRequestMessage from '../../ApiSendRequestMessage';
 
 const PriceView = ({
   token,
@@ -141,7 +141,7 @@ const PriceView = ({
                     }}
                   />
                 ) : (
-                  service.service_price
+                  `${service.service_price} €`
                 )}
               </td>
               <td>
@@ -166,7 +166,7 @@ const PriceView = ({
         </tbody>
       </table>
 
-      <PriceSubmitMessage errorMessage={errorMessage} success={success} />
+      <ApiSendRequestMessage errorMessage={errorMessage} success={success} />
 
       {popupOpen && (
         <div className="overlay" onClick={popupWindow}>

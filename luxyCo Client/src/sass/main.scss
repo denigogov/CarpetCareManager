@@ -1,6 +1,6 @@
-@use "./general";
-@use "./colors";
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@use './general';
+@use './colors';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
   padding: 0;
@@ -61,7 +61,6 @@ img {
   height: 70%;
   z-index: 3;
   border-radius: 30px;
-  background-attachment: fixed;
 
   display: flex;
   flex-direction: column;

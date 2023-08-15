@@ -360,6 +360,39 @@ const tableInventory = (_, res) => {
     });
 };
 
+const createNewInventory = (req, res) => {
+  const {
+    article_number,
+    article_name,
+    details,
+    quantity,
+    location,
+    price,
+    category_id,
+  } = req.body;
+
+  database
+    .query(
+      'INSERT INTO inventory(article_number, article_name, details,quantity, location,price, category_id) VALUES (?, ?, ?, ? ,?,?,?)',
+      [
+        article_number,
+        article_name,
+        details,
+        quantity,
+        location,
+        price,
+        category_id,
+      ]
+    )
+    .then(([inventory]) => {
+      res.location(`/table/inventory/${inventory.insertId}`).sendStatus(201);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error creating new inventory');
+    });
+};
+
 const tableInvetoryCategories = (_, res) => {
   database
     .query(`SELECT * from inventory_categories`)
@@ -392,4 +425,5 @@ module.exports = {
   createNewService,
   tableInventory,
   tableInvetoryCategories,
+  createNewInventory,
 };
