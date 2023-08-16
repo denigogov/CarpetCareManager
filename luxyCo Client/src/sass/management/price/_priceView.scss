@@ -20,10 +20,6 @@
   font-size: 15px;
 
   table {
-    tr:hover {
-      background-color: colors.$background-Primary;
-    }
-
     input {
       @include mixing.inputFileds;
       padding: 5px;
@@ -62,13 +58,4 @@
     background-color: #da006219;
     border-radius: 0 20px 20px 0;
   }
-}
-
-.smallPopup {
-  width: 30%;
-  height: 50%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }

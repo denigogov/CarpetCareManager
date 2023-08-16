@@ -1,0 +1,25 @@
+@use '../../colors';
+@use '../../mixing';
+@use '../../general';
+
+.inventoryCategoryView--container {
+  @include mixing.table;
+
+  table {
+    input {
+      @include mixing.inputFileds;
+      padding: 7px;
+    }
+
+    button {
+      @include mixing.button;
+      letter-spacing: general.$spacing;
+      background-color: colors.$button-Secoundary;
+      padding: 7px 20px;
+    }
+
+    .updateInventoryCategBtn {
+      background-color: colors.$button-Primary;
+    }
+  }
+}

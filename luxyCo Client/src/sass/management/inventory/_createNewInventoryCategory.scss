@@ -1,0 +1,26 @@
+@use '../../colors';
+@use '../../mixing';
+@use '../../general';
+
+.createNewCategory {
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  input {
+    @include mixing.inputFileds;
+  }
+
+  button {
+    @include mixing.button;
+    letter-spacing: general.$spacing;
+  }
+
+  p {
+    font-size: 16px;
+    color: colors.$borderLine-Second;
+  }
+}

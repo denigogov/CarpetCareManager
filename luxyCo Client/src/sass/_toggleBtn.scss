@@ -1,0 +1,61 @@
+@use 'colors';
+
+.togglebuttonContainer {
+  color: red;
+  font-size: 12px;
+  text-align: center;
+}
+
+.cB {
+  display: none;
+}
+.toggleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transform: scale(1);
+  padding: 6px;
+}
+.line-toggle {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 15px;
+  // background: #ff6454;
+  background: colors.$banner-Primary;
+  border-radius: 20px;
+}
+.lineCircle-toggle {
+  display: inline-block;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: #ffff;
+  border-radius: 50%;
+  top: -5px;
+  box-shadow: 2px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  transform: translateX(-30px);
+  border: 1px solid colors.$banner-Primary;
+}
+
+/***Adding tranisitons***/
+
+.line-toggle,
+.lineCircle-toggle {
+  transition: 0.3s all cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+input[type='checkbox'].cB:checked + .line-toggle {
+  background: #da006214;
+}
+input[type='checkbox'].cB:checked + .line-toggle .lineCircle-toggle {
+  // background: #27ae60;
+  background: colors.$banner-Primary;
+  transform: translateX(10px);
+  box-shadow: -2px 0px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.toggleTextOff {
+  color: colors.$font-Primary;
+}

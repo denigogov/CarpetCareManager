@@ -349,7 +349,7 @@ const tableInventory = (_, res) => {
   database
     .query(
       `SELECT inventory.id,inventory_categories.id as category_id, article_number,article_name,details,quantity,location,price,date_entry,category_name FROM carpet.inventory
-    inner join inventory_categories on category_id = inventory_categories.id`
+    left join inventory_categories on category_id = inventory_categories.id`
     )
     .then(([inventory]) => {
       res.json(inventory);
@@ -407,6 +407,48 @@ const tableInvetoryCategories = (_, res) => {
     });
 };
 
+const updateInventoryCategories = (req, res) => {
+  const { category_name } = req.body;
+  const id = req.params.id;
+
+  database
+    .query(
+      `UPDATE inventory_categories SET category_name = ? WHERE inventory_categories.id= ?`,
+      [category_name, id]
+    )
+    .then(([category]) => {
+      console.log(category);
+      if (!category.affectedRows) {
+        res.status(404).send('error happen, please try again!');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+};
+
+const deleteTableInventoryCategory = (req, res) => {
+  const id = req.params.id;
+
+  database
+    .query(
+      'DELETE FROM inventory_categories WHERE inventory_categories.id = ?',
+      [id]
+    )
+    .then(([category]) => {
+      if (!category.affectedRows) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(404).send('error deleting the category', err);
+    });
+};
+
 module.exports = {
   tableDepartments,
   createNewOrder,
@@ -426,4 +468,6 @@ module.exports = {
   tableInventory,
   tableInvetoryCategories,
   createNewInventory,
+  updateInventoryCategories,
+  deleteTableInventoryCategory,
 };

@@ -34,7 +34,6 @@ const CreateInventory = ({ token }) => {
         body: JSON.stringify(inputData),
       });
 
-      console.log(res);
       if (res.ok) {
         mutate(['inventory', token]);
         setErrorMessage('');

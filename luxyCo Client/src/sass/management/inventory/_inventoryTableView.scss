@@ -1,5 +1,6 @@
 @use '../../colors';
 @use '../../mixing';
+@use '../../general';
 
 .inventoryTable {
   width: 100%;
@@ -15,4 +16,11 @@
     background-color: colors.$banner-Primary;
   }
   @include mixing.table;
+}
+
+.buttonPopup {
+  button {
+    @include mixing.button;
+    letter-spacing: general.$spacing;
+  }
 }

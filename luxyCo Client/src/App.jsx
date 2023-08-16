@@ -58,6 +58,7 @@ import {
   fetchOrderById,
 } from './api';
 import CreateInventory from './pages/management/inventory/CreateInventory';
+import CreateNewCategory from './pages/management/inventory/CreateNewCategory';
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -167,6 +168,10 @@ const App = () => {
               <Route
                 path="add-inventory"
                 element={<CreateInventory token={token} />}
+              />
+              <Route
+                path="add-category"
+                element={<CreateNewCategory token={token} />}
               />
             </Route>
           </Route>

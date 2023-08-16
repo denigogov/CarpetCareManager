@@ -29,6 +29,16 @@ router
   .get('/inventory', verifyToken, database.tableInventory)
   .post('/inventory', database.createNewInventory)
 
-  .get('/inventorycategories', verifyToken, database.tableInvetoryCategories);
+  .get('/inventorycategories', verifyToken, database.tableInvetoryCategories)
+  .put(
+    '/inventorycategories/:id',
+    verifyToken,
+    database.updateInventoryCategories
+  )
+  .delete(
+    '/inventorycategories/:id',
+    verifyToken,
+    database.deleteTableInventoryCategory
+  );
 
 module.exports = router;
