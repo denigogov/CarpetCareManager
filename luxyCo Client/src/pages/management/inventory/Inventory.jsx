@@ -83,8 +83,6 @@ const Inventory = ({ token }) => {
     setShowCategory(showCategory => !showCategory);
   };
 
-  console.log(showCategory);
-
   return (
     <div>
       <InventoryNavBar
@@ -93,6 +91,7 @@ const Inventory = ({ token }) => {
         setSearchedValue={setSearchedValue}
         handleShowCategory={handleShowCategory}
         showCategory={showCategory}
+        token={token}
       />
 
       {showCategory ? (
@@ -105,6 +104,7 @@ const Inventory = ({ token }) => {
           inventory={filteredInventory}
           formatedDate={formatedDate}
           handleSelectedInventory={handleSelectedInventory}
+          token={token}
         />
       )}
 

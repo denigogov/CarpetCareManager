@@ -27,9 +27,12 @@ router
   .post('/orderServices', verifyToken, database.postOrderServices)
 
   .get('/inventory', verifyToken, database.tableInventory)
-  .post('/inventory', database.createNewInventory)
+  .post('/inventory', verifyToken, database.createNewInventory)
+  .put('/inventory/:id', verifyToken, database.updateInventory)
+  .delete('/inventory/:id', verifyToken, database.deleteInventory)
 
   .get('/inventorycategories', verifyToken, database.tableInvetoryCategories)
+  .post('/inventorycategories', verifyToken, database.createInventoryCategory)
   .put(
     '/inventorycategories/:id',
     verifyToken,

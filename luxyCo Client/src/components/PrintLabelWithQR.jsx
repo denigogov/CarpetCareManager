@@ -4,7 +4,6 @@ import QRCodeLabel from './QRCodeLabel';
 import '../sass/_QRCodeStyle.scss';
 
 const PrintLabelsWithQR = ({ printData }) => {
-  console.log(printData);
   const componentRef = useRef();
 
   return (

@@ -22,8 +22,6 @@ const CreateInventory = ({ token }) => {
   const { data: inventoryCategories } = useSWR(['inventoryCategory', token]);
 
   const handleCreateInventory = async inputData => {
-    console.log(inputData);
-
     try {
       const res = await fetch(`http://localhost:4000/table/inventory/`, {
         method: 'POST',

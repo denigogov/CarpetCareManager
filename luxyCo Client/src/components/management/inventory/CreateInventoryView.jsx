@@ -11,7 +11,6 @@ const CreateInventoryView = ({
   const [QRcodeData, setQRcodeData] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  console.log(selectedCategory);
   const articleNameRef = useRef(null);
   const articleDetailsRef = useRef(null);
   const quantityRef = useRef(null);

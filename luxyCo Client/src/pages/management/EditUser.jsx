@@ -49,8 +49,7 @@ const EditUser = ({ token }) => {
       if (response.ok) {
         mutate('http://localhost:4000/user');
         setApiStatusMessage(true);
-        throw Error();
-      }
+      } else throw Error();
     } catch (error) {
       console.error(error);
     }

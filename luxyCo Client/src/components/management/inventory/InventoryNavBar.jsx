@@ -12,6 +12,7 @@ const InventoryNavBar = ({
   setSearchedValue,
   handleShowCategory,
   showCategory,
+  token,
 }) => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [createCategory, setCreateCategory] = useState(false);
@@ -60,12 +61,16 @@ const InventoryNavBar = ({
         onChange={e => setSearchedValue(e.target.value)}
       />
 
-      <Link to={`/management/inventory/add-category`}>
-        <p className="inv-nav inventoryLink" onClick={handleCategory}>
+      <Link
+        to={`/management/inventory/addInventoryCategory`}
+        onClick={handleCategory}
+      >
+        <p className="inv-nav inventoryLink">
           create new category
           <img src={categoryIcon} alt="new categoy icon" />
         </p>
       </Link>
+
       <Link
         to={`/management/inventory/add-inventory`}
         onClick={() => setPopupOpen(e => !e)}
@@ -87,7 +92,8 @@ const InventoryNavBar = ({
             onClick={preventPropagation}
           >
             {createCategory === 'create new category' ? (
-              <CreateNewCategory />
+              // I have to pass the token here because its not together with the Outlet!!!!
+              <CreateNewCategory token={token} />
             ) : (
               <Outlet />
             )}

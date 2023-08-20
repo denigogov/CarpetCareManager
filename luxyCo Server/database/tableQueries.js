@@ -344,7 +344,6 @@ const orderScheduledDate = (req, res) => {
 };
 
 // TABLE INVENTORY
-
 const tableInventory = (_, res) => {
   database
     .query(
@@ -393,6 +392,48 @@ const createNewInventory = (req, res) => {
     });
 };
 
+const updateInventory = (req, res) => {
+  const { article_name, details, quantity, location, price, category_id } =
+    req.body;
+  const id = req.params.id;
+
+  database
+    .query(
+      `UPDATE inventory SET article_name =?,details =?,quantity =? ,location =?,price =?,category_id =? WHERE id= ?`,
+      [article_name, details, quantity, location, price, category_id, id]
+    )
+    .then(([inventory]) => {
+      if (!inventory.affectedRows) {
+        res
+          .status(404)
+          .send('error happen updating Inventory, please try again!');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+};
+
+const deleteInventory = (req, res) => {
+  const id = req.params.id;
+
+  database
+    .query('DELETE FROM inventory WHERE id = ?', [id])
+    .then(([inventory]) => {
+      if (!inventory.affectedRows) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(404).send('error deleting the inventory', err);
+    });
+};
+
+// TABLE INVENTORY-Categories
 const tableInvetoryCategories = (_, res) => {
   database
     .query(`SELECT * from inventory_categories`)
@@ -407,6 +448,25 @@ const tableInvetoryCategories = (_, res) => {
     });
 };
 
+const createInventoryCategory = (req, res) => {
+  const { category_name } = req.body;
+
+  database
+    .query('INSERT INTO inventory_categories(category_name) VALUES (?)', [
+      category_name,
+    ])
+    .then(([category]) => {
+      console.log(category);
+      res
+        .location(`/table/inventorycategories/${category.insertId}`)
+        .sendStatus(201);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error creating new inventory category');
+    });
+};
+
 const updateInventoryCategories = (req, res) => {
   const { category_name } = req.body;
   const id = req.params.id;
@@ -417,7 +477,6 @@ const updateInventoryCategories = (req, res) => {
       [category_name, id]
     )
     .then(([category]) => {
-      console.log(category);
       if (!category.affectedRows) {
         res.status(404).send('error happen, please try again!');
       } else {
@@ -468,6 +527,9 @@ module.exports = {
   tableInventory,
   tableInvetoryCategories,
   createNewInventory,
+  createInventoryCategory,
   updateInventoryCategories,
   deleteTableInventoryCategory,
+  updateInventory,
+  deleteInventory,
 };

@@ -59,6 +59,7 @@ import {
 } from './api';
 import CreateInventory from './pages/management/inventory/CreateInventory';
 import CreateNewCategory from './pages/management/inventory/CreateNewCategory';
+import UpdateInventory from './pages/management/inventory/UpdateInventory';
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -111,9 +112,7 @@ const App = () => {
             loader={({ params }) => fetchOrderById({ params }, token)}
           />
         </Route>
-
         <Route path="/delivery" element={<Delivery token={token} />} />
-
         {/* CONTACT ROUTE */}
         <Route path="contact" element={<Contact token={token} />}>
           <Route path="addCustomer" element={<CreateContact token={token} />} />
@@ -137,7 +136,6 @@ const App = () => {
             }
           />
         </Route>
-
         {userInfo.department === 2 && (
           <Route path="management" element={<Management token={token} />}>
             <Route
@@ -169,8 +167,13 @@ const App = () => {
                 path="add-inventory"
                 element={<CreateInventory token={token} />}
               />
+
               <Route
-                path="add-category"
+                path="updateInventory/:id"
+                element={<UpdateInventory token={token} />}
+              />
+              <Route
+                path="addInventoryCategory"
                 element={<CreateNewCategory token={token} />}
               />
             </Route>
@@ -180,7 +183,6 @@ const App = () => {
         {/* BUG  THIS SHOULD BE ERROR ELEMENT BUT I ADDED BECAUSE PREVENTING ME USER LOGIN ERROR  BUG*/}
         {/* Mistake came from the user info in some point I'm losing the data from USERINFO and that way I have FLICKER PROBLEM with managment I need to fix prevent losing the data !!!!!! vazno */}
         <Route path="*" element={<p></p>}></Route>
-
         {/* <Route
           path="*"
           element={
