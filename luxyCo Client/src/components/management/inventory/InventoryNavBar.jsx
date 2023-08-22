@@ -5,8 +5,12 @@ import { useState } from 'react';
 import addInventoryIcon from '../../../assets/addIcon.svg';
 import CreateNewCategory from '../../../pages/management/inventory/CreateNewCategory';
 import ToggleBtn from '../../ToggleBtn';
+import InventoryPDF from './InventoryPDF';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const InventoryNavBar = ({
+  inventory,
+  selectedCategoryName,
   inventoryCategories,
   setSelectedCategory,
   setSearchedValue,
@@ -80,7 +84,27 @@ const InventoryNavBar = ({
           <img src={addInventoryIcon} />
         </p>
       </Link>
-      <p className="inv-nav">download inventory</p>
+      <p className="inv-nav">
+        <PDFDownloadLink
+          document={
+            <InventoryPDF
+              inventory={inventory}
+              selectedCategoryName={selectedCategoryName}
+            />
+          }
+          fileName={`Inventory - ${
+            selectedCategoryName?.category_name ?? 'All'
+          }`}
+        >
+          {({ loading }) =>
+            loading ? (
+              ''
+            ) : (
+              <p style={{ color: ' #666666' }}>download inventory</p>
+            )
+          }
+        </PDFDownloadLink>
+      </p>
       {popupOpen && (
         <div className="overlay" onClick={popupWindow}>
           <main

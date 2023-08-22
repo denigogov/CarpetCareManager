@@ -83,9 +83,17 @@ const Inventory = ({ token }) => {
     setShowCategory(showCategory => !showCategory);
   };
 
+  const selectedCategoryName = inventoryCategories.find(i => {
+    const matchCategory = i.id === +selectedCategory;
+
+    if (matchCategory) return i.category_name;
+  });
+
   return (
     <div>
       <InventoryNavBar
+        inventory={filteredInventory}
+        selectedCategoryName={selectedCategoryName}
         inventoryCategories={inventoryCategories}
         setSelectedCategory={setSelectedCategory}
         setSearchedValue={setSearchedValue}
@@ -93,7 +101,6 @@ const Inventory = ({ token }) => {
         showCategory={showCategory}
         token={token}
       />
-
       {showCategory ? (
         <InventoryCategoryView
           inventoryCategories={inventoryCategories}
@@ -110,9 +117,11 @@ const Inventory = ({ token }) => {
 
       {/* TO VIEW THE PDF ... JUST FOR EDIT  */}
       {/* <PDFViewer style={{ width: '100%', height: '100vh' }}>
-        <InventoryPDF inventory={filteredInventory} />
+        <InventoryPDF
+          inventory={filteredInventory}
+          selectedCategoryName={selectedCategoryName}
+        />
       </PDFViewer> */}
-
       {QRpopupOpen && (
         <div className="overlay" onClick={handlePopupQR}>
           <div

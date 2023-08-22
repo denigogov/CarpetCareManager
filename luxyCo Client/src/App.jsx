@@ -155,7 +155,7 @@ const App = () => {
               <Route path="addUser" element={<CreateUser token={token} />} />
             </Route>
 
-            <Route path="analytics" element={<Analytics />} />
+            <Route path="analytics" element={<Analytics token={token} />} />
             <Route path="expenses" element={<Expenses />} />
 
             <Route path="price" element={<Price token={token} />}>
