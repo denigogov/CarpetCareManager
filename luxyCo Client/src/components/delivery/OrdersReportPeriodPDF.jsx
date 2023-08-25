@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
 } from '@react-pdf/renderer';
-import appLogo from '../../../assets/appLogoPNG.png';
+import appLogo from '../../assets/appLogoPNG.png';
 
 const thermalPrinterWidth = 80; // in mm
 const logoWidth = 14; // fit the logo within the paper width
@@ -116,7 +116,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const InventoryPDF = ({ inventory, selectedCategoryName }) => (
+const OrdersReportPeriodPDF = ({
+  filterData,
+  startDateFormat,
+  endDateFormat,
+  searchByStatus,
+}) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View>
@@ -132,37 +137,54 @@ const InventoryPDF = ({ inventory, selectedCategoryName }) => (
         </View>
 
         <View>
-          <Text style={[styles.title, styles.textBold]}>Article List</Text>
+          <Text style={[styles.title, styles.textBold]}>Orders Report</Text>
           <Text style={[styles.title, styles.smallFont]}>
-            {selectedCategoryName?.category_name ?? 'All'}
+            Period: {startDateFormat} - {endDateFormat}
+          </Text>
+          <Text style={[styles.title, styles.smallFont]}>
+            Order Status: {searchByStatus}
           </Text>
           <View style={styles.table}>
             {/* Table header */}
             <View style={[styles.tableRow, styles.tableHeader]}>
               <Text style={styles.tableCell}>#</Text>
-              <Text style={styles.tableCell}>Article Number</Text>
+              <Text style={styles.tableCell}>Order ID</Text>
               <Text style={[styles.tableCell, styles.widerTableCell]}>
-                Article Name
+                Custumer
               </Text>
-              <Text style={styles.tableCell}>quantity</Text>
+              <Text style={[styles.tableCell, styles.widerTableCell]}>
+                Status
+              </Text>
+              <Text style={[styles.tableCell, styles.widerTableCell]}>
+                Product Type
+              </Text>
+              <Text style={styles.tableCell}>M²</Text>
+              <Text style={styles.tableCell}>Pieces</Text>
               <Text style={styles.tableCell}>Price</Text>
-              <Text style={styles.tableCell}>Category</Text>
-              <Text style={styles.tableCell}>Date entry</Text>
+              <Text style={[styles.tableCell, styles.widerTableCell]}>
+                Scheduled Date
+              </Text>
             </View>
             {/* Table rows */}
-            {inventory.map((i, index) => (
+            {filterData.map((i, index) => (
               <View key={i.id} style={styles.tableRow}>
                 <Text style={styles.tableCell}>{index + 1}</Text>
-                <Text style={styles.tableCell}>{i.article_number}</Text>
+                <Text style={styles.tableCell}>{i.id}</Text>
                 <Text style={[styles.tableCell, styles.widerTableCell]}>
-                  {`${i.article_name} - ${i.details}`}
+                  {`${i.first_name} ${i.last_name}`}
                 </Text>
-                <Text style={[styles.tableCell]}>{i.quantity}</Text>
+                <Text style={[styles.tableCell, styles.widerTableCell]}>
+                  {i.status_name}
+                </Text>
 
-                <Text style={styles.tableCell}>{i.price} €</Text>
-                <Text style={styles.tableCell}>{i.category_name}</Text>
-                <Text style={styles.tableCell}>
-                  {new Date(i.date_entry)
+                <Text style={[styles.tableCell, styles.widerTableCell]}>
+                  {i.service_name}
+                </Text>
+                <Text style={styles.tableCell}>{i.m2}</Text>
+                <Text style={styles.tableCell}>{i.pieces}</Text>
+                <Text style={styles.tableCell}>{i.total_price} €</Text>
+                <Text style={[styles.tableCell, styles.widerTableCell]}>
+                  {new Date(i.scheduled_date)
                     .toISOString()
                     .slice(0, 10)
                     .replaceAll('-', '.')
@@ -194,4 +216,4 @@ const InventoryPDF = ({ inventory, selectedCategoryName }) => (
   </Document>
 );
 
-export default InventoryPDF;
+export default OrdersReportPeriodPDF;

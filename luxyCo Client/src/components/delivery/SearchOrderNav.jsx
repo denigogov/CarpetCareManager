@@ -1,7 +1,10 @@
 import '../../sass/delivery/_searchOrderNav.scss';
+import downloadIcon from '../../assets/downloadIcon.svg';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import OrdersReportPeriodPDF from './OrdersReportPeriodPDF';
 
 const SearchOrderNav = ({
   setStartDate,
@@ -11,11 +14,17 @@ const SearchOrderNav = ({
   orderStatus,
   setSearchByStatus,
   setInputSearchValue,
+  filterData,
+  formattedDateLocal,
+  searchByStatus,
 }) => {
   const handleChange = ([newStartDate, newEndDate]) => {
     setStartDate(newStartDate);
     setEndDate(newEndDate);
   };
+
+  const startDateFormat = formattedDateLocal(startDate);
+  const endDateFormat = formattedDateLocal(endDate);
 
   return (
     <div className="searchOrder--container">
@@ -98,6 +107,32 @@ const SearchOrderNav = ({
                 return <option key={status.id}>{status.status_name}</option>;
               })}
             </select>
+          </li>
+
+          <li>
+            <PDFDownloadLink
+              document={
+                <OrdersReportPeriodPDF
+                  filterData={filterData}
+                  startDateFormat={startDateFormat}
+                  endDateFormat={endDateFormat}
+                  searchByStatus={searchByStatus}
+                />
+              }
+              fileName={`Order Report: ${startDateFormat} - ${endDateFormat} with status: ${searchByStatus}`}
+            >
+              {({ loading }) =>
+                loading ? (
+                  ''
+                ) : (
+                  <img
+                    className="downloadIconNav"
+                    src={downloadIcon}
+                    alt="icon to download orders in PDF"
+                  />
+                )
+              }
+            </PDFDownloadLink>
           </li>
         </ul>
       </nav>

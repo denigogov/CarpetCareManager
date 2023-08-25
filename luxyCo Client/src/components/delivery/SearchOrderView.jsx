@@ -1,40 +1,14 @@
 import { tr } from 'date-fns/locale';
 import '../../sass/delivery/_searchOrderView.scss';
 
-const SearchOrderView = ({
-  ordersBySchedueledDate,
-  searchByStatus,
-  inputSearchValue,
-}) => {
-  const filterData = inputSearchValue
-    ? ordersBySchedueledDate.filter(order => {
-        const searchValue = inputSearchValue.toLowerCase().trim();
-
-        const firstNameMatch = order.first_name
-          ? order.first_name.toLowerCase().includes(searchValue)
-          : '';
-
-        const lastNameMatch = order.last_name
-          ? order.last_name.toLowerCase().includes(searchValue)
-          : '';
-
-        return (
-          (searchByStatus === 'all' || order.status_name === searchByStatus) &&
-          (firstNameMatch || lastNameMatch)
-        );
-      })
-    : searchByStatus === 'all'
-    ? ordersBySchedueledDate
-    : ordersBySchedueledDate.filter(
-        order => order.status_name === searchByStatus
-      );
-
+const SearchOrderView = ({ ordersBySchedueledDate, filterData }) => {
   return (
     <div>
       <div className="table-searchOrderView">
         <table>
           <thead>
             <tr>
+              <th>#</th>
               <th>Order ID</th>
               <th>Customer</th>
               <th>m²</th>
@@ -47,9 +21,10 @@ const SearchOrderView = ({
           </thead>
           <tbody>
             {ordersBySchedueledDate
-              ? filterData.map(order => {
+              ? filterData.map((order, index) => {
                   return (
                     <tr key={order.id}>
+                      <td>{index + 1}</td>
                       <td>{order.id}</td>
                       <td>
                         {order?.first_name ?? 'custumer not exist'}{' '}

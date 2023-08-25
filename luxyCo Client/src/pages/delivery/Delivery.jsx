@@ -46,6 +46,29 @@ const Delivery = ({ token }) => {
   if (ordersBySchedueledDateLoading || orderStatusLoading)
     return <LoadingView />;
 
+  const filterData = inputSearchValue
+    ? ordersBySchedueledDate.filter(order => {
+        const searchValue = inputSearchValue.toLowerCase().trim();
+
+        const firstNameMatch = order.first_name
+          ? order.first_name.toLowerCase().includes(searchValue)
+          : '';
+
+        const lastNameMatch = order.last_name
+          ? order.last_name.toLowerCase().includes(searchValue)
+          : '';
+
+        return (
+          (searchByStatus === 'all' || order.status_name === searchByStatus) &&
+          (firstNameMatch || lastNameMatch)
+        );
+      })
+    : searchByStatus === 'all'
+    ? ordersBySchedueledDate
+    : ordersBySchedueledDate.filter(
+        order => order.status_name === searchByStatus
+      );
+
   return (
     <div className="delivery--container">
       <div className="delivery__container--scan">
@@ -64,11 +87,15 @@ const Delivery = ({ token }) => {
           orderStatus={orderStatus}
           setSearchByStatus={setSearchByStatus}
           setInputSearchValue={setInputSearchValue}
+          filterData={filterData}
+          formattedDateLocal={formattedDateLocal}
+          searchByStatus={searchByStatus}
         />
         <SearchOrderView
           ordersBySchedueledDate={ordersBySchedueledDate}
           searchByStatus={searchByStatus}
           inputSearchValue={inputSearchValue}
+          filterData={filterData}
         />
       </div>
     </div>
