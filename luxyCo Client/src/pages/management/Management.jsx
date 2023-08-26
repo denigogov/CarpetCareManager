@@ -5,10 +5,11 @@ import analyticsIcon from '../../assets/analyticsIcon.svg';
 import expensesIcon from '../../assets/expensesIcon.svg';
 import priceIcon from '../../assets/priceIcon.svg';
 import inventory from '../../assets/inventory.svg';
+import OrderStatusIcon from '../../assets/OrderStatus.svg';
 
 import useSWR from 'swr';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
-import { fetchTableServices } from '../../api';
+import { fetchOrderStatus, fetchTableServices } from '../../api';
 import LoadingView from '../../components/LoadingView';
 
 const Management = ({ token }) => {
@@ -17,8 +18,13 @@ const Management = ({ token }) => {
     error: servicesError,
     isLoading: servicesLoading,
   } = useSWR(['tableServices', token], () => fetchTableServices(token));
+  const {
+    data: orderService,
+    error: orderServiceError,
+    isLoading: orderServiceLoading,
+  } = useSWR(['tableOrderService', token], () => fetchOrderStatus(token));
 
-  if (servicesError)
+  if (servicesError || orderServiceError)
     return (
       <ErrorDisplayView
         errorMessage={error.message}
@@ -26,7 +32,7 @@ const Management = ({ token }) => {
         navigateTo2="/order"
       />
     );
-  if (servicesLoading) return <LoadingView />;
+  if (servicesLoading || orderServiceLoading) return <LoadingView />;
 
   return (
     <div className="managment__navbar">
@@ -75,6 +81,21 @@ const Management = ({ token }) => {
             >
               <img src={expensesIcon} alt="expenses" />
               expenses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="orderStatus"
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? 'pending'
+                  : isActive
+                  ? 'activeLink-globaly'
+                  : 'navLink'
+              }
+            >
+              <img src={OrderStatusIcon} alt="Order status Icon" />
+              status
             </NavLink>
           </li>
           <li>

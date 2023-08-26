@@ -66,7 +66,7 @@ const tableOrders = (req, res) => {
 
       left join users on orders.user_id = users.id
       left join customers on orders.customer_id = customers.id
-      inner join order_status on orders.order_status_id = order_status.id
+      left join order_status on orders.order_status_id = order_status.id
       INNER JOIN order_services ON orders.orderService_id = order_services.id
       left JOIN services ON order_services.service_id = services.id
 
@@ -160,7 +160,7 @@ const getOrderById = (req, res) => {
 
     left join users on orders.user_id = users.id
     left join customers on orders.customer_id = customers.id
-    inner join order_status on orders.order_status_id = order_status.id
+    left join order_status on orders.order_status_id = order_status.id
     INNER JOIN order_services ON orders.orderService_id = order_services.id
     left JOIN services ON order_services.service_id = services.id
 
@@ -190,6 +190,23 @@ const tableOrderStatus = (_, res) => {
     .catch(err => {
       console.error(err);
       res.status(500).send('Error retrieving data from database');
+    });
+};
+
+const deleteOrderStatus = (req, res) => {
+  const id = req.params.id;
+
+  database
+    .query('DELETE FROM order_status WHERE id = ?', [id])
+    .then(([orderStatus]) => {
+      if (!orderStatus.affectedRows) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(404).send('error deleting the orderStatus', err);
     });
 };
 
@@ -330,7 +347,7 @@ const orderScheduledDate = (req, res) => {
       left join customers on orders.customer_id = customers.id
       inner join order_services on orderService_id = order_services.id
       left join services on services.id = order_services.service_id
-      inner join order_status on order_status_id = order_status.id
+      left join order_status on order_status_id = order_status.id
       WHERE scheduled_date BETWEEN  ? AND ? `,
       [startDate, endDate]
     )
@@ -513,6 +530,7 @@ module.exports = {
   createNewOrder,
   tableOrders,
   tableOrderStatus,
+  deleteOrderStatus,
   tableServices,
   tableOrderServices,
   postOrderServices,
