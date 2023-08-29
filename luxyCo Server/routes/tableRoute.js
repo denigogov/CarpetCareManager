@@ -4,7 +4,7 @@ const router = express.Router();
 const database = require('../database/tableQueries');
 const { validateUsers } = require('../validators');
 const { verifyToken } = require('../Auth');
-
+// .post('/multiorder', database.createOrderMultiple)
 router
   .get('/departments', verifyToken, database.tableDepartments)
   .get('/orders/scheduled', verifyToken, database.orderScheduledDate)

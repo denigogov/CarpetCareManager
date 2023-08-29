@@ -1,5 +1,25 @@
 const database = require('./database');
 
+// const createOrderMultiple = (req, res) => {
+//   const orders = req.body; // Assumes req.body is an array of order objects [{ name, price }, ...]
+
+//   if (!Array.isArray(orders)) {
+//     return res.status(400).send('Invalid input format');
+//   }
+
+//   const values = orders.map(order => [order.name, order.price]);
+
+//   database
+//     .query('INSERT INTO multiorders (name, price) VALUES ?', [values])
+//     .then(result => {
+//       res.location(`/table/multiorder/${result.insertId}`).sendStatus(201);
+//     })
+//     .catch(err => {
+//       console.error(err);
+//       res.status(500).send('Error creating new orders');
+//     });
+// };
+
 const tableDepartments = (_, res) => {
   database
     .query('select * from  departments')
