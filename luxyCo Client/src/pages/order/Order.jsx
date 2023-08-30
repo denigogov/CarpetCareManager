@@ -154,7 +154,7 @@ const Order = ({ token, userInfo }) => {
       </div>
       {popupOpen && (
         <div className="overlay" onClick={popupWindow}>
-          <main className="popUp" onClick={preventPropagation}>
+          <main className="popUp xlPopUp" onClick={preventPropagation}>
             <Outlet />
           </main>
         </div>

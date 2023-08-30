@@ -63,14 +63,15 @@ const createNewOrder = (req, res) => {
     });
 };
 
+// GOTOVO !!!!
 const tableOrders = (req, res) => {
   const { date } = req.query;
 
   database
     .query(
       `
-      SELECT
-      orders.id,
+      select   
+      orders_multiple.id,
       users.username,
       customers.first_name,
       customers.last_name,
@@ -82,13 +83,11 @@ const tableOrders = (req, res) => {
       delivery,
       scheduled_date,city,
       pieces as carpet_pieces,
-      services.service_price,m2  ,pieces FROM orders
-
-      left join users on orders.user_id = users.id
-      left join customers on orders.customer_id = customers.id
-      left join order_status on orders.order_status_id = order_status.id
-      INNER JOIN order_services ON orders.orderService_id = order_services.id
-      left JOIN services ON order_services.service_id = services.id
+      services.service_price,m2  ,pieces FROM orders_multiple
+      left join customers on orders_multiple.customer_id = customers.id
+      left join users on orders_multiple.user_id = users.id
+      left join order_status on orders_multiple.order_status_id = order_status.id
+      left join services on orders_multiple.service_id = services.id
 
       WHERE order_date LIKE CONCAT(?, '%')    ORDER BY id DESC;`,
 
@@ -103,11 +102,12 @@ const tableOrders = (req, res) => {
     });
 };
 
+// GOTOVO !!!!
 const deleteOrders = (req, res) => {
   const id = req.params.id;
 
   database
-    .query('DELETE FROM orders WHERE id = ?', [id])
+    .query('DELETE FROM orders_multiple WHERE id = ?', [id])
     .then(([order]) => {
       if (!order.affectedRows) {
         res.sendStatus(404);
@@ -120,6 +120,7 @@ const deleteOrders = (req, res) => {
     });
 };
 
+// GOTOVO !!!!
 const updateOrder = (req, res) => {
   const { total_price, order_status_id, delivery, scheduled_date, m2, pieces } =
     req.body;
@@ -127,8 +128,7 @@ const updateOrder = (req, res) => {
 
   database
     .query(
-      `UPDATE orders
-      JOIN order_services ON orders.orderService_id = order_services.id
+      `UPDATE orders_multiple
       SET 
           total_price=?,
           order_status_id=?,
@@ -136,7 +136,7 @@ const updateOrder = (req, res) => {
           scheduled_date=?,
           m2=?,
           pieces=?
-      WHERE orders.id=?`,
+      WHERE orders_multiple.id=?`,
       [total_price, order_status_id, delivery, scheduled_date, m2, pieces, id]
     )
     .then(([order]) => {
@@ -151,40 +151,39 @@ const updateOrder = (req, res) => {
     });
 };
 
+// GOTOVO !!!!
 const getOrderById = (req, res) => {
   const id = parseInt(req.params.id);
   // Converting the date to be +2 hours because of the ISO String problem
   database
     .query(
       `
-    SELECT
-    orders.id,
-    users.username,
-    customers.first_name,
-    customers.last_name,
-    customers.phone_number,
-    customers.street,
-    status_name,
-    order_status.id as order_status_id,
-    CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
-    total_price ,
-    delivery,
-    CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date,
-    city,
-    postalCode,
-    pieces as carpet_pieces,
-    services.service_price,
-    m2,
-    pieces
-    FROM orders
+      select
+      orders_multiple.id,
+      users.username,
+      customers.first_name,
+      customers.last_name,
+      customers.phone_number,
+      customers.street,
+      status_name,
+      order_status.id as order_status_id,
+      CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
+      total_price ,
+      delivery,
+      CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date,
+      city,
+      postalCode,
+      pieces as carpet_pieces,
+      services.service_price,
+      m2,
+      pieces
+      FROM   orders_multiple
+      left join customers on orders_multiple.customer_id = customers.id
+      left join users on orders_multiple.user_id = users.id
+      left join order_status on orders_multiple.order_status_id = order_status.id
+      left join services on orders_multiple.service_id = services.id
 
-    left join users on orders.user_id = users.id
-    left join customers on orders.customer_id = customers.id
-    left join order_status on orders.order_status_id = order_status.id
-    INNER JOIN order_services ON orders.orderService_id = order_services.id
-    left JOIN services ON order_services.service_id = services.id
-
-    WHERE orders.id = ?  `,
+    WHERE orders_multiple.id = ?  `,
 
       [id]
     )
@@ -280,18 +279,6 @@ const deleteTableServices = (req, res) => {
     });
 };
 
-const tableOrderServices = (_, res) => {
-  database
-    .query('select * from  order_services')
-    .then(([orderServices]) => {
-      res.json(orderServices);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('Error retrieving data from database');
-    });
-};
-
 const createNewService = (req, res) => {
   const { service_name, service_price } = req.body;
 
@@ -309,32 +296,16 @@ const createNewService = (req, res) => {
     });
 };
 
-const postOrderServices = (req, res) => {
-  const { id, service_id, m2, pieces } = req.body;
-
-  database
-    .query(
-      'INSERT INTO order_services(id,service_id, m2, pieces) VALUES (?,?, ?, ?)',
-      [id, service_id, m2, pieces]
-    )
-    .then(([result]) => {
-      res.location(`/table/orderServices/${result.insertId}`).sendStatus(201);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('Error creating new values');
-    });
-};
-
+// GOTOVO !!!!
 const updateOrderStatus = (req, res) => {
   const { order_status_id } = req.body;
   const id = req.params.id;
 
   database
-    .query(`UPDATE orders SET  order_status_id=? WHERE orders.id=?`, [
-      order_status_id,
-      id,
-    ])
+    .query(
+      `UPDATE orders_multiple SET  order_status_id=? WHERE orders_multiple.id=?`,
+      [order_status_id, id]
+    )
     .then(([order]) => {
       if (!order.affectedRows) {
         res.status(404).send('error happen, please try again!');
@@ -353,21 +324,22 @@ const orderScheduledDate = (req, res) => {
   database
     .query(
       `
-      SELECT 
-      orders.id,
-      first_name,
-      last_name,
+      select
+      orders_multiple.id,
+      customers.first_name,
+      customers.last_name,
       m2,
       pieces,
       total_price,
       status_name,
       service_name,
       CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date
-      FROM orders 
-      left join customers on orders.customer_id = customers.id
-      inner join order_services on orderService_id = order_services.id
-      left join services on services.id = order_services.service_id
-      left join order_status on order_status_id = order_status.id
+      FROM orders_multiple 
+      left join customers on orders_multiple.customer_id = customers.id
+      left join order_status on orders_multiple.order_status_id = order_status.id
+      left join services on orders_multiple.service_id = services.id
+
+
       WHERE scheduled_date BETWEEN  ? AND ? `,
       [startDate, endDate]
     )
@@ -552,8 +524,6 @@ module.exports = {
   tableOrderStatus,
   deleteOrderStatus,
   tableServices,
-  tableOrderServices,
-  postOrderServices,
   deleteOrders,
   getOrderById,
   updateOrder,

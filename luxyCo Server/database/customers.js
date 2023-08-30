@@ -93,19 +93,19 @@ const getCustomerOrders = (req, res) => {
   // Converting the date to be +2 hours because of the ISO String problem
   database
     .query(
-      `SELECT customers.first_name, customers.last_name,
-      order_services.m2,  
-      
-      CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
-      orders.total_price, 
-      orders.delivery, 
-      orders.scheduled_date,
-      services.service_name,
-      pieces
-      FROM orders 
-      INNER JOIN customers ON customers.id = orders.customer_id 
-      INNER JOIN order_services ON order_services.id = orders.orderService_id
-      INNER JOIN services on services.id = service_id
+      `SELECT customers.first_name, 
+      customers.last_name,
+        orders_multiple.m2,  
+        
+        CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
+        orders_multiple.total_price, 
+        orders_multiple.delivery, 
+        orders_multiple.scheduled_date,
+        services.service_name,
+        orders_multiple.pieces
+        FROM orders_multiple 
+        INNER JOIN customers ON customers.id = orders_multiple.customer_id 
+        INNER JOIN services on services.id = service_id
       WHERE customers.id = ?
       order by order_date DESC`,
       [id]

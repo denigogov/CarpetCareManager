@@ -4,7 +4,7 @@ const router = express.Router();
 const database = require('../database/tableQueries');
 const { validateUsers } = require('../validators');
 const { verifyToken } = require('../Auth');
-// .post('/multiorder', database.createOrderMultiple)
+
 router
   .get('/departments', verifyToken, database.tableDepartments)
   .get('/orders/scheduled', verifyToken, database.orderScheduledDate)
@@ -23,9 +23,6 @@ router
   .post('/services', verifyToken, database.createNewService)
   .put('/services/:id', verifyToken, database.updateTableServices)
   .delete('/services/:id', verifyToken, database.deleteTableServices)
-
-  .get('/orderServices', verifyToken, database.tableOrderServices)
-  .post('/orderServices', verifyToken, database.postOrderServices)
 
   .get('/inventory', verifyToken, database.tableInventory)
   .post('/inventory', verifyToken, database.createNewInventory)

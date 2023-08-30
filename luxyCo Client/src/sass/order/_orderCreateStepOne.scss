@@ -1,6 +1,11 @@
-@use "../colors";
-@use "../general";
-@use "../mixing";
+@use '../colors';
+@use '../general';
+@use '../mixing';
+
+.stepOne {
+  display: flex;
+  gap: 15px;
+}
 
 .OrderCreateStepOne {
   display: flex;
@@ -34,4 +39,8 @@
 
 .totalPriceSum {
   font-weight: 500;
+}
+
+.deliveryIcon {
+  cursor: pointer;
 }

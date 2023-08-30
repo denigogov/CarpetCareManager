@@ -1,89 +1,20 @@
 import { useRef, useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
 import '../../sass/order/_orderCreateStepOne.scss';
-import OrderStepTwo from './OrderStepTwo';
 
-const OrderCreate = ({
-  services,
-  orderServices,
-  token,
-  customers,
-  userInfo,
-}) => {
-  const [servicePrice, setServicePrice] = useState(0);
-  const [m2, setm2] = useState(0);
-  const [delivery, setDelivery] = useState(false);
-  const [serviceTypeId, setServiceTypeId] = useState(null);
-  const [nextStepMessage, setNextStepMessage] = useState(false);
-  const [error, setError] = useState('');
-
-  console.log(services);
-
-  const { mutate } = useSWRConfig();
+const OrderCreate = ({ services, setm2, setServiceTypeId, setPieces }) => {
   const takePiecesRef = useRef(null);
-
-  const serviceDataStoringRef = useRef({});
-  const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
 
   const filteredServices = services.filter(service => service.id !== 4);
 
-  const deliveryPrice = services
-    .filter(service => service.id === 4)
-    .map(service => service.service_price);
-
-  // Values that I need for STEP 2
-  const orderServiceLastId = orderServices.map(service => service.id).pop();
-  const totalPrice = delivery
-    ? priceCalculate + +deliveryPrice[0]
-    : priceCalculate;
-
   const selectService = e => {
     const selectedService = JSON.parse(e.target.value);
-    setServicePrice(selectedService.service_price);
     setServiceTypeId(selectedService.id);
-  };
-
-  const handleStepOne = e => {
-    e.preventDefault();
-
-    const data = {
-      service_id: serviceTypeId,
-      m2: parseInt(m2),
-      pieces: parseInt(takePiecesRef.current.value),
-    };
-    serviceDataStoringRef.current = data;
-
-    if (!serviceTypeId || !m2 || !takePiecesRef.current.value) {
-      setError('Please fill in all the required fields.');
-      return;
-    }
-
-    const createOrderStepOne = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/table/orderServices`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(serviceDataStoringRef.current),
-        });
-
-        if (res.ok) {
-          mutate('http://localhost:4000/table/orderServices'); // mutate is  Refresh the users data
-          setNextStepMessage(true);
-        }
-      } catch (error) {
-        setError('Error creating order', error);
-      }
-    };
-    createOrderStepOne();
   };
 
   return (
     <div className="OrderCreateStepOne">
       <form className="orderInput--wrap">
-        <select onChange={selectService} disabled={nextStepMessage}>
+        <select onChange={selectService}>
           <option value="">Service Type</option>
           {filteredServices.map(service => (
             <option value={JSON.stringify(service)} key={service.id}>
@@ -98,45 +29,16 @@ const OrderCreate = ({
           type="number"
           min="0"
           onChange={e => setm2(e.target.value)}
-          disabled={nextStepMessage}
         />
 
         <input
           required
           type="number"
           min="0"
-          ref={takePiecesRef}
+          onChange={e => setPieces(e.target.value)}
           placeholder="add carpet pieces"
-          disabled={nextStepMessage}
         />
-
-        <label>delivery</label>
-        <input type="checkbox" onChange={e => setDelivery(e.target.checked)} />
       </form>
-
-      <div className="totalPrice">
-        {nextStepMessage && (
-          <OrderStepTwo
-            customers={customers}
-            token={token}
-            totalPrice={totalPrice}
-            orderServiceLastId={orderServiceLastId}
-            delivery={delivery}
-            userInfo={userInfo}
-          />
-        )}
-        {totalPrice.length > 1 ? (
-          ''
-        ) : (
-          <p className="totalPriceSum">price: {totalPrice.toFixed(2)} €</p>
-        )}
-        {!nextStepMessage && <p className="errorMessage">{error}</p>}
-        {!nextStepMessage && (
-          <button onClick={handleStepOne} className="stepOneBtn">
-            next
-          </button>
-        )}
-      </div>
     </div>
   );
 };
