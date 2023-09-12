@@ -6,7 +6,8 @@ const CreateCustomer = ({
   token,
   setCreateNewCustomer,
   setNewCustomerData,
-  onHandleStepThree,
+  customers,
+  setStepTwo,
 }) => {
   const { mutate } = useSWRConfig();
   const [error, setError] = useState('');
@@ -37,6 +38,19 @@ const CreateCustomer = ({
     // destructoring because I want to check if the fileds are empty or not
     const { first_name, last_name, phone_number } = data;
 
+    const findDuplicate = customers.some(
+      arr => arr.phone_number === takePhoneNumber.current.value
+    );
+
+    {
+      findDuplicate &&
+        setError(
+          'please try again, user with same phone number already exists'
+        );
+    }
+
+    console.log(findDuplicate);
+
     if (!first_name || !last_name || !phone_number) {
       setError('Please fill in all the required fields.');
       return;
@@ -54,10 +68,10 @@ const CreateCustomer = ({
         });
 
         if (res.ok) {
-          onHandleStepThree();
           setCreateNewCustomer(false);
           setNewCustomerData(customerData.current);
           mutate('http://localhost:4000/customer', true);
+          setStepTwo(true);
         }
       } catch (error) {
         setError('Error creating customer', error);

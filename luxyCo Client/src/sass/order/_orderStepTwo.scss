@@ -1,12 +1,12 @@
-@use "../colors";
-@use "../general";
-@use "../mixing";
+@use '../colors';
+@use '../general';
+@use '../mixing';
 .addCustomerIcon {
   width: 20px;
 }
 
 .customerSearchIcon {
-  background: url("../../assets/detailsIcon.svg");
+  background: url('../../assets/detailsIcon.svg');
   @include mixing.inputFiledsAddIcon();
 }
 
@@ -14,7 +14,7 @@
   margin-top: 30px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 30px;
 
   input {
@@ -39,13 +39,6 @@
 
   &::-webkit-scrollbar-thumb {
     background-color: colors.$banner-Primary;
-  }
-
-  ul {
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
   }
 
   button {

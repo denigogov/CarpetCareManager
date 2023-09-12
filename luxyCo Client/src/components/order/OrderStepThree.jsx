@@ -4,70 +4,24 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../../sass/order/_orderStepThree.scss';
 import { format } from 'date-fns';
 
-const OrderStepThree = ({
-  customerLastId,
-  selectedUserId,
-  totalPrice,
-  orderServiceLastId,
-  delivery,
-  userInfo,
-  token,
-}) => {
+const OrderStepThree = ({ setDateForrmated }) => {
   const [scheduleDate, setScheduleDate] = useState(new Date());
-  const [error, setError] = useState('');
-  const [orderSuccessful, setOrderSuccessful] = useState('');
 
-  const formattedDate = format(scheduleDate, 'yyyy/MM/dd');
-
-  // set user to be able to select date min. today
-  const today = new Date();
-
-  const orderValues = {
-    customer_id: selectedUserId !== undefined ? selectedUserId : customerLastId,
-    user_id: userInfo.id,
-    total_price: totalPrice,
-    delivery: delivery,
-    orderService_id: orderServiceLastId,
-    scheduled_date: formattedDate,
-  };
-
-  const sendOrder = () => {
-    const createOrder = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/table/orders`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(orderValues),
-        });
-
-        if (res.ok) {
-          setOrderSuccessful('Order added. Success!');
-        }
-      } catch (error) {
-        setError('Error creating order', error);
-      }
-    };
-    createOrder();
+  const scheduleDateSetup = date => {
+    const formattedDate = format(date, 'yyyy/MM/dd');
+    setScheduleDate(date);
+    setDateForrmated(formattedDate);
   };
 
   return (
-    <div className="orderStepThree--container">
-      <div className="dataPicker">
-        <p>add Schedule Date</p>
-        <DatePicker
-          selected={scheduleDate}
-          onChange={date => setScheduleDate(date)}
-          dateFormat="yyyy/MM/dd"
-          disabled={orderSuccessful}
-          minDate={today}
-        />
-        <button onClick={sendOrder}>create order</button>
-        <p className="successfulMessage">{orderSuccessful}</p>
-        <p className="errorMessage">{error}</p>
-      </div>
+    <div className="dataPicker">
+      <p>add Schedule Date</p>
+      <DatePicker
+        selected={scheduleDate}
+        onChange={date => scheduleDateSetup(date)}
+        dateFormat="yyyy/MM/dd"
+        minDate={new Date()}
+      />
     </div>
   );
 };

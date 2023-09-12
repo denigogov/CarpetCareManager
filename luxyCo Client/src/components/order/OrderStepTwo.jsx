@@ -1,150 +1,114 @@
-import { useState } from "react";
-import "../../sass/order/_orderStepTwo.scss";
-import addCustomerIcon from "../../assets/addUserIcon.svg";
-import OrderStepThree from "./OrderStepThree";
-import CreateCustomer from "./CreateCustomer";
-import useSWR, { useSWRConfig } from "swr";
+import { useRef, useState } from 'react';
+import addIcon from '../../assets/addIcon.svg';
+import deleteIcon from '../../assets/deleteIcon.svg';
+import '../../sass/order/_orderCreateStepOne.scss';
 
 const OrderStepTwo = ({
-  customers,
-  token,
-  totalPrice,
-  orderServiceLastId,
-  delivery,
-  userInfo,
+  services,
+  data,
+  setData,
+
+  setDeliveryPrice,
 }) => {
-  const [searchInputUser, setSearchInputUser] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
-  const [createNewCustomer, setCreateNewCustomer] = useState(false);
-  const [newCustomerData, setNewCustomerData] = useState("");
-  const [showStepThree, setShowStepThree] = useState(false);
+  const filteredServices = services.filter(service => {
+    if (service.service_name === 'Delivery') {
+      setDeliveryPrice(service.service_price);
+      return false; // Excluding the 'Delivery' service from the filteredServices array and setDeliveryPrice for calculte the final total_price
+    }
 
-  const { mutate } = useSWRConfig();
-
-  // Values That I need to complete the order in step-3 !!
-  // taking the last element with SHIFT because In my database Order by id DESC is !! I want user to see the lates created user first!! In the future we can apply filters for user to search by Letters ....
-  const customerLastId = customers.map((customer) => customer.id).shift();
-  const selectedUserId = selectedUser.id;
-
-  const findCustomer = customers.filter((customer) => {
-    const searchValue = searchInputUser.toLowerCase().trim();
-
-    const searchByFirstName = customer.first_name
-      .toLowerCase()
-      .includes(searchValue);
-    const searchByPhoneNumber = customer.phone_number.includes(searchInputUser);
-    const searchByLastName = customer.last_name
-      .toLowerCase()
-      .includes(searchValue);
-
-    return (
-      (searchInputUser !== "" && searchByFirstName) ||
-      searchByPhoneNumber ||
-      searchByLastName
-    );
+    return true;
   });
 
-  const showUser = (customer) => {
-    setSelectedUser(customer);
-    setSearchInputUser("");
-    setCreateNewCustomer(false);
+  const addProduct = () => {
+    setData([...data, { m2: 0, pieces: 0, service_id: '' }]);
   };
 
-  const addNewCustomer = () => {
-    setSelectedUser("");
-    // Toggle the state to open and close create user
-    setCreateNewCustomer(!createNewCustomer);
-    mutate("http://localhost:4000/table/orderServices");
+  const handleChange = (e, i) => {
+    const { name, value } = e.target;
+    const onChangeVal = [...data];
+    onChangeVal[i][name] = value;
+
+    setData(onChangeVal);
   };
 
-  const handleStepThree = () => {
-    setShowStepThree(true);
+  const handleDelete = i => {
+    const deleteValue = [...data];
+    deleteValue.splice(i, 1);
+    setData(deleteValue);
+  };
+
+  const selectService = (e, i) => {
+    const selectedService = JSON.parse(e.target.value);
+
+    const serviceId = selectedService.id;
+    setData(data => {
+      const newData = [...data];
+      newData[i].service_id = serviceId;
+
+      return newData;
+    });
   };
 
   return (
-    <div>
-      <div className="orderStepTwo--container">
-        <input
-          type="text"
-          value={searchInputUser}
-          onChange={(e) => setSearchInputUser(e.target.value)}
-          className="customerSearchIcon"
-          placeholder="search for user"
-          disabled={selectedUser}
+    <div className="OrderCreateStepOne">
+      <form className="orderInput--wrap">
+        <img
+          className="clickedAddIcon"
+          style={{ width: '30px', cursor: 'pointer' }}
+          src={addIcon}
+          alt="add new product"
+          onClick={addProduct}
         />
+        {data.map((arr, i) => (
+          <div className="stepOneFlex" key={i}>
+            <select
+              defaultValue={arr.service_id}
+              name="service_id"
+              onChange={e => selectService(e, i)}
+            >
+              <option>Service Type</option>
+              {filteredServices.map(service => (
+                <option
+                  value={JSON.stringify(service)}
+                  key={service.id}
+                  onChange={handleChange}
+                >
+                  {service.service_name}
+                </option>
+              ))}
+            </select>
 
-        {searchInputUser ? (
-          findCustomer.length ? (
-            <div className="OrderCustomersList">
-              <ul>
-                {findCustomer.map((customer) => (
-                  <li key={customer.id} onClick={() => showUser(customer)}>
-                    {customer.first_name + " " + customer.last_name}
-                    <button>select</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p>No matching customers found</p>
-          )
-        ) : (
-          <div className="addNewCustomer--container" onClick={addNewCustomer}>
-            <p>add new customer</p>
+            <input
+              required
+              placeholder="carpet size in m²"
+              type="number"
+              min="0"
+              name="m2"
+              value={arr.m2}
+              onChange={e => handleChange(e, i)}
+            />
+
+            <input
+              required
+              type="number"
+              min="0"
+              name="pieces"
+              placeholder="add carpet pieces"
+              value={arr.pieces}
+              onChange={e => handleChange(e, i)}
+            />
+
+            <p className="currentPrice">price: {arr.total_price} €</p>
+
             <img
-              className="addCustomerIcon"
-              src={addCustomerIcon}
-              alt="create new user Icon"
+              src={deleteIcon}
+              alt="test"
+              style={{ width: '1.95rem', cursor: 'pointer' }}
+              onClick={() => handleDelete(i)}
             />
           </div>
-        )}
-        {selectedUser ? (
-          <div>
-            <p>{selectedUser.first_name + " " + selectedUser.last_name}</p>
-            <p>{selectedUser.street + " " + selectedUser.city}</p>
-            <p>{selectedUser.phone_number}</p>
-          </div>
-        ) : newCustomerData ? (
-          <div>
-            <p>
-              {newCustomerData.first_name + " " + newCustomerData.last_name}
-            </p>
-            <p>{newCustomerData.street + " " + newCustomerData.city}</p>
-            <p>{newCustomerData.phone_number}</p>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
-      {createNewCustomer && (
-        <CreateCustomer
-          token={token}
-          setCreateNewCustomer={setCreateNewCustomer}
-          setNewCustomerData={setNewCustomerData}
-          onHandleStepThree={handleStepThree}
-        />
-      )}
-      {(showStepThree || selectedUser) && (
-        <OrderStepThree
-          customerLastId={customerLastId}
-          selectedUserId={selectedUserId}
-          totalPrice={totalPrice}
-          orderServiceLastId={orderServiceLastId}
-          delivery={delivery}
-          userInfo={userInfo}
-          token={token}
-        />
-      )}
-
-      {/* <OrderStepThree
-        customerLastId={customerLastId}
-        selectedUserId={selectedUserId}
-        totalPrice={totalPrice}
-        orderServiceLastId={orderServiceLastId}
-        delivery={delivery}
-        userInfo={userInfo}
-        token={token}
-      /> */}
+        ))}
+      </form>
     </div>
   );
 };

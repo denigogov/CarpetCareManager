@@ -14,6 +14,7 @@ const OrderView = ({
   setPopupOpen,
 }) => {
   // User to search orders by FirstName, LastName, and Street
+
   const search = searchOrder
     ? data.filter(order => {
         const searchValue = searchOrder.toLowerCase().trim();

@@ -1,23 +1,23 @@
 const database = require('./database');
 
 // const createOrderMultiple = (req, res) => {
-//   const orders = req.body; // Assumes req.body is an array of order objects [{ name, price }, ...]
+// const orders = req.body; // Assumes req.body is an array of order objects [{ name, price }, ...]
 
-//   if (!Array.isArray(orders)) {
-//     return res.status(400).send('Invalid input format');
-//   }
+// if (!Array.isArray(orders)) {
+//   return res.status(400).send('Invalid input format');
+// }
 
-//   const values = orders.map(order => [order.name, order.price]);
+// const values = orders.map(order => [order.name, order.price]);
 
-//   database
-//     .query('INSERT INTO multiorders (name, price) VALUES ?', [values])
-//     .then(result => {
-//       res.location(`/table/multiorder/${result.insertId}`).sendStatus(201);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).send('Error creating new orders');
-//     });
+// database
+//   .query('INSERT INTO multiorders (name, price) VALUES ?', [values])
+//   .then(result => {
+//     res.location(`/table/multiorder/${result.insertId}`).sendStatus(201);
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     res.status(500).send('Error creating new orders');
+//   });
 // };
 
 const tableDepartments = (_, res) => {
@@ -33,33 +33,35 @@ const tableDepartments = (_, res) => {
 };
 
 const createNewOrder = (req, res) => {
-  const {
-    customer_id,
-    user_id,
-    total_price,
-    delivery,
-    scheduled_date,
-    orderService_id,
-  } = req.body;
+  const orders = req.body;
+
+  if (!Array.isArray(orders) || orders.length === 0) {
+    return res.status(400).send('Invalid input format');
+  }
+
+  const values = orders.map(order => [
+    order.customer_id,
+    order.user_id,
+    order.service_id, // Replace with your service_id field
+    order.scheduled_date,
+    order.total_price,
+    order.m2,
+    order.pieces,
+    order.delivery,
+  ]);
+
+  const query =
+    'INSERT INTO orders_multiple (customer_id, user_id, service_id, scheduled_date, total_price, m2, pieces, delivery) VALUES ?';
 
   database
-    .query(
-      'INSERT INTO orders(customer_id, user_id, total_price, delivery, orderService_id,scheduled_date) VALUES (?, ?, ?, ? ,?,?)',
-      [
-        customer_id,
-        user_id,
-        total_price,
-        delivery,
-        orderService_id,
-        scheduled_date,
-      ]
-    )
-    .then(([order]) => {
-      res.location(`/table/orders/${order.insertId}`).sendStatus(201);
+    .query(query, [values])
+    .then(result => {
+      console.log(result);
+      res.sendStatus(201);
     })
     .catch(err => {
       console.error(err);
-      res.status(500).send('Error creating new order');
+      res.status(500).send('Error creating new orders');
     });
 };
 

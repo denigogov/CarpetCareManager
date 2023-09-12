@@ -2,22 +2,12 @@
 @use '../general';
 @use '../mixing';
 
-.stepOne {
-  display: flex;
-  gap: 15px;
-}
-
-.OrderCreateStepOne {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
 .orderInput--wrap {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   gap: 20px;
-  text-align: center;
+
   input,
   select {
     @include mixing.inputFileds;
@@ -30,6 +20,10 @@
   letter-spacing: general.$spacing;
 }
 
+.sendOrderBtn {
+  @include mixing.button;
+  letter-spacing: general.$spacing;
+}
 .totalPrice {
   display: flex;
   flex-direction: column;
@@ -43,4 +37,14 @@
 
 .deliveryIcon {
   cursor: pointer;
+}
+
+.stepOneFlex {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.currentPrice {
+  font-size: 11px;
 }

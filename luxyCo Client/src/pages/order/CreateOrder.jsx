@@ -1,28 +1,52 @@
 import { fetchTableCustomers, fetchTableServices } from '../../api';
 import useSWR, { useSWRConfig } from 'swr';
-import OrderCreateStepOne from '../../components/order/OrderCreateStepOne';
+import { format } from 'date-fns';
+
 import LoadingView from '../../components/LoadingView';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
-import { useState } from 'react';
-import addIcon from '../../assets/addIcon.svg';
-import deleteIcon from '../../assets/deleteIcon.svg';
+import { useEffect, useState } from 'react';
+
 import truckIcon from '../../assets/truck-tick-svgrepo-com.svg';
+import OrderStepOne from '../../components/order/OrderStepOne';
+import OrderStepTwo from '../../components/order/OrderStepTwo';
+import OrderStepThree from '../../components/order/OrderStepThree';
 
 const CreateOrder = ({ token, userInfo }) => {
-  const [m2, setm2] = useState(0);
+  const [deliveryPrice, setDeliveryPrice] = useState('');
+
+  const [stepTwo, setStepTwo] = useState(false);
+  const [showStepThree, setShowStepThree] = useState(false);
+  const [orderSend, setOrderSend] = useState(false);
+  const [error, setError] = useState('');
+  const [orderSuccessful, setOrderSuccessful] = useState('');
+
   const [delivery, setDelivery] = useState(false);
-  const [pieces, setPieces] = useState(0);
-  const [serviceTypeId, setServiceTypeId] = useState(null);
-  const [stepOneComponents, setStepOneComponents] = useState([]);
-  const [stepOneData, setStepOneData] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [newCustomerID, setNewCustomerID] = useState('');
+  const [dateForrmated, setDateForrmated] = useState('');
+
+  const [data, setData] = useState([
+    {
+      m2: 0,
+      pieces: 0,
+      service_id: '',
+    },
+  ]);
+
+  useEffect(() => {
+    if (orderSuccessful) {
+      const timer = setTimeout(() => {
+        setOrderSuccessful('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [orderSuccessful]);
 
   const {
     data: customers,
     error: customersError,
     isLoading: customersLoading,
-  } = useSWR(['customers', token], () => fetchTableCustomers(token), {
-    refreshInterval: 1000, // Refresh data every 1 seconds
-  });
+  } = useSWR(['customers', token], () => fetchTableCustomers(token));
 
   const {
     data: services,
@@ -30,7 +54,7 @@ const CreateOrder = ({ token, userInfo }) => {
     isLoading: servicesLoading,
   } = useSWR(['services', token], () => fetchTableServices(token));
 
-  if (customersError)
+  if (servicesError || customersError)
     return (
       <ErrorDisplayView
         errorMessage={'faild to fetch'}
@@ -39,120 +63,145 @@ const CreateOrder = ({ token, userInfo }) => {
       />
     );
 
-  if (servicesError)
-    return (
-      <ErrorDisplayView
-        errorMessage={'faild to fetch'}
-        navigateTo1="/dashboard"
-        navigateTo2="/order"
-      />
-    );
+  if (customersLoading || servicesLoading) return <LoadingView />;
 
-  if (customersLoading || servicesLoading) return <LoadingView />; //I need to add loading component!
+  const updatedData = data.map(item => {
+    // matching the ID from all services with current to take out the price and create total_price of the current service !
+    const service = services.find(s => s.id === item.service_id);
 
-  // const deliveryPrice = services
-  //   .filter(service => service.id === 4)
-  //   .map(service => service.service_price);
+    return {
+      ...item,
+      customer_id: selectedUser.id ? +selectedUser.id : +newCustomerID + 1,
+      user_id: +userInfo.id,
+      delivery: delivery,
+      scheduled_date: dateForrmated
+        ? dateForrmated
+        : format(new Date(), 'yyyy/MM/dd'),
+      total_price: service
+        ? (service.service_price * item.m2).toFixed(2)
+        : '0.00',
+    };
+  });
 
-  // const priceCalculate = servicePrice ? servicePrice * m2 : 0.0;
+  const totalPrice = updatedData
+    .map(arr => arr.total_price)
+    .reduce((acc, mov) => +acc + +mov, 0);
 
-  // const totalPrice = delivery
-  //   ? priceCalculate + +deliveryPrice[0]
-  //   : priceCalculate;
+  const sendOrder = () => {
+    const createOrder = async () => {
+      try {
+        const res = await fetch(`http://localhost:4000/table/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedData),
+        });
 
-  const handleStepOne = e => {
-    e.preventDefault();
-
-    console.log(stepOneData);
-  };
-
-  const addProduct = () => {
-    const newData = { m2, pieces, serviceTypeId };
-    setStepOneData([...stepOneData, newData]);
-
-    const newComponent = (
-      <OrderCreateStepOne
-        services={services}
-        setm2={setm2}
-        setServiceTypeId={setServiceTypeId}
-        setPieces={setPieces}
-      />
-    );
-
-    setStepOneComponents([...stepOneComponents, newComponent]);
-  };
-
-  // BUGBUGBUGBUG
-  const removeProduct = id => {
-    const updatedComponents = stepOneComponents.filter(
-      component => component.key !== id
-    );
-    setStepOneComponents(updatedComponents);
-
-    const updatedData = stepOneData.filter(data => data.id !== id);
-    setStepOneData(updatedData);
+        if (res.ok) {
+          setError('');
+          setOrderSuccessful('Order added. Success!');
+          setOrderSend(true);
+        }
+      } catch (error) {
+        setError('Error creating order', error);
+      }
+    };
+    createOrder();
   };
 
   return (
     <div className="createOrder--container">
-      <p className="createOrder--title">Create Order</p>
-      <div className="createOrder--wrap">
-        <div className="stepOne">
-          <img
-            className="clickedAddIcon"
-            onClick={addProduct}
-            style={{ width: '30px', cursor: 'pointer' }}
-            src={addIcon}
-            alt="add new product"
-          />
-
-          <OrderCreateStepOne
-            services={services}
-            setm2={setm2}
-            setServiceTypeId={setServiceTypeId}
-            setPieces={setPieces}
-          />
-        </div>
-        {stepOneComponents.map((component, i) => (
-          <div key={i} className="stepOne">
-            {component}
-            <button
-              onClick={() => removeProduct(component)}
-              className="removeProductButton"
-            >
+      {orderSend || (
+        <div>
+          <p className="createOrder--title">Create Order</p>
+          <div className="createOrder--wrap">
+            <OrderStepOne
+              customers={customers}
+              token={token}
+              userInfo={userInfo}
+              selectedUser={selectedUser}
+              setSelectedUser={setSelectedUser}
+              setNewCustomerID={setNewCustomerID}
+              setStepTwo={setStepTwo}
+            />
+            {(stepTwo || selectedUser) && (
+              <div
+                style={
+                  showStepThree
+                    ? {
+                        transition: 'all 0.4s linear',
+                        transform: 'scale(0.8)',
+                        marginTop: '-40px',
+                      }
+                    : { transition: 'all 0.4s linear' }
+                }
+              >
+                <OrderStepTwo
+                  services={services}
+                  data={updatedData}
+                  setData={setData}
+                  setDeliveryPrice={setDeliveryPrice}
+                />
+              </div>
+            )}
+            {showStepThree && data.length && (
+              <OrderStepThree setDateForrmated={setDateForrmated} />
+            )}
+            <div className="totalPrice">
               <img
-                style={{ width: '27px', cursor: 'pointer' }}
-                src={deleteIcon}
-                alt="delete product icon"
+                className="deliveryIcon"
+                onClick={() => setDelivery(!delivery)}
+                src={truckIcon}
+                style={
+                  delivery
+                    ? {
+                        width: '40px',
+                        filter:
+                          'invert(53%) sepia(91%) saturate(339%) hue-rotate(68deg) brightness(94%) contrast(91%)',
+                      }
+                    : {
+                        width: '40px',
+                        filter:
+                          'invert(13%) sepia(96%) saturate(7483%) hue-rotate(327deg) brightness(85%) contrast(101%)',
+                      }
+                }
               />
-            </button>
+              <p className="totalPriceSum">
+                price:{' '}
+                {delivery
+                  ? (totalPrice + +deliveryPrice).toFixed(2)
+                  : totalPrice.toFixed(2)}
+                €
+              </p>
+
+              {showStepThree || (
+                <div>
+                  {(stepTwo || selectedUser) && (
+                    <button
+                      className="stepOneBtn"
+                      onClick={() => setShowStepThree(true)}
+                    >
+                      next
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {showStepThree && (
+                <div>
+                  <button onClick={sendOrder} className="sendOrderBtn">
+                    create order
+                  </button>
+                  <p className="errorMessage">{error}</p>
+                </div>
+              )}
+            </div>
           </div>
-        ))}
-        <div className="totalPrice">
-          <img
-            className="deliveryIcon"
-            onClick={() => setDelivery(!delivery)}
-            src={truckIcon}
-            style={
-              delivery
-                ? {
-                    width: '40px',
-                    filter:
-                      'invert(53%) sepia(91%) saturate(339%) hue-rotate(68deg) brightness(94%) contrast(91%)',
-                  }
-                : {
-                    width: '40px',
-                    filter:
-                      'invert(13%) sepia(96%) saturate(7483%) hue-rotate(327deg) brightness(85%) contrast(101%)',
-                  }
-            }
-          />
-          {/* <p className="totalPriceSum">price: {totalPrice.toFixed(2)} €</p> */}
-          <button onClick={handleStepOne} className="stepOneBtn">
-            next
-          </button>
         </div>
-      </div>
+      )}
+      <p className="successfulMessage">{orderSuccessful}</p>
     </div>
   );
 };
