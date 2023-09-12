@@ -56,6 +56,7 @@ const OrderView = ({
               <th>Order Id</th>
               <th>Customer</th>
               <th>Address</th>
+              <th>Service Type</th>
               <th>Order Status</th>
               <th>Order Date</th>
               <th>Total Price</th>
@@ -84,7 +85,7 @@ const OrderView = ({
                 <td>{`${order.street ? order.street : ''} - ${
                   order.city ? order.city : ''
                 }`}</td>
-
+                <td>{order.service_name}</td>
                 <td>{order.status_name}</td>
 
                 <td>

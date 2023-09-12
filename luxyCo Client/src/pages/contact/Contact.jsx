@@ -109,7 +109,7 @@ const Contact = ({ token }) => {
       {popupOpen && (
         <div className="overlay" onClick={popupWindow}>
           <main className="popUp" onClick={preventPropagation}>
-            <Outlet />
+            <Outlet context={[setPopupOpen]} />
           </main>
         </div>
       )}

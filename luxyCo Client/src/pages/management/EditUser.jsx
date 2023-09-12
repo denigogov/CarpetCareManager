@@ -3,6 +3,7 @@ import '../../sass/management/_editUser.scss';
 import { useEffect, useState } from 'react';
 import { fetchTableDepartment } from '../../api';
 import useSWR, { useSWRConfig } from 'swr';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 
 const EditUser = ({ token }) => {
   const data = useLoaderData(token);
@@ -10,7 +11,8 @@ const EditUser = ({ token }) => {
 
   const [formData, setFormData] = useState(data);
   const [departments, setDepartments] = useState([]);
-  const [apiStatusMessage, setApiStatusMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSucces] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,8 +20,16 @@ const EditUser = ({ token }) => {
 
       setDepartments(data);
     };
+
+    if (success) {
+      const timer = setTimeout(() => {
+        setSucces('');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+
     fetchData();
-  }, []);
+  }, [success]);
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -48,10 +58,11 @@ const EditUser = ({ token }) => {
 
       if (response.ok) {
         mutate('http://localhost:4000/user');
-        setApiStatusMessage(true);
+        setSucces('user updated');
+        setErrorMessage('');
       } else throw Error();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      setErrorMessage(`update faild, please try again ${err}`);
     }
   };
 
@@ -134,17 +145,8 @@ const EditUser = ({ token }) => {
           </div>
         </div>
       </form>
-      <p>
-        {apiStatusMessage ? (
-          <p style={apiStatusMessage ? { color: '#8FD14F' } : { color: 'red' }}>
-            {apiStatusMessage
-              ? 'update successful'
-              : 'update faild, please try again'}
-          </p>
-        ) : (
-          ''
-        )}
-      </p>
+
+      <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
     </div>
   );
 };

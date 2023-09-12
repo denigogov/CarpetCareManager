@@ -2,12 +2,18 @@ import { useSWRConfig } from 'swr';
 import '../../sass/management/_createUser.scss';
 import { useEffect, useState } from 'react';
 import { fetchTableDepartment } from '../../api';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 
 const CreateUser = ({ token }) => {
   const { mutate } = useSWRConfig();
   const [departments, setDepartments] = useState([]);
   const [userDataStoring, setUserDataStoring] = useState({});
-  const [errorMessage, setErrorMessage] = useState();
+  const [success, setSucces] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
+  const [setPopupOpen] = useOutletContext();
 
   useEffect(() => {
     const fetchDepartment = async () => {
@@ -15,7 +21,16 @@ const CreateUser = ({ token }) => {
       setDepartments(data);
     };
     fetchDepartment();
-  }, []);
+
+    if (success) {
+      const timer = setTimeout(() => {
+        setSucces('');
+        setPopupOpen(false);
+        navigate('/management/users/');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   const inputUserForm = e => {
     e.preventDefault();
@@ -41,16 +56,20 @@ const CreateUser = ({ token }) => {
           },
           body: JSON.stringify(userDataStoring),
         });
-        mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
 
         if (res.ok) {
-          setErrorMessage(true);
+          mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
+          setSucces(`${userDataStoring.username} added`);
+          setErrorMessage('');
+
           return res;
         } else {
-          setErrorMessage(false);
+          throw new Error();
         }
-      } catch (error) {
-        console.error('Error deleting user', error);
+      } catch (err) {
+        setErrorMessage(
+          `error user not added, please try again, ${err.message}`
+        );
       }
     };
     createUser();
@@ -136,14 +155,9 @@ const CreateUser = ({ token }) => {
       </form>
       <button className="createUserBtn" onClick={submitCreateUser}>
         create user
-      </button>{' '}
-      {errorMessage && (
-        <p style={{ color: 'green' }}>
-          {errorMessage
-            ? `${userDataStoring.username} successfully added`
-            : 'error user not added, please try again'}
-        </p>
-      )}
+      </button>
+
+      <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
     </div>
   );
 };

@@ -10,8 +10,13 @@ import truckIcon from '../../assets/truck-tick-svgrepo-com.svg';
 import OrderStepOne from '../../components/order/OrderStepOne';
 import OrderStepTwo from '../../components/order/OrderStepTwo';
 import OrderStepThree from '../../components/order/OrderStepThree';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 
 const CreateOrder = ({ token, userInfo }) => {
+  const navigate = useNavigate();
+  const [setPopupOpen] = useOutletContext();
+
   const [deliveryPrice, setDeliveryPrice] = useState('');
 
   const [stepTwo, setStepTwo] = useState(false);
@@ -37,7 +42,9 @@ const CreateOrder = ({ token, userInfo }) => {
     if (orderSuccessful) {
       const timer = setTimeout(() => {
         setOrderSuccessful('');
-      }, 5000);
+        setPopupOpen(false);
+        navigate('/order');
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [orderSuccessful]);
@@ -101,11 +108,11 @@ const CreateOrder = ({ token, userInfo }) => {
 
         if (res.ok) {
           setError('');
-          setOrderSuccessful('Order added. Success!');
+          setOrderSuccessful('Order added');
           setOrderSend(true);
         }
       } catch (error) {
-        setError('Error creating order', error);
+        setError('Error creating order', { error });
       }
     };
     createOrder();
@@ -194,14 +201,13 @@ const CreateOrder = ({ token, userInfo }) => {
                   <button onClick={sendOrder} className="sendOrderBtn">
                     create order
                   </button>
-                  <p className="errorMessage">{error}</p>
                 </div>
               )}
             </div>
           </div>
         </div>
       )}
-      <p className="successfulMessage">{orderSuccessful}</p>
+      <ApiSendRequestMessage success={orderSuccessful} errorMessage={error} />
     </div>
   );
 };

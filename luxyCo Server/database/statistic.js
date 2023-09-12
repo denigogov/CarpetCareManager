@@ -11,8 +11,19 @@ const ordersByDay = (_, res) => {
       SUM(CASE WHEN DATE_FORMAT(orders_multiple.order_date, '%Y-%m') = DATE_FORMAT(CURRENT_DATE, '%Y-%m') THEN 1 ELSE 0 END) AS current_month_orders,
       SUM(CASE WHEN DATE_FORMAT(orders_multiple.order_date, '%Y-%m') = DATE_FORMAT(CURRENT_DATE, '%Y-%m') THEN orders_multiple.m2 ELSE 0 END) AS current_month_m2,
       SUM(CASE WHEN DATE_FORMAT(orders_multiple.order_date, '%Y-%m') = DATE_FORMAT(CURRENT_DATE, '%Y-%m') THEN orders_multiple.total_price ELSE 0 END) AS current_month_total_price
-  FROM orders_multiple
-  GROUP BY day_of_week
+    FROM orders_multiple
+    GROUP BY day_of_week
+    ORDER BY CASE
+      WHEN day_of_week = 'Monday' THEN 1
+      WHEN day_of_week = 'Tuesday' THEN 2
+      WHEN day_of_week = 'Wednesday' THEN 3
+      WHEN day_of_week = 'Thursday' THEN 4
+      WHEN day_of_week = 'Friday' THEN 5
+      WHEN day_of_week = 'Saturday' THEN 6
+      WHEN day_of_week = 'Sunday' THEN 7
+      ELSE 8  
+    END;
+    
   `
     )
     .then(([orders]) => {

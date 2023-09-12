@@ -6,16 +6,19 @@ import detailsIcon from '../../assets/detailsIcon.svg';
 import addUserIcon from '../../assets/addUserIcon.svg';
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingView from '../../components/LoadingView';
 
 import useSWR, { useSWRConfig } from 'swr';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 
 const Users = ({ token, userInfo }) => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
   const [popupOpen, setPopupOpen] = useState(false);
+  const [success, setSucces] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const fetcher = async url => {
     const response = await fetch(url, {
@@ -23,8 +26,18 @@ const Users = ({ token, userInfo }) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return response.json();
   };
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSucces('');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   // To Render ERROR ,DATA and WHEN DATA IS LOAD!
   const { data, error, isLoading } = useSWR(
@@ -47,9 +60,11 @@ const Users = ({ token, userInfo }) => {
         });
 
         mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
+        setSucces('User Deleted');
+        setErrorMessage('');
       }
     } catch (error) {
-      console.error('Error deleting user', error);
+      setErrorMessage('Error deleting user', error);
     }
   };
 
@@ -139,12 +154,12 @@ const Users = ({ token, userInfo }) => {
             })}
           </tbody>
         </table>
-
+        <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
         {/* PopUp window with background */}
         {popupOpen && (
           <div className="overlay" onClick={popupWindow}>
             <main className="popUp" onClick={preventPropagation}>
-              <Outlet />
+              <Outlet context={[setPopupOpen]} />
             </main>
           </div>
         )}

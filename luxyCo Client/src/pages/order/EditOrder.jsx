@@ -2,9 +2,10 @@ import { useLoaderData } from 'react-router-dom';
 import '../../sass/order/_editOrder.scss';
 import useSWR, { useSWRConfig } from 'swr';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import EditOrderOwnerView from '../../components/order/EditOrderOwnerView';
 import EditOrderUserView from '../../components/order/EditOrderUserView';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 
 const EditOrder = ({ token, userInfo }) => {
   const fetchOrderById = useLoaderData(token);
@@ -18,6 +19,15 @@ const EditOrder = ({ token, userInfo }) => {
   const deliveryRef = useRef(null);
   const piecesRef = useRef(null);
   const orderUpdateDataRef = useRef(null);
+
+  useEffect(() => {
+    if (updateSuccessful) {
+      const timer = setTimeout(() => {
+        setUpdateSuccessful('');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [updateSuccessful]);
 
   const formatedDate = new Date(
     new Date(fetchOrderById.scheduled_date).getTime()
@@ -129,8 +139,8 @@ const EditOrder = ({ token, userInfo }) => {
       <button type="submit" onClick={handleUpdateUser}>
         update order
       </button>
-      <p className="errorMessage">{error}</p>
-      <p className="successfulMessage">{updateSuccessful}</p>
+
+      <ApiSendRequestMessage success={updateSuccessful} errorMessage={error} />
     </div>
   );
 };

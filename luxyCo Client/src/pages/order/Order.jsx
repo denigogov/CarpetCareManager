@@ -14,6 +14,7 @@ import { fetchOrdersByDate, fetchOrderStatus } from '../../api';
 import SelectedOrderInfo from '../../components/order/SelectedOrderInfo';
 import LoadingView from '../../components/LoadingView';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
+import CreateOrder from './CreateOrder';
 
 const Order = ({ token, userInfo }) => {
   const [wishDate, setWishDate] = useState(new Date());
@@ -87,6 +88,10 @@ const Order = ({ token, userInfo }) => {
     deleteOrder();
   };
 
+  const togglePopup = () => {
+    setPopupOpen(x => !x);
+  };
+
   return (
     <div className="order">
       <nav className="createOrder--nav">
@@ -155,7 +160,7 @@ const Order = ({ token, userInfo }) => {
       {popupOpen && (
         <div className="overlay" onClick={popupWindow}>
           <main className="popUp xlPopUp" onClick={preventPropagation}>
-            <Outlet />
+            <Outlet context={[setPopupOpen]} />
           </main>
         </div>
       )}

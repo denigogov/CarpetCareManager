@@ -1,10 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import '../../sass/contact/_createContact.scss';
 import useSWR, { useSWRConfig } from 'swr';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 
 const CreateContact = ({ token }) => {
   const [error, setError] = useState('');
   const [successfulMessage, setSuccessfulMessage] = useState('');
+
+  const [setPopupOpen] = useOutletContext();
+  const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -16,6 +21,17 @@ const CreateContact = ({ token }) => {
   const customerInputData = useRef(null);
 
   const { data: fetchCustomers } = useSWR(['fetchCustomers', token]);
+
+  useEffect(() => {
+    if (successfulMessage) {
+      const timer = setTimeout(() => {
+        setSuccessfulMessage('');
+        setPopupOpen(false);
+        navigate('/contact');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [successfulMessage]);
 
   const handleCusomerForm = e => {
     e.preventDefault();
@@ -55,7 +71,7 @@ const CreateContact = ({ token }) => {
 
         if (res.ok) {
           setSuccessfulMessage(
-            `Customer ${firstNameRef.current.value} ${lastNameRef.current.value} added. Success!`
+            `Customer ${firstNameRef.current.value} ${lastNameRef.current.value} added`
           );
           // cleaning in case there was some error before !
           setError('');
@@ -121,8 +137,8 @@ const CreateContact = ({ token }) => {
         </div>
       </form>
       <button onClick={handleCusomerForm}>create customer</button>
-      <p className="errorMessage">{error}</p>
-      <p className="successfulMessage">{successfulMessage}</p>
+
+      <ApiSendRequestMessage success={successfulMessage} errorMessage={error} />
     </div>
   );
 };

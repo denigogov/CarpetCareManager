@@ -80,6 +80,7 @@ const tableOrders = (req, res) => {
       customers.phone_number,
       customers.street,
       status_name,
+      service_name,
       CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
       total_price ,
       delivery,
