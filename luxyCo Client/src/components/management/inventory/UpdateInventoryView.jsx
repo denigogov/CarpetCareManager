@@ -4,7 +4,6 @@ const UpdateInventoryView = ({
   selectedInventoryData,
   inventoryCategory,
   formSubmitUpdate,
-  disableForm,
 }) => {
   const articleNameRef = useRef(null);
   const articleDetailsRef = useRef(null);
@@ -39,21 +38,23 @@ const UpdateInventoryView = ({
 
         <form>
           <div className="createInventory--left">
+            <label>Article Name</label>
             <input
               type="text"
               placeholder="Article Name"
               defaultValue={selectedInventoryData.article_name}
               ref={articleNameRef}
               required
-              disabled={disableForm}
             />
+            <label>Details</label>
             <input
               type="text"
               placeholder="details"
               defaultValue={selectedInventoryData.details}
               ref={articleDetailsRef}
-              disabled={disableForm}
             />
+
+            <label>Quantity</label>
             <input
               type="number"
               min="0"
@@ -61,11 +62,11 @@ const UpdateInventoryView = ({
               defaultValue={selectedInventoryData.quantity}
               required
               ref={articleQuantityRef}
-              disabled={disableForm}
             />
           </div>
           <div className="createInventory--right">
-            <select ref={selectedCategoryRef} disabled={disableForm}>
+            <label>Article Category</label>
+            <select ref={selectedCategoryRef}>
               <option value={selectedInventoryData.category_id}>
                 {selectedInventoryData.category_name}
               </option>
@@ -77,14 +78,15 @@ const UpdateInventoryView = ({
                 );
               })}
             </select>
-
+            <label>Location</label>
             <input
               type="text"
               placeholder="Location"
               defaultValue={selectedInventoryData.location}
               ref={locationRef}
-              disabled={disableForm}
             />
+
+            <label>Price</label>
             <input
               type="number"
               min="0"
@@ -92,7 +94,6 @@ const UpdateInventoryView = ({
               placeholder="Price €"
               defaultValue={selectedInventoryData.price}
               ref={priceRef}
-              disabled={disableForm}
             />
           </div>
         </form>

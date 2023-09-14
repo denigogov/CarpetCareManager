@@ -5,18 +5,24 @@ import { useState } from 'react';
 
 const OrderStatusView = ({
   orderStatusData,
-  handleEditRequest,
   handleDeleteRequest,
+  handleUpdateBtn,
+  setUpdatedStatus,
 }) => {
   const [editStatus, setEditStatus] = useState(false);
 
   const handleEditClick = i => {
-    handleEditRequest(i.status_name);
     setEditStatus(i.status_name);
+    setUpdatedStatus(i.status_name);
   };
 
   const handleDeleteClick = e => {
     handleDeleteRequest(e);
+  };
+
+  const onClickUpdate = i => {
+    handleUpdateBtn(i);
+    setEditStatus(false);
   };
 
   return (
@@ -38,7 +44,11 @@ const OrderStatusView = ({
               <td>{index + 1}</td>
               <td>
                 {editStatus === i.status_name ? (
-                  <input type="text" defaultValue={i.status_name} />
+                  <input
+                    type="text"
+                    defaultValue={i.status_name}
+                    onChange={e => setUpdatedStatus(e.target.value)}
+                  />
                 ) : (
                   i?.status_name ?? 'status not provieded'
                 )}
@@ -48,7 +58,12 @@ const OrderStatusView = ({
                 {editStatus !== i.status_name ? (
                   <button onClick={() => handleEditClick(i)}>edit</button>
                 ) : (
-                  <button className="updateBtn">update</button>
+                  <button
+                    className="updateBtn"
+                    onClick={() => onClickUpdate(i)}
+                  >
+                    update
+                  </button>
                 )}
               </td>
               <td onClick={() => handleDeleteClick(i)}>

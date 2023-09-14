@@ -204,7 +204,7 @@ const OrdersReportPeriodPDF = ({
         </View>
         <View>
           <Text>Phone: +491638843357</Text>
-          <Text>E-mail: deni.gogov@gmail.com</Text>
+          <Text>E-mail: denigogov@gmail.com</Text>
         </View>
         <View>
           <Text>Sparkasse Karlsruhe</Text>

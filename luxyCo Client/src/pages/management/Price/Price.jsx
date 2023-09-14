@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import LoadingView from '../../../components/LoadingView';
 import ErrorDisplayView from '../../../components/ErrorDisplayView';
 import PriceView from '../../../components/management/price/PriceView';
+import { handleUpdateDeleteRequest } from '../../../handleRequests';
 
 const Price = ({ token }) => {
   const [selectedService, setSelectedService] = useState(null);
@@ -31,29 +32,19 @@ const Price = ({ token }) => {
     );
 
     if (confirmUpdate) {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/table/services/${selectedService.id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(sendUpdate),
-          }
-        );
-
-        if (res.ok) {
-          mutate(`http://localhost:4000/table/services`);
-          setSuccess('service updated');
-          setErrorMessage('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setErrorMessage(`update faild, please try again ${error}`);
-      }
+      handleUpdateDeleteRequest(
+        '/table/services/',
+        selectedService.id,
+        'PUT',
+        token,
+        sendUpdate,
+        'update faild, please try again',
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        'http://localhost:4000/table/services',
+        'service updated'
+      );
     }
   };
 

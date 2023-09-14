@@ -215,6 +215,41 @@ const tableOrderStatus = (_, res) => {
     });
 };
 
+const createOrderStatus = (req, res) => {
+  const { status_name } = req.body;
+
+  database
+    .query('INSERT INTO order_status( status_name) VALUES (?)', [status_name])
+    .then(([status]) => {
+      res.location(`/table/services/${status.insertId}`).sendStatus(201);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error creating new order');
+    });
+};
+
+const updateTableOrderStatus = (req, res) => {
+  const { status_name } = req.body;
+  const id = req.params.id;
+
+  database
+    .query(`update order_status set status_name = ? where id = ?`, [
+      status_name,
+      id,
+    ])
+    .then(([statusName]) => {
+      if (!statusName.affectedRows) {
+        res.status(404).send('error happen, please try again!');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+};
+
 const deleteOrderStatus = (req, res) => {
   const id = req.params.id;
 
@@ -525,6 +560,8 @@ module.exports = {
   createNewOrder,
   tableOrders,
   tableOrderStatus,
+  createOrderStatus,
+  updateTableOrderStatus,
   deleteOrderStatus,
   tableServices,
   deleteOrders,

@@ -5,6 +5,7 @@ import useSWR, { useSWRConfig } from 'swr';
 import deleteUserIcon from '../../../assets/deleteIcon.svg';
 import addIcon from '../../../assets/addIcon.svg';
 import ApiSendRequestMessage from '../../ApiSendRequestMessage';
+import { handleUpdateDeleteRequest } from '../../../handleRequests';
 
 const PriceView = ({
   token,
@@ -57,27 +58,43 @@ const PriceView = ({
     );
 
     if (confirmDelete) {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/table/services/${service.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      handleUpdateDeleteRequest(
+        '/table/services/',
+        service.id,
+        'DELETE',
+        token,
+        null,
+        'delete faild',
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        'tableServices',
+        'service deleted'
+      );
 
-        if (res.ok) {
-          mutate(['tableServices', token]);
-          setSuccess('service deleted');
-          setErrorMessage('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setErrorMessage(`delete faild ${error}`);
-      }
+      // Leave as REFERENCES!
+
+      // try {
+      //   const res = await fetch(
+      //     `http://localhost:4000/table/services/${service.id}`,
+      //     {
+      //       method: 'DELETE',
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     }
+      //   );
+
+      //   if (res.ok) {
+      //     mutate(['tableServices', token]);
+      //     setSuccess('service deleted');
+      //     setErrorMessage('');
+      //   } else {
+      //     throw new Error();
+      //   }
+      // } catch (error) {
+      //   setErrorMessage(`delete faild ${error}`);
+      // }
     }
   };
 

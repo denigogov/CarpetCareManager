@@ -9,8 +9,6 @@ import LoadingView from '../../../components/LoadingView';
 import InventoryNavBar from '../../../components/management/inventory/InventoryNavBar';
 import InventoryTableView from '../../../components/management/inventory/InventoryTableView';
 import PrintLabelsWithQR from '../../../components/PrintLabelWithQR';
-import InventoryPDF from '../../../components/management/inventory/InventoryPDF';
-import { PDFViewer } from '@react-pdf/renderer';
 import InventoryCategoryView from '../../../components/management/inventory/InventoryCategoryView';
 
 const Inventory = ({ token }) => {

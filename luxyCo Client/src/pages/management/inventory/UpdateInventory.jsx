@@ -12,7 +12,7 @@ const UpdateInventory = ({ token }) => {
   const [success, setSuccess] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [disableForm, setDisableForm] = useState(false);
+
 
   useEffect(() => {
     if (success) {
@@ -69,7 +69,6 @@ const UpdateInventory = ({ token }) => {
         mutate(['inventory', token]);
         setSuccess('inventory updated');
         setErrorMessage('');
-        setDisableForm(true);
       } else {
         throw new Error();
       }
@@ -79,13 +78,12 @@ const UpdateInventory = ({ token }) => {
   };
 
   return (
-    <div>
+    <div className='updateInventory-wrap'>
       <UpdateInventoryView
         selectedInventoryID={selectedInventoryID}
         selectedInventoryData={...selectedInventoryData[0]}
         inventoryCategory={filteredInventoryCategory}
         formSubmitUpdate={updateSend}
-        disableForm={disableForm}
       />
 
       <ApiSendRequestMessage success={success} errorMessage={errorMessage} />

@@ -16,6 +16,8 @@ router
   .put('/orders/:id', verifyToken, database.updateOrder)
 
   .get('/orderStatus', verifyToken, database.tableOrderStatus)
+  .post('/orderStatus', verifyToken, database.createOrderStatus)
+  .put('/orderStatusTable/:id', verifyToken, database.updateTableOrderStatus)
   .put('/orderStatus/:id', verifyToken, database.updateOrderStatus)
   .delete('/orderStatus/:id', verifyToken, database.deleteOrderStatus)
 

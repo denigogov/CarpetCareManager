@@ -78,25 +78,23 @@ const OrderView = ({
                 <td
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleSelectOrder(order)}
-                >{`${
-                  order.first_name ? order.first_name : 'customer deleted'
-                } ${order.last_name ? order.last_name : ''}`}</td>
-
-                <td>{`${order.street ? order.street : ''} - ${
-                  order.city ? order.city : ''
+                >{`${order?.first_name ?? 'customer deleted'} ${
+                  order?.last_name ?? ''
                 }`}</td>
-                <td>{order.service_name}</td>
-                <td>{order.status_name}</td>
+
+                <td>{`${order?.street ?? ''} - ${order?.city ?? ''}`}</td>
+                <td>{order?.service_name ?? 'service removed'}</td>
+                <td>{order?.status_name}</td>
 
                 <td>
-                  {new Date(order.order_date)
+                  {new Date(order?.order_date)
                     .toISOString()
                     .slice(0, 19)
                     .replaceAll('-', '.')
-                    .replace('T', ' ')}
+                    .replace('T', ' ') ?? 'no data added'}
                 </td>
 
-                <td>{order.total_price} €</td>
+                <td>{order?.total_price ?? 'no price added'} €</td>
                 <td>
                   {order.scheduled_date
                     ? new Date(
@@ -107,10 +105,10 @@ const OrderView = ({
                         .slice(0, 10)
                     : 'no scheduled date'}
                 </td>
-                <td>{order.m2}</td>
-                <td>{order.pieces}</td>
+                <td>{order?.m2 ?? 'not provided'}</td>
+                <td>{order?.pieces ?? 'not provided'}</td>
                 <td>{order.delivery === 0 ? 'no' : 'yes'}</td>
-                <td>{order.username ? order.username : 'user deleted'}</td>
+                <td>{order?.username ?? 'user deleted'}</td>
                 <td>
                   <Link
                     to={

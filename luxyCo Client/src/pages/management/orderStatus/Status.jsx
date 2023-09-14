@@ -1,21 +1,62 @@
 import useSWR, { useSWRConfig } from 'swr';
 import OrderStatusView from '../../../components/management/orderStatus/OrderStatusView';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
+import ErrorDisplayView from '../../../components/ErrorDisplayView';
+import LoadingView from '../../../components/LoadingView';
+import { handleUpdateDeleteRequest } from '../../../handleRequests';
 
 const OrderStatus = ({ token }) => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [updatedStatus, setUpdatedStatus] = useState('');
 
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess('');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
+  const { mutate } = useSWRConfig();
   const {
     data: orderStatus,
     error: orderStatusError,
     isLoading: errorStatusLoading,
   } = useSWR(['tableOrderService', token]);
 
-  const { mutate } = useSWRConfig();
+  if (orderStatusError)
+    return (
+      <ErrorDisplayView
+        errorMessage={error.message}
+        navigateTo1="/dashboard"
+        navigateTo2="/delivery"
+      />
+    );
+  if (errorStatusLoading) return <LoadingView />;
 
-  const handleEditRequest = e => {};
+  const handleUpdateBtn = async e => {
+    const confirmUpdate = confirm(
+      `Please confirm if you want to update this status "${e.status_name}"`
+    );
+    if (confirmUpdate) {
+      handleUpdateDeleteRequest(
+        '/table/orderStatusTable/',
+        e.id,
+        'PUT',
+        token,
+        { status_name: updatedStatus },
+        'update faild',
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        'tableOrderService',
+        'service updated'
+      );
+    }
+  };
 
   const handleDeleteRequest = async e => {
     const confirmDelete = confirm(
@@ -23,27 +64,19 @@ const OrderStatus = ({ token }) => {
     );
 
     if (confirmDelete) {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/table/orderStatus/${e.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (res.ok) {
-          mutate(['tableOrderService', token]);
-          setSuccess('service deleted');
-          setErrorMessage('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setErrorMessage(`delete faild ${error}`);
-      }
+      handleUpdateDeleteRequest(
+        '/table/orderStatus/',
+        e.id,
+        'DELETE',
+        token,
+        null,
+        'delete faild',
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        'tableOrderService',
+        'service deleted'
+      );
     }
   };
 
@@ -51,8 +84,9 @@ const OrderStatus = ({ token }) => {
     <div>
       <OrderStatusView
         orderStatusData={orderStatus}
-        handleEditRequest={handleEditRequest}
         handleDeleteRequest={handleDeleteRequest}
+        handleUpdateBtn={handleUpdateBtn}
+        setUpdatedStatus={setUpdatedStatus}
       />
 
       <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
