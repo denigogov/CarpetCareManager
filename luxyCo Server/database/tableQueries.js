@@ -219,7 +219,7 @@ const createOrderStatus = (req, res) => {
   const { status_name } = req.body;
 
   database
-    .query('INSERT INTO order_status( status_name) VALUES (?)', [status_name])
+    .query('INSERT INTO order_status ( status_name) VALUES (?)', [status_name])
     .then(([status]) => {
       res.location(`/table/services/${status.insertId}`).sendStatus(201);
     })

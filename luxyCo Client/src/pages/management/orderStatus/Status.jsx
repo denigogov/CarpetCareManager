@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
 import ErrorDisplayView from '../../../components/ErrorDisplayView';
 import LoadingView from '../../../components/LoadingView';
-import { handleUpdateDeleteRequest } from '../../../handleRequests';
+import { handlePostPutDeleteRequest } from '../../../handleRequests';
 
 const OrderStatus = ({ token }) => {
   const [errorMessage, setErrorMessage] = useState(false);
@@ -42,7 +42,7 @@ const OrderStatus = ({ token }) => {
       `Please confirm if you want to update this status "${e.status_name}"`
     );
     if (confirmUpdate) {
-      handleUpdateDeleteRequest(
+      handlePostPutDeleteRequest(
         '/table/orderStatusTable/',
         e.id,
         'PUT',
@@ -64,7 +64,7 @@ const OrderStatus = ({ token }) => {
     );
 
     if (confirmDelete) {
-      handleUpdateDeleteRequest(
+      handlePostPutDeleteRequest(
         '/table/orderStatus/',
         e.id,
         'DELETE',

@@ -2,6 +2,7 @@ import '../../../sass/management/orderStatus/_orderStatusView.scss';
 import deleteUserIcon from '../../../assets/deleteIcon.svg';
 import addIcon from '../../../assets/addIcon.svg';
 import { useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 const OrderStatusView = ({
   orderStatusData,
@@ -10,6 +11,9 @@ const OrderStatusView = ({
   setUpdatedStatus,
 }) => {
   const [editStatus, setEditStatus] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleEditClick = i => {
     setEditStatus(i.status_name);
@@ -22,7 +26,19 @@ const OrderStatusView = ({
 
   const onClickUpdate = i => {
     handleUpdateBtn(i);
+
+    // After updating to close the input filed
     setEditStatus(false);
+  };
+
+  // Event handler stop bubbling
+  const preventPropagation = event => {
+    event.stopPropagation();
+  };
+
+  const popupWindow = () => {
+    setPopupOpen(x => !x);
+    navigate('/management/orderStatus');
   };
 
   return (
@@ -31,7 +47,13 @@ const OrderStatusView = ({
         <thead>
           <tr>
             <th>
-              <img src={addIcon} alt="plus icon" /> add service
+              <Link
+                style={{ color: 'black' }}
+                to="/management/orderStatus/createStatus"
+                onClick={() => setPopupOpen(x => !x)}
+              >
+                <img src={addIcon} alt="plus icon" /> add service
+              </Link>
             </th>
             <th>Status Name</th>
             <th>Edit</th>
@@ -73,6 +95,14 @@ const OrderStatusView = ({
           ))}
         </tbody>
       </table>
+
+      {popupOpen && (
+        <div className="overlay" onClick={popupWindow}>
+          <main className="popUp xsPopup" onClick={preventPropagation}>
+            <Outlet context={[setPopupOpen]} />
+          </main>
+        </div>
+      )}
     </div>
   );
 };

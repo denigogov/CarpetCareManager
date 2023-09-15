@@ -5,7 +5,7 @@ import useSWR, { useSWRConfig } from 'swr';
 import deleteUserIcon from '../../../assets/deleteIcon.svg';
 import addIcon from '../../../assets/addIcon.svg';
 import ApiSendRequestMessage from '../../ApiSendRequestMessage';
-import { handleUpdateDeleteRequest } from '../../../handleRequests';
+import { handlePostPutDeleteRequest } from '../../../handleRequests';
 
 const PriceView = ({
   token,
@@ -58,7 +58,7 @@ const PriceView = ({
     );
 
     if (confirmDelete) {
-      handleUpdateDeleteRequest(
+      handlePostPutDeleteRequest(
         '/table/services/',
         service.id,
         'DELETE',

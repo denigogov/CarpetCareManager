@@ -61,6 +61,7 @@ import CreateInventory from './pages/management/inventory/CreateInventory';
 import CreateNewCategory from './pages/management/inventory/CreateNewCategory';
 import UpdateInventory from './pages/management/inventory/UpdateInventory';
 import OrderStatus from './pages/management/orderStatus/Status';
+import AddStatus from './pages/management/orderStatus/AddStatus';
 
 const App = () => {
   const { token, setToken } = useToken(null);
@@ -162,10 +163,12 @@ const App = () => {
             <Route path="price" element={<Price token={token} />}>
               <Route path="addService" element={<AddService token={token} />} />
             </Route>
-            <Route
-              path="orderStatus"
-              element={<OrderStatus token={token} />}
-            ></Route>
+            <Route path="orderStatus" element={<OrderStatus token={token} />}>
+              <Route
+                path="createStatus"
+                element={<AddStatus token={token} />}
+              />
+            </Route>
 
             <Route path="inventory" element={<Inventory token={token} />}>
               <Route

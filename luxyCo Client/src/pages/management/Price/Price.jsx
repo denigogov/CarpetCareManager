@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import LoadingView from '../../../components/LoadingView';
 import ErrorDisplayView from '../../../components/ErrorDisplayView';
 import PriceView from '../../../components/management/price/PriceView';
-import { handleUpdateDeleteRequest } from '../../../handleRequests';
+import { handlePostPutDeleteRequest } from '../../../handleRequests';
 
 const Price = ({ token }) => {
   const [selectedService, setSelectedService] = useState(null);
@@ -32,7 +32,7 @@ const Price = ({ token }) => {
     );
 
     if (confirmUpdate) {
-      handleUpdateDeleteRequest(
+      handlePostPutDeleteRequest(
         '/table/services/',
         selectedService.id,
         'PUT',

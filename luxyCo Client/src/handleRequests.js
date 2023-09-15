@@ -15,7 +15,7 @@ const BASE_URL = 'http://localhost:4000';
  * @param {string} succ success message
  */
 
-export const handleUpdateDeleteRequest = async (
+export const handlePostPutDeleteRequest = async (
   url,
   id,
   method,
@@ -41,7 +41,10 @@ export const handleUpdateDeleteRequest = async (
       requestOptions.body = JSON.stringify(queryData);
     }
 
-    const res = await fetch(`${BASE_URL}${url}${id}`, requestOptions);
+    // const res = await fetch(`${BASE_URL}${url}${id}`, requestOptions);
+    const apiUrl = id ? `${BASE_URL}${url}${id}` : `${BASE_URL}${url}`;
+
+    const res = await fetch(apiUrl, requestOptions);
 
     if (res.ok) {
       mutateFunction([`${mutateUrl}`, token]);

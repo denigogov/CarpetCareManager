@@ -1,0 +1,23 @@
+@use '../../colors';
+@use '../../mixing';
+
+.createStatus__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+
+  p {
+    margin-top: 15px;
+    color: colors.$borderLine-Second;
+  }
+
+  input {
+    @include mixing.inputFileds;
+  }
+
+  button {
+    @include mixing.button;
+  }
+}
