@@ -17,6 +17,7 @@ const InventoryTableView = ({
   const [success, setSuccess] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { mutate } = useSWRConfig();
+
   const handleClickInventory = i => {
     handleSelectedInventory(i);
   };

@@ -12,6 +12,7 @@ import OrderStepTwo from '../../components/order/OrderStepTwo';
 import OrderStepThree from '../../components/order/OrderStepThree';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 import { useOutletContext, useNavigate } from 'react-router-dom';
+import { handlePostPutDeleteRequest } from '../../handleRequests';
 
 const CreateOrder = ({ token, userInfo }) => {
   const navigate = useNavigate();
@@ -95,25 +96,21 @@ const CreateOrder = ({ token, userInfo }) => {
     .reduce((acc, mov) => +acc + +mov, 0);
 
   const sendOrder = () => {
-    const createOrder = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/table/orders`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedData),
-        });
-
-        if (res.ok) {
-          setError('');
-          setOrderSuccessful('Order added');
-          setOrderSend(true);
-        }
-      } catch (error) {
-        setError('Error creating order', { error });
-      }
+    const createOrder = () => {
+      handlePostPutDeleteRequest(
+        '/table/orders',
+        null,
+        'POST',
+        token,
+        updatedData,
+        'Error creating order',
+        setError,
+        setOrderSuccessful,
+        null,
+        null,
+        'Order added',
+        setOrderSend(true)
+      );
     };
     createOrder();
   };

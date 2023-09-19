@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import EditOrderOwnerView from '../../components/order/EditOrderOwnerView';
 import EditOrderUserView from '../../components/order/EditOrderUserView';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import { handlePostPutDeleteRequest } from '../../handleRequests';
 
 const EditOrder = ({ token, userInfo }) => {
   const fetchOrderById = useLoaderData(token);
@@ -71,33 +72,19 @@ const EditOrder = ({ token, userInfo }) => {
 
     orderUpdateDataRef.current = updatedData;
 
-    const updateOrder = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/table/orders/${fetchOrderById.id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(orderUpdateDataRef.current),
-          }
-        );
-
-        if (res.ok) {
-          mutate(
-            'http://localhost:4000/http://localhost:4000/table/orders',
-            true
-          );
-          setUpdateSuccessful('Order updated. Success!');
-          setError('');
-        }
-      } catch (error) {
-        setError(`Error Updating Order ${error}`);
-      }
-    };
-    updateOrder();
+    handlePostPutDeleteRequest(
+      '/table/orders/',
+      fetchOrderById.id,
+      'PUT',
+      token,
+      orderUpdateDataRef.current,
+      'Error Updating Order',
+      setError,
+      setUpdateSuccessful,
+      mutate,
+      'http://localhost:4000/http://localhost:4000/table/orders',
+      'Order updated.'
+    );
   };
 
   return (

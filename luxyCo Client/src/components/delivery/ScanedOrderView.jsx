@@ -1,3 +1,4 @@
+import { handlePostPutDeleteRequest } from '../../handleRequests';
 import '../../sass/delivery/scanedOrderView.scss';
 import { useRef, useState } from 'react';
 
@@ -21,32 +22,19 @@ const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
     : '';
 
   const handleUpdateStatus = e => {
-    const updateOrderStatus = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/table/orderStatus/${fetchedOrderById.id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ order_status_id: orderStatusId }),
-          }
-        );
-
-        if (res.ok) {
-          setUpdateSuccessful('Order updated. Success!');
-          setError('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setError(`Error Updating Order ${error}`);
-      }
-    };
-
-    updateOrderStatus();
+    handlePostPutDeleteRequest(
+      '/table/orderStatus/',
+      fetchedOrderById.id,
+      'PUT',
+      token,
+      { order_status_id: orderStatusId },
+      'Error Updating Order',
+      setError,
+      setUpdateSuccessful,
+      null,
+      null,
+      'Order updated. Success!'
+    );
   };
 
   return (

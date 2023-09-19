@@ -1,7 +1,7 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const database = require("../database/userQueries");
+const database = require('../database/userQueries');
 
 const {
   hashpassword,
@@ -9,10 +9,10 @@ const {
   verifyToken,
 
   sendUserInfo,
-} = require("../Auth");
+} = require('../Auth');
 
 router
-  .post("/", database.getUserByEmailWithPasswordAndPassToNext, verifyPassword)
-  .get("/", verifyToken, database.getUserbyIdAndNext, sendUserInfo);
+  .post('/', database.getUserByEmailWithPasswordAndPassToNext, verifyPassword)
+  .get('/', verifyToken, database.getUserbyIdAndNext, sendUserInfo);
 
 module.exports = router;

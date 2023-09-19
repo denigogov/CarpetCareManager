@@ -69,20 +69,20 @@ const InventoryNavBar = ({
         to={`/management/inventory/addInventoryCategory`}
         onClick={handleCategory}
       >
-        <p className="inv-nav inventoryLink">
+        <button className="inv-nav inventoryLink">
           create new category
           <img src={categoryIcon} alt="new categoy icon" />
-        </p>
+        </button>
       </Link>
 
       <Link
         to={`/management/inventory/add-inventory`}
         onClick={() => setPopupOpen(e => !e)}
       >
-        <p className="inv-nav inventoryLink">
+        <button className="inv-nav inventoryLink">
           create new inventory
           <img src={addInventoryIcon} />
-        </p>
+        </button>
       </Link>
       <p className="inv-nav">
         <PDFDownloadLink
@@ -117,7 +117,7 @@ const InventoryNavBar = ({
           >
             {createCategory === 'create new category' ? (
               // I have to pass the token here because its not together with the Outlet!!!!
-              <CreateNewCategory token={token} />
+              <CreateNewCategory token={token} setPopupOpen={setPopupOpen} />
             ) : (
               <Outlet />
             )}

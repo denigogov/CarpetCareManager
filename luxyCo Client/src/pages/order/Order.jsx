@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -15,15 +15,28 @@ import SelectedOrderInfo from '../../components/order/SelectedOrderInfo';
 import LoadingView from '../../components/LoadingView';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
 import CreateOrder from './CreateOrder';
+import { handlePostPutDeleteRequest } from '../../handleRequests';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 
 const Order = ({ token, userInfo }) => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState('all');
   const [searchOrder, setSearchOrder] = useState('');
   const [popupOpen, setPopupOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState('');
 
   // selected order RENDER THE ORDER INFO !! STILL IN PROGRESS SOME FIELDS NEED TO BE REMOVE FROM THE TABLE AND TO BE ADDED IN SELECTED ORDER INFO
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess('');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
@@ -66,26 +79,25 @@ const Order = ({ token, userInfo }) => {
   };
 
   const handleDeleteOrder = id => {
-    const deleteOrder = async () => {
-      try {
-        const confirmDelete = confirm(
-          `Please confirm if you want to delete this order with ID ${id} all data from this order will be permanently deleted!`
-        );
+    const confirmDelete = confirm(
+      `Please confirm if you want to delete this order with ID ${id} all data from this order will be permanently deleted!`
+    );
 
-        if (confirmDelete) {
-          await fetch(`http://localhost:4000/table/orders/${id}`, {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          mutate('http://localhost:4000/table/orders');
-        }
-      } catch (error) {
-        console.error('Error deleting order', error);
-      }
-    };
-    deleteOrder();
+    if (confirmDelete) {
+      handlePostPutDeleteRequest(
+        '/table/orders/',
+        id,
+        'DELETE',
+        token,
+        null,
+        'Error deleting order',
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        'http://localhost:4000/table/orders',
+        'Order Deleted'
+      );
+    }
   };
 
   const togglePopup = () => {
@@ -155,6 +167,8 @@ const Order = ({ token, userInfo }) => {
           handleDeleteOrder={handleDeleteOrder}
           setPopupOpen={setPopupOpen}
         />
+        <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
+
         {selectedOrder && <SelectedOrderInfo selectedOrder={selectedOrder} />}
       </div>
       {popupOpen && (

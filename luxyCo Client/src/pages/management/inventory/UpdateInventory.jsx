@@ -5,14 +5,13 @@ import ErrorDisplayView from '../../../components/ErrorDisplayView';
 import LoadingView from '../../../components/LoadingView';
 import { useEffect, useState } from 'react';
 import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
+import { handlePostPutDeleteRequest } from '../../../handleRequests';
 
 const UpdateInventory = ({ token }) => {
   const selectedInventoryID = useParams();
 
   const [success, setSuccess] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-
 
   useEffect(() => {
     if (success) {
@@ -50,38 +49,27 @@ const UpdateInventory = ({ token }) => {
     i => i.id !== selectedInventoryData[0].category_id
   );
 
- 
   const updateSend = async sendData => {
-    try {
-      const response = await fetch(
-        `http://localhost:4000/table/inventory/${selectedInventoryID.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(sendData),
-        }
-      );
-
-      if (response.ok) {
-        mutate(['inventory', token]);
-        setSuccess('inventory updated');
-        setErrorMessage('');
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      setErrorMessage(`updating inventory faild, please try again, ${err}`);
-    }
+    handlePostPutDeleteRequest(
+      '/table/inventory/',
+      selectedInventoryID.id,
+      'PUT',
+      token,
+      sendData,
+      'updating inventory faild, please try again',
+      setErrorMessage,
+      setSuccess,
+      mutate,
+      'inventory',
+      'inventory updated'
+    );
   };
 
   return (
-    <div className='updateInventory-wrap'>
+    <div className="updateInventory-wrap">
       <UpdateInventoryView
-        selectedInventoryID={selectedInventoryID}
         selectedInventoryData={...selectedInventoryData[0]}
+        selectedInventoryID={selectedInventoryID}
         inventoryCategory={filteredInventoryCategory}
         formSubmitUpdate={updateSend}
       />

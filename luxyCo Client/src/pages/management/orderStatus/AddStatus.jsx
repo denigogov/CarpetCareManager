@@ -14,16 +14,16 @@ const AddStatus = ({ token }) => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
 
-  // useEffect(() => {
-  //   if (success) {
-  //     const timer = setTimeout(() => {
-  //       setSuccess('');
-  //       setPopupOpen(false);
-  //       navigate('/management/orderStatus');
-  //     }, 2500);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [success]);
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess('');
+        setPopupOpen(false);
+        navigate('/management/orderStatus');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   const handleCreateService = async statusName => {
     const sendData = { status_name: statusName };

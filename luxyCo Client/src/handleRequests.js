@@ -13,6 +13,7 @@ const BASE_URL = 'http://localhost:4000';
  * @param {function} mutate  add only mutate fn from SWR without callin inside of the param.
  * @param {string} mutateUrl  only the named data in useSWR
  * @param {string} succ success message
+ * @param {setterFn} additionaluseState for setup something else in case you need!
  */
 
 export const handlePostPutDeleteRequest = async (
@@ -26,7 +27,8 @@ export const handlePostPutDeleteRequest = async (
   setSuccess,
   mutateFunction,
   mutateUrl,
-  succ
+  succ,
+  additionaluseState
 ) => {
   try {
     const requestOptions = {
@@ -47,7 +49,14 @@ export const handlePostPutDeleteRequest = async (
     const res = await fetch(apiUrl, requestOptions);
 
     if (res.ok) {
-      mutateFunction([`${mutateUrl}`, token]);
+      if (typeof mutateFunction === 'function') {
+        mutateFunction([`${mutateUrl}`, token]);
+      }
+
+      if (additionaluseState !== undefined) {
+        additionaluseState();
+      }
+
       setSuccess(`${succ}`);
       setErrorMessage('');
     } else {
