@@ -69,7 +69,7 @@ const orderStatPerStatus = (_, res) => {
       order_status_id,
       COUNT(*) AS orders
   FROM
-      carpet.orders_multiple
+      orders_multiple
   
   GROUP BY
       order_status_id;

@@ -81,7 +81,7 @@ const tableOrders = (req, res) => {
       customers.street,
       status_name,
       service_name,
-      CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
+      CONVERT_TZ(order_date, '+00:00', '+04:00') AS order_date,
       total_price ,
       delivery,
       scheduled_date,city,
@@ -170,7 +170,7 @@ const getOrderById = (req, res) => {
       customers.street,
       status_name,
       order_status.id as order_status_id,
-      CONVERT_TZ(order_date, '+00:00', '+02:00') AS order_date,
+      CONVERT_TZ(order_date, '+00:00', '+04:00') AS order_date,
       total_price ,
       delivery,
       CONVERT_TZ(scheduled_date, '+00:00', '+02:00') AS scheduled_date,
@@ -394,7 +394,7 @@ const orderScheduledDate = (req, res) => {
 const tableInventory = (_, res) => {
   database
     .query(
-      `SELECT inventory.id,inventory_categories.id as category_id, article_number,article_name,details,quantity,location,price,date_entry,category_name FROM carpet.inventory
+      `SELECT inventory.id,inventory_categories.id as category_id, article_number,article_name,details,quantity,location,price,date_entry,category_name FROM inventory
     left join inventory_categories on category_id = inventory_categories.id`
     )
     .then(([inventory]) => {
