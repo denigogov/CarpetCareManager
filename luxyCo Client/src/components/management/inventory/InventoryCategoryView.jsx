@@ -1,13 +1,14 @@
-import '../../../sass/management/inventory/_inventoryCategoryView.scss';
-import ApiSendRequestMessage from '../../ApiSendRequestMessage';
-import deleteUserIcon from '../../../assets/deleteIcon.svg';
-import { useRef, useState, useEffect } from 'react';
-import { useSWRConfig } from 'swr';
+import "../../../sass/management/inventory/_inventoryCategoryView.scss";
+import ApiSendRequestMessage from "../../ApiSendRequestMessage";
+import deleteUserIcon from "../../../assets/deleteIcon.svg";
+import { useRef, useState, useEffect } from "react";
+import { useSWRConfig } from "swr";
+import { handlePostPutDeleteRequest } from "../../../handleRequests";
 
 const InventoryCategoryView = ({ inventoryCategories, token }) => {
   const [updateCategory, setUpdateCategory] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [success, setSuccess] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState("");
 
   const { mutate } = useSWRConfig();
 
@@ -16,17 +17,17 @@ const InventoryCategoryView = ({ inventoryCategories, token }) => {
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 5000);
       return () => clearTimeout(timer);
     }
   }, [success]);
 
-  const handleUpdateCategory = i => {
+  const handleUpdateCategory = (i) => {
     setUpdateCategory(i.id);
   };
 
-  const handleUpdateRequest = async () => {
+  const handleUpdateRequest = () => {
     setUpdateCategory(false);
 
     const confirmUpdate = confirm(
@@ -34,62 +35,44 @@ const InventoryCategoryView = ({ inventoryCategories, token }) => {
     );
 
     if (confirmUpdate) {
-      try {
-        const res = await fetch(
-          ` http://localhost:4000/table/inventorycategories/${updateCategory}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              category_name: categoryNameRef.current.value,
-            }),
-          }
-        );
-
-        if (res.ok) {
-          mutate(['inventoryCategory', token]);
-          setSuccess('service updated');
-          setErrorMessage('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setErrorMessage(`update faild, please try again ${error}`);
-      }
+      handlePostPutDeleteRequest(
+        "/table/inventorycategories/",
+        updateCategory,
+        "PUT",
+        token,
+        {
+          category_name: categoryNameRef.current.value,
+        },
+        "update faild, please try again",
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        "inventoryCategory",
+        "service updated"
+      );
     }
   };
 
   //   DELETE REQUEST
-  const handleDeleteRequest = async i => {
+  const handleDeleteRequest = (i) => {
     const confirmUpdate = confirm(
       `Please confirm if you want to delete this category ${i.category_name}.`
     );
 
     if (confirmUpdate) {
-      try {
-        const res = await fetch(
-          ` http://localhost:4000/table/inventorycategories/${i.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (res.ok) {
-          mutate(['inventoryCategory', token]);
-          setSuccess('service deleted');
-          setErrorMessage('');
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        setErrorMessage(`delete faild, please try again ${error}`);
-      }
+      handlePostPutDeleteRequest(
+        "/table/inventorycategories/",
+        i.id,
+        "DELETE",
+        token,
+        null,
+        "delete faild, please try again",
+        setErrorMessage,
+        setSuccess,
+        mutate,
+        "inventoryCategory",
+        "service deleted"
+      );
     }
   };
 
@@ -105,14 +88,14 @@ const InventoryCategoryView = ({ inventoryCategories, token }) => {
           </tr>
         </thead>
         <tbody>
-          {inventoryCategories.map(i => (
+          {inventoryCategories.map((i) => (
             <tr key={i.id}>
-              <td>{i.id}</td>
+              <td data-cell="ID">{i.id}</td>
 
               {updateCategory !== i.id ? (
-                <td>{i.category_name}</td>
+                <td data-cell="Name">{i.category_name}</td>
               ) : (
-                <td>
+                <td data-cell="Name">
                   <input
                     type="text"
                     defaultValue={i.category_name}
@@ -120,7 +103,7 @@ const InventoryCategoryView = ({ inventoryCategories, token }) => {
                   />
                 </td>
               )}
-              <td>
+              <td data-cell="Update">
                 {updateCategory !== i.id ? (
                   <button onClick={() => handleUpdateCategory(i)}>edit</button>
                 ) : (
@@ -132,7 +115,7 @@ const InventoryCategoryView = ({ inventoryCategories, token }) => {
                   </button>
                 )}
               </td>
-              <td>
+              <td data-cell="Delete">
                 <img
                   src={deleteUserIcon}
                   alt="delete category icon"

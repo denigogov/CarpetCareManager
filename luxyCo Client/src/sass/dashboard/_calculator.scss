@@ -1,6 +1,6 @@
-@use '../colors';
-@use '../mixing';
-@use '../general';
+@use "../colors";
+@use "../mixing";
+@use "../general";
 
 .calculator--container {
   height: 100%;
@@ -32,7 +32,7 @@
       padding: 17px 50px;
     }
 
-    input[type='checkbox'] {
+    input[type="checkbox"] {
       box-shadow: none;
     }
 
@@ -70,5 +70,22 @@
 
   span {
     font-size: 16px;
+  }
+}
+
+@media screen and (min-width: general.$mobileS) {
+  .calculator-wrap {
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: general.$mobile) {
+  .calculator--container {
+    padding: 20px;
+  }
+
+  .calculator-wrap {
+    flex-direction: column;
+    gap: 20px;
   }
 }

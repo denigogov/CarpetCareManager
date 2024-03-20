@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import '../../sass/contact/_createContact.scss';
-import useSWR, { useSWRConfig } from 'swr';
-import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import { useEffect, useRef, useState } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import "../../sass/contact/_createContact.scss";
+import useSWR, { useSWRConfig } from "swr";
+import ApiSendRequestMessage from "../../components/ApiSendRequestMessage";
+import { handlePostPutDeleteRequest } from "../../handleRequests";
 
 const CreateContact = ({ token }) => {
-  const [error, setError] = useState('');
-  const [successfulMessage, setSuccessfulMessage] = useState('');
+  const [error, setError] = useState("");
+  const [successfulMessage, setSuccessfulMessage] = useState("");
 
   const [setPopupOpen] = useOutletContext();
   const navigate = useNavigate();
@@ -20,20 +21,20 @@ const CreateContact = ({ token }) => {
 
   const customerInputData = useRef(null);
 
-  const { data: fetchCustomers } = useSWR(['fetchCustomers', token]);
+  const { data: fetchCustomers } = useSWR(["fetchCustomers", token]);
 
   useEffect(() => {
     if (successfulMessage) {
       const timer = setTimeout(() => {
-        setSuccessfulMessage('');
+        setSuccessfulMessage("");
         setPopupOpen(false);
-        navigate('/contact');
+        navigate("/contact");
       }, 2500);
       return () => clearTimeout(timer);
     }
   }, [successfulMessage]);
 
-  const handleCusomerForm = e => {
+  const handleCusomerForm = (e) => {
     e.preventDefault();
 
     const customerData = {
@@ -49,21 +50,22 @@ const CreateContact = ({ token }) => {
 
     const { first_name, last_name, phone_number } = customerData;
     if (!first_name || !last_name || !phone_number) {
-      setError('Please fill in all the required fields.');
+      setError("Please fill in all the required fields.");
       return;
     }
 
     // Checking if the number already exsite in database for createing new user and update user
     const checkingForUniquePhoneNumber = fetchCustomers.some(
-      customers => customers.phone_number === phoneNumberRef.current.value
+      (customers) => customers.phone_number === phoneNumberRef.current.value
     );
 
+    // because of the if statemant I wont refactore this fn
     const addCustomer = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/customer`, {
-          method: 'POST',
+        const res = await fetch(`https://carpetcare.onrender.com/customer`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(customerInputData.current),
@@ -74,11 +76,11 @@ const CreateContact = ({ token }) => {
             `Customer ${firstNameRef.current.value} ${lastNameRef.current.value} added`
           );
           // cleaning in case there was some error before !
-          setError('');
+          setError("");
         }
 
         if (checkingForUniquePhoneNumber)
-          throw new Error('phone number already exists');
+          throw new Error("phone number already exists");
       } catch ({ message }) {
         setError(`Error creating customer, ${message}`);
       }
@@ -128,7 +130,7 @@ const CreateContact = ({ token }) => {
             disabled={successfulMessage}
           />
           <input
-            type="number"
+            type="tel"
             pattern="[A-Za-z0-9]+"
             placeholder="Postal Code"
             ref={postalCodeRef}

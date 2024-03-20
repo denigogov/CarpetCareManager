@@ -14,24 +14,20 @@ const EditOrderUserView = ({
         <option value={fetchOrderById.order_status_id}>
           {fetchOrderById.status_name}
         </option>
-        {orderStatusConfig.map(status => (
+        {orderStatusConfig.map((status) => (
           <option value={status.id} key={status.id}>
             {status.status_name}
           </option>
         ))}
       </select>
       <label>pieces</label>
-      <input
-        type="number"
-        defaultValue={fetchOrderById.pieces}
-        ref={piecesRef}
-      />
+      <input type="tel" defaultValue={fetchOrderById.pieces} ref={piecesRef} />
       <label>scheduled date</label>
       <input
         min={today}
         defaultValue={formatedDate}
         type="date"
-        onChange={e => setScheduleDate(e.target.value)}
+        onChange={(e) => setScheduleDate(e.target.value)}
       />
     </div>
   );

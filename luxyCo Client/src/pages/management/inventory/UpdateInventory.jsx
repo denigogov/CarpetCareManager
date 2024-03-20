@@ -1,22 +1,22 @@
-import UpdateInventoryView from '../../../components/management/inventory/UpdateInventoryView';
-import { useParams } from 'react-router-dom';
-import useSWR, { useSWRConfig } from 'swr';
-import ErrorDisplayView from '../../../components/ErrorDisplayView';
-import LoadingView from '../../../components/LoadingView';
-import { useEffect, useState } from 'react';
-import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
-import { handlePostPutDeleteRequest } from '../../../handleRequests';
+import UpdateInventoryView from "../../../components/management/inventory/UpdateInventoryView";
+import { useParams } from "react-router-dom";
+import useSWR, { useSWRConfig } from "swr";
+import ErrorDisplayView from "../../../components/ErrorDisplayView";
+import LoadingView from "../../../components/LoadingView";
+import { useEffect, useState } from "react";
+import ApiSendRequestMessage from "../../../components/ApiSendRequestMessage";
+import { handlePostPutDeleteRequest } from "../../../handleRequests";
 
 const UpdateInventory = ({ token }) => {
   const selectedInventoryID = useParams();
 
-  const [success, setSuccess] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -27,9 +27,9 @@ const UpdateInventory = ({ token }) => {
     data: inventory,
     error: inventoryError,
     isLoading: inventoryLoading,
-  } = useSWR(['inventory', token]);
+  } = useSWR(["inventory", token]);
 
-  const { data: inventoryCategory } = useSWR(['inventoryCategory', token]);
+  const { data: inventoryCategory } = useSWR(["inventoryCategory", token]);
 
   if (inventoryError)
     return (
@@ -42,33 +42,33 @@ const UpdateInventory = ({ token }) => {
   if (inventoryLoading) return <LoadingView />;
 
   const selectedInventoryData = inventory.filter(
-    i => i.id === +selectedInventoryID.id
+    (i) => i.id === +selectedInventoryID.id
   );
 
   const filteredInventoryCategory = inventoryCategory.filter(
-    i => i.id !== selectedInventoryData[0].category_id
+    (i) => i.id !== selectedInventoryData[0].category_id
   );
 
-  const updateSend = async sendData => {
+  const updateSend = async (sendData) => {
     handlePostPutDeleteRequest(
-      '/table/inventory/',
+      "/table/inventory/",
       selectedInventoryID.id,
-      'PUT',
+      "PUT",
       token,
       sendData,
-      'updating inventory faild, please try again',
+      "updating inventory faild, please try again",
       setErrorMessage,
       setSuccess,
       mutate,
-      'inventory',
-      'inventory updated'
+      "inventory",
+      "inventory updated"
     );
   };
 
   return (
     <div className="updateInventory-wrap">
       <UpdateInventoryView
-        selectedInventoryData={...selectedInventoryData[0]}
+        selectedInventoryData={selectedInventoryData[0]}
         selectedInventoryID={selectedInventoryID}
         inventoryCategory={filteredInventoryCategory}
         formSubmitUpdate={updateSend}

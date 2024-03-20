@@ -1,6 +1,6 @@
-@use '../../colors';
-@use '../../mixing';
-@use '../../general';
+@use "../../colors";
+@use "../../mixing";
+@use "../../general";
 
 .createInventory {
   height: calc(100vh - 300px);
@@ -55,4 +55,13 @@
 .updateInventory-wrap {
   display: flex;
   flex-direction: column;
+}
+
+@media screen and (max-width: general.$mobileS) {
+  .updateInventory {
+    form,
+    button {
+      transform: translateY(70px);
+    }
+  }
 }

@@ -1,6 +1,6 @@
-@use '../../colors';
-@use '../../mixing';
-@use '../../general';
+@use "../../colors";
+@use "../../mixing";
+@use "../../general";
 
 .orderStatusView {
   width: 100%;
@@ -35,5 +35,12 @@
     .updateBtn {
       background-color: colors.$button-Primary;
     }
+  }
+}
+
+.addStatusIcon {
+  @include mixing.iconLinkShow;
+  &::after {
+    content: "add status";
   }
 }

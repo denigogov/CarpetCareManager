@@ -1,12 +1,12 @@
-import '../../../sass/management/inventory/_inventoryNavBar.scss';
-import categoryIcon from '../../../assets/categoryIcon.svg';
-import { Outlet, useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
-import addInventoryIcon from '../../../assets/addIcon.svg';
-import CreateNewCategory from '../../../pages/management/inventory/CreateNewCategory';
-import ToggleBtn from '../../ToggleBtn';
-import InventoryPDF from './InventoryPDF';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import "../../../sass/management/inventory/_inventoryNavBar.scss";
+import categoryIcon from "../../../assets/categoryIcon.svg";
+import { Outlet, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import addInventoryIcon from "../../../assets/addIcon.svg";
+import CreateNewCategory from "../../../pages/management/inventory/CreateNewCategory";
+import ToggleBtn from "../../ToggleBtn";
+import InventoryPDF from "./InventoryPDF";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 const InventoryNavBar = ({
   inventory,
@@ -23,34 +23,36 @@ const InventoryNavBar = ({
 
   const navigate = useNavigate();
 
-  const preventPropagation = e => {
+  const preventPropagation = (e) => {
     e.stopPropagation();
   };
 
   const popupWindow = () => {
-    setPopupOpen(e => !e);
-    navigate('/management/inventory');
+    setPopupOpen((e) => !e);
+    navigate("/management/inventory");
     setCreateCategory(false);
   };
 
-  const handleCategory = e => {
+  const handleCategory = (e) => {
     setCreateCategory(e.target.textContent);
-    setPopupOpen(e => !e);
+    setPopupOpen((e) => !e);
   };
 
   return (
     <div className="inventory-navBar">
       <ToggleBtn
-        handleShowCategory={handleShowCategory}
-        showCategory={showCategory}
+        handlerOnClik={handleShowCategory}
+        state={showCategory}
+        toggleTextOn={`Category Visibility on`}
+        toggleTextOff={"Category Visibility Off"}
       />
 
       <select
         className="selectCat--inventory"
-        onChange={e => setSelectedCategory(e.target.value)}
+        onChange={(e) => setSelectedCategory(e.target.value)}
       >
         <option value="all">View All Inventory</option>
-        {inventoryCategories.map(i => {
+        {inventoryCategories.map((i) => {
           return (
             <option key={i.id} value={i.id}>
               {i.category_name}
@@ -62,7 +64,7 @@ const InventoryNavBar = ({
         className="searchInventory"
         type="search"
         placeholder="search for inventory"
-        onChange={e => setSearchedValue(e.target.value)}
+        onChange={(e) => setSearchedValue(e.target.value)}
       />
 
       <Link
@@ -77,7 +79,7 @@ const InventoryNavBar = ({
 
       <Link
         to={`/management/inventory/add-inventory`}
-        onClick={() => setPopupOpen(e => !e)}
+        onClick={() => setPopupOpen((e) => !e)}
       >
         <button className="inv-nav inventoryLink">
           create new inventory
@@ -93,14 +95,14 @@ const InventoryNavBar = ({
             />
           }
           fileName={`Inventory - ${
-            selectedCategoryName?.category_name ?? 'All'
+            selectedCategoryName?.category_name ?? "All"
           }`}
         >
           {({ loading }) =>
             loading ? (
-              ''
+              ""
             ) : (
-              <p style={{ color: ' #666666' }}>download inventory</p>
+              <p style={{ color: " #666666" }}>download inventory</p>
             )
           }
         </PDFDownloadLink>
@@ -109,13 +111,13 @@ const InventoryNavBar = ({
         <div className="overlay" onClick={popupWindow}>
           <main
             className={
-              createCategory === 'create new category'
-                ? 'popUp xsPopup'
-                : 'popUp'
+              createCategory === "create new category"
+                ? "popUp xsPopup"
+                : "popUp"
             }
             onClick={preventPropagation}
           >
-            {createCategory === 'create new category' ? (
+            {createCategory === "create new category" ? (
               // I have to pass the token here because its not together with the Outlet!!!!
               <CreateNewCategory token={token} setPopupOpen={setPopupOpen} />
             ) : (

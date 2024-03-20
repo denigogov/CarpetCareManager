@@ -1,39 +1,39 @@
-import { handlePostPutDeleteRequest } from '../../handleRequests';
-import '../../sass/delivery/scanedOrderView.scss';
-import { useRef, useState } from 'react';
+import { handlePostPutDeleteRequest } from "../../handleRequests";
+import "../../sass/delivery/scanedOrderView.scss";
+import { useRef, useState } from "react";
 
 const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
   const [orderStatusId, setOrderStatusId] = useState(null);
-  const [error, setError] = useState('');
-  const [updateSuccessful, setUpdateSuccessful] = useState('');
+  const [error, setError] = useState("");
+  const [updateSuccessful, setUpdateSuccessful] = useState("");
 
   // fn to transform the date time
-  const formatedDate = dateToTransform => {
+  const formatedDate = (dateToTransform) => {
     return new Date(new Date(dateToTransform))
       .toISOString()
-      .replaceAll('-', '.')
-      .replace('T', ' ');
+      .replaceAll("-", ".")
+      .replace("T", " ");
   };
 
   const filteredStatus = orderStatus
     ? orderStatus.filter(
-        status => status.status_name !== fetchedOrderById.status_name
+        (status) => status.status_name !== fetchedOrderById.status_name
       )
-    : '';
+    : "";
 
-  const handleUpdateStatus = e => {
+  const handleUpdateStatus = (e) => {
     handlePostPutDeleteRequest(
-      '/table/orderStatus/',
+      "/table/orderStatus/",
       fetchedOrderById.id,
-      'PUT',
+      "PUT",
       token,
       { order_status_id: orderStatusId },
-      'Error Updating Order',
+      "Error Updating Order",
       setError,
       setUpdateSuccessful,
       null,
       null,
-      'Order updated. Success!'
+      "Order updated. Success!"
     );
   };
 
@@ -43,43 +43,43 @@ const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
         <p>
           {fetchedOrderById.first_name
             ? `${fetchedOrderById.first_name}  ${fetchedOrderById.last_name}`
-            : 'user deleted'}{' '}
+            : "user deleted"}{" "}
         </p>
 
         <p>
           {fetchedOrderById.street
-            ? `${fetchedOrderById.street}  ${fetchedOrderById?.city ?? ''} ${
-                fetchedOrderById?.postalCode ?? ''
+            ? `${fetchedOrderById.street}  ${fetchedOrderById?.city ?? ""} ${
+                fetchedOrderById?.postalCode ?? ""
               }`
-            : 'no street added'}
+            : "no street added"}
         </p>
       </div>
 
       <div className="orderScan__wrap">
         <div className="orderScan-detailsLeft">
           <p>
-            Order Date:{' '}
+            Order Date:{" "}
             <span>
               {formatedDate(fetchedOrderById.order_date).slice(0, 19)}
             </span>
           </p>
 
           <p>
-            Scheduled Date:{' '}
+            Scheduled Date:{" "}
             <span>
-              {' '}
+              {" "}
               {formatedDate(fetchedOrderById.scheduled_date).slice(0, 10)}
             </span>
           </p>
           <p>
-            Delivery: <span>{fetchedOrderById.delivery ? 'Yes' : 'No'}</span>
+            Delivery: <span>{fetchedOrderById.delivery ? "Yes" : "No"}</span>
           </p>
 
           <p>
             Order Status:
             <span>
-              {' '}
-              <select onChange={e => setOrderStatusId(e.target.value)}>
+              {" "}
+              <select onChange={(e) => setOrderStatusId(e.target.value)}>
                 <option value={fetchedOrderById.order_status_id}>
                   {fetchedOrderById.status_name}
                 </option>
@@ -91,7 +91,7 @@ const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
                         </option>
                       );
                     })
-                  : ''}
+                  : ""}
               </select>
             </span>
           </p>
@@ -99,14 +99,14 @@ const ScanedOrderView = ({ fetchedOrderById, token, orderStatus }) => {
 
         <div className="orderScan-detailsRight">
           <p>
-            m²: <span> {fetchedOrderById?.m2 ?? 'no size added'}</span>
+            m²: <span> {fetchedOrderById?.m2 ?? "no size added"}</span>
           </p>
           <p>
-            Pieces: <span>{fetchedOrderById?.pieces ?? 'no pieces added'}</span>
+            Pieces: <span>{fetchedOrderById?.pieces ?? "no pieces added"}</span>
           </p>
           <p>
-            Price:{' '}
-            <span>{fetchedOrderById?.total_price ?? 'no price added'} €</span>
+            Price:{" "}
+            <span>{fetchedOrderById?.total_price ?? "no price added"} €</span>
           </p>
           {orderStatusId && <button onClick={handleUpdateStatus}>save</button>}
         </div>

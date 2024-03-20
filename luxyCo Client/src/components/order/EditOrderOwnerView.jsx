@@ -8,12 +8,12 @@ const EditOrderOwnerView = ({
     <div className="editOrder--ownerView">
       <label>total price</label>
       <input
-        type="number"
+        type="tel"
         defaultValue={fetchOrderById.total_price}
         ref={totalPriceRef}
       />
       <label>m²</label>
-      <input type="number" defaultValue={fetchOrderById.m2} ref={m2Ref} />
+      <input type="tel" defaultValue={fetchOrderById.m2} ref={m2Ref} />
       <label>Delivery</label>
       <select ref={deliveryRef} defaultValue={fetchOrderById.delivery}>
         <option value="1">Yes</option>

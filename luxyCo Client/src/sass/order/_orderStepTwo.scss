@@ -1,12 +1,12 @@
-@use '../colors';
-@use '../general';
-@use '../mixing';
+@use "../colors";
+@use "../general";
+@use "../mixing";
 .addCustomerIcon {
   width: 20px;
 }
 
 .customerSearchIcon {
-  background: url('../../assets/detailsIcon.svg');
+  background: url("../../assets/detailsIcon.svg");
   @include mixing.inputFiledsAddIcon();
 }
 
@@ -60,4 +60,10 @@
   gap: 20px;
   flex-direction: row-reverse;
   cursor: pointer;
+}
+
+@media (max-width: general.$mobileS) {
+  .orderStepTwo--container {
+    flex-direction: column;
+  }
 }

@@ -1,6 +1,6 @@
-@use '../mixing';
-@use '../colors';
-@use '../general';
+@use "../mixing";
+@use "../colors";
+@use "../general";
 
 .scanedOrderView__container {
   position: relative;
@@ -37,6 +37,7 @@
   text-align: justify;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 
   p {
     color: colors.$font-Primary;

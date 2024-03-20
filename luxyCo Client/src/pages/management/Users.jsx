@@ -1,26 +1,29 @@
-import '../../sass/management/_users.scss';
+import "../../sass/management/_users.scss";
 // import deleteIcon from "../../assets/deleteIcon.svg";
-import deleteUserIcon from '../../assets/deleteIcon.svg';
-import editIcon from '../../assets/editIcon.svg';
-import detailsIcon from '../../assets/detailsIcon.svg';
-import addUserIcon from '../../assets/addUserIcon.svg';
-import { Outlet, Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import LoadingView from '../../components/LoadingView';
+import deleteUserIcon from "../../assets/deleteIcon.svg";
+import editIcon from "../../assets/editIcon.svg";
+import detailsIcon from "../../assets/detailsIcon.svg";
+import addUserIcon from "../../assets/addUserIcon.svg";
+import { Outlet, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import LoadingView from "../../components/LoadingView";
 
-import useSWR, { useSWRConfig } from 'swr';
-import ErrorDisplayView from '../../components/ErrorDisplayView';
-import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import useSWR, { useSWRConfig } from "swr";
+import ErrorDisplayView from "../../components/ErrorDisplayView";
+import ApiSendRequestMessage from "../../components/ApiSendRequestMessage";
+import Swal from "sweetalert2";
 
 const Users = ({ token, userInfo }) => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
   const [popupOpen, setPopupOpen] = useState(false);
-  const [success, setSucces] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSucces] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const fetcher = async url => {
+  const isPhone = window.innerWidth < 1022;
+
+  const fetcher = async (url) => {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,41 +33,50 @@ const Users = ({ token, userInfo }) => {
     return response.json();
   };
 
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => {
-        setSucces('');
-      }, 2500);
-      return () => clearTimeout(timer);
-    }
-  }, [success]);
-
   // To Render ERROR ,DATA and WHEN DATA IS LOAD!
   const { data, error, isLoading } = useSWR(
-    'http://localhost:4000/user',
+    "https://carpetcare.onrender.com/user",
     fetcher
   );
 
+  const filteredData = data?.filter((user) => user?.id !== 145);
+
   const deleteUser = async (id, first_name) => {
     try {
-      const confirmDelete = confirm(
-        `Please confirm if you want to delete this user ${first_name.toUpperCase()} all data related to the user will be lost.`
-      );
+      const sendMessage = Swal.fire({
+        title: "Delete User",
+        html: `Please confirm if you want to delete this user <strong>${first_name.toUpperCase()}</strong> all data related to the user will be lost.`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#da0063",
+        iconColor: "#da0063",
+        cancelButtonColor: "#b7b7b7",
+        confirmButtonText: "Yes, delete it!",
+      });
 
-      if (confirmDelete) {
-        await fetch(`http://localhost:4000/user/${id}`, {
-          method: 'DELETE',
+      if ((await sendMessage).isConfirmed) {
+        await fetch(`https://carpetcare.onrender.com/user/${id}`, {
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
-        setSucces('User Deleted');
-        setErrorMessage('');
+        mutate("https://carpetcare.onrender.com/user"); // mutate is  Refresh the users data
+        setSucces("User Deleted");
+        setErrorMessage("");
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          iconColor: "#da0063",
+          title: `${success}!`,
+          showConfirmButton: false,
+          timer: 2500,
+        });
       }
     } catch (error) {
-      setErrorMessage('Error deleting user', error);
+      setErrorMessage("Error deleting user", error);
     }
   };
 
@@ -75,29 +87,41 @@ const Users = ({ token, userInfo }) => {
         navigateTo1="/dashboard"
         navigateTo2="/order"
       />
-    ); // I need to add personal error messages!
-  if (isLoading) return <LoadingView />; //I need to add loading component!
+    );
+
+  if (isLoading) return <LoadingView />;
 
   // Event handler stop bubbling
-  const preventPropagation = event => {
+  const preventPropagation = (event) => {
     event.stopPropagation();
   };
 
   const popupWindow = () => {
-    setPopupOpen(x => !x);
-    navigate('/management/users/');
+    setPopupOpen((x) => !x);
+    navigate("/management/users/");
   };
 
   return (
     <div>
       <div className="table-container">
         <table className="userTable">
+          {isPhone && (
+            <div className="createUserIcon">
+              <Link
+                to={`/management/users/addUser/`}
+                onClick={() => setPopupOpen((x) => !x)}
+              >
+                <img src={addUserIcon} alt="create new user icon" />
+              </Link>
+            </div>
+          )}
+
           <thead>
             <tr>
               <th>
                 <Link
                   to={`/management/users/addUser/`}
-                  onClick={() => setPopupOpen(x => !x)}
+                  onClick={() => setPopupOpen((x) => !x)}
                 >
                   <img src={addUserIcon} alt="create new user icon" />
                 </Link>
@@ -112,25 +136,25 @@ const Users = ({ token, userInfo }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((users, i) => {
+            {filteredData.map((users, i) => {
               return (
                 <tr key={users.id}>
-                  <td>{i + 1}</td>
-                  <td>{users.username}</td>
-                  <td>{users.first_name}</td>
-                  <td>{users.last_name}</td>
-                  <td>{users.department_name}</td>
+                  <td data-cell="#">{i + 1}</td>
+                  <td data-cell="Username">{users.username}</td>
+                  <td data-cell="First Name">{users.first_name}</td>
+                  <td data-cell="Last Name">{users.last_name}</td>
+                  <td data-cell="Department">{users.department_name}</td>
 
-                  <td>
+                  <td data-cell="Details">
                     <Link
                       to={`/management/users/details/${users.id}`}
-                      onClick={() => setPopupOpen(x => !x)}
+                      onClick={() => setPopupOpen((x) => !x)}
                     >
                       <img src={detailsIcon} alt="user details Icon" />
                     </Link>
                   </td>
 
-                  <td>
+                  <td data-cell="Edit">
                     <Link
                       to={`/management/users/edit/${users.id}`}
                       onClick={popupWindow}
@@ -140,7 +164,7 @@ const Users = ({ token, userInfo }) => {
                   </td>
 
                   {userInfo.id === users.id || (
-                    <td>
+                    <td data-cell="Remove">
                       <img
                         onClick={() => deleteUser(users.id, users.first_name)}
                         className="userDeleteIcon"
@@ -154,7 +178,7 @@ const Users = ({ token, userInfo }) => {
             })}
           </tbody>
         </table>
-        <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
+
         {/* PopUp window with background */}
         {popupOpen && (
           <div className="overlay" onClick={popupWindow}>

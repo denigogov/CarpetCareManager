@@ -1,38 +1,53 @@
-import { Outlet, NavLink, useNavigate, redirect } from 'react-router-dom';
-import '../sass/_root.scss';
-import appLogo from '../assets/appLogo.svg';
-import githubIcon from '../assets/githubIcon.svg';
-import linkedInIcon from '../assets/linkedInIcon.svg';
+import { Outlet, NavLink, useNavigate, redirect } from "react-router-dom";
+import "../sass/_root.scss";
+import appLogo from "../assets/appLogo.svg";
+import githubIcon from "../assets/githubIcon.svg";
+import linkedInIcon from "../assets/linkedInIcon.svg";
+import { useState } from "react";
 
 const Root = ({ setToken, userInfo }) => {
   const navigate = useNavigate();
 
+  const isPhone = window.innerWidth < 768;
+
+  const [openNavBar, setOpenNavBar] = useState(!isPhone);
+
   const logoutHandler = () => {
-    localStorage.removeItem('token');
-    setToken('');
-    navigate('/');
+    localStorage.removeItem("token");
+    setToken("");
+    navigate("/");
+  };
+
+  const handleNavBar = () => {
+    setOpenNavBar((e) => !e);
   };
 
   return (
     <div className="rootContainer">
       <div className="navbarContainer">
-        <div className="navbar-left">
+        <div
+          className={
+            openNavBar ? "navbar-left" : " navbar-left closeOpenNavBar "
+          }
+        >
           <div className="logo">
             <div className="appLogo ">
               <img
+                title="LuxyCo Carpet Care Manager"
                 src={appLogo}
                 alt="app logo "
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate("/dashboard")}
               />
             </div>
           </div>
           <div className="userLoggedin">{userInfo.name}</div>
-          <nav>
+
+          <nav className="mainNavBar">
             <ul>
               <NavLink
                 to="dashboard"
                 className={({ isActive, isPending }) =>
-                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
                 <li>
@@ -44,7 +59,7 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="order"
                 className={({ isActive, isPending }) =>
-                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
                 <li>
@@ -56,7 +71,7 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="delivery"
                 className={({ isActive, isPending }) =>
-                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
                 <li>
@@ -68,7 +83,7 @@ const Root = ({ setToken, userInfo }) => {
               <NavLink
                 to="contact"
                 className={({ isActive, isPending }) =>
-                  isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
+                  isPending ? "pending" : isActive ? "activeLink" : "navLink"
                 }
               >
                 <li>
@@ -77,11 +92,11 @@ const Root = ({ setToken, userInfo }) => {
                   {/* <span className="tooltip">Contact</span> */}
                 </li>
               </NavLink>
-              {userInfo.department === 2 && (
+              {(userInfo.department === 2 || userInfo.department === 3) && (
                 <NavLink
                   to="management"
                   className={({ isActive, isPending }) =>
-                    isPending ? 'pending' : isActive ? 'activeLink' : 'navLink'
+                    isPending ? "pending" : isActive ? "activeLink" : "navLink"
                   }
                 >
                   <li>
@@ -93,10 +108,21 @@ const Root = ({ setToken, userInfo }) => {
               )}
             </ul>
           </nav>
+
+          <div>
+            {/* hide Navbar Icon Only visible to latop/Desktop */}
+            {!isPhone && <i className="bx bx-hide" onClick={handleNavBar}></i>}
+
+            {/* Logout  */}
+            {isPhone && (
+              <i className="bx bx-power-off" onClick={logoutHandler}></i>
+            )}
+          </div>
           <footer id="footer">
             <div className="footer__icons">
               <a target="_blank" href="https://github.com/denigogov">
                 <img
+                  title="GitHub Profile"
                   className="githubLogo"
                   src={githubIcon}
                   alt="github Logo"
@@ -108,6 +134,7 @@ const Root = ({ setToken, userInfo }) => {
                 href="https://www.linkedin.com/in/dejan-gogov-571871270/"
               >
                 <img
+                  title="LinkedIn Profile"
                   className="linkedInLogo"
                   src={linkedInIcon}
                   alt="linkedIn Logo"
@@ -117,9 +144,24 @@ const Root = ({ setToken, userInfo }) => {
             <p>LuxyCo by Dejan Gogov</p>
           </footer>
         </div>
+
         <div className="navbar-topTest">
           <div className="navbar-top">
-            <i className="bx bx-power-off" onClick={logoutHandler}></i>
+            {!isPhone && (
+              <i className="bx bx-power-off" onClick={logoutHandler}></i>
+            )}
+            <div
+              className={openNavBar ? "overlay1" : ""}
+              onClick={handleNavBar}
+            >
+              {!openNavBar && (
+                <div className="openNavbarBtn__container">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              )}
+            </div>
           </div>
           <div className="mainOutlet">
             <Outlet />

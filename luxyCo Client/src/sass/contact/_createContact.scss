@@ -47,3 +47,9 @@
 }
 
 // from component editContact
+@media (max-width: general.$mobileS) {
+  .createContact--left,
+  .createContact--right {
+    padding: 2px !important;
+  }
+}

@@ -35,3 +35,16 @@
   letter-spacing: general.$spacing;
   margin-top: 1.5rem;
 }
+
+@media (max-width: general.$mobile) {
+  .editUser--data {
+    transform: scale(0.63);
+  }
+
+  .editUser {
+    h3,
+    p {
+      height: 100%;
+    }
+  }
+}

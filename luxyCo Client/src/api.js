@@ -1,6 +1,6 @@
 export const fetchTokenValidation = async token => {
   try {
-    const res = await fetch('http://localhost:4000/login/', {
+    const res = await fetch('https://carpetcare.onrender.com/login', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -17,7 +17,7 @@ export const fetchTokenValidation = async token => {
 
 // -===========================================================
 
-const BASE_URL = 'http://localhost:4000'; // Your API base URL
+const BASE_URL = 'https://carpetcare.onrender.com'; // Your API base URL
 
 export const fetchApi = async (endpoint, token) => {
   try {

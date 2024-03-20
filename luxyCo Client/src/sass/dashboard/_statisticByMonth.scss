@@ -1,3 +1,5 @@
+@use "../general";
+
 .statisticByMonth--wrap {
   height: 100%;
   display: flex;
@@ -6,7 +8,23 @@
   justify-content: space-around;
 }
 
+// .perMonthLineChart {
+//   margin: 0 auto;
+//   width: 80%;
+// }
+
 .perMonthLineChart {
   margin: 0 auto;
-  width: 80%;
+  width: calc(35em - 2rem);
+  height: 270px;
+}
+
+@media screen and (max-width: general.$mobile) {
+  .perMonthLineChart {
+    width: 100%;
+  }
+
+  .statisticByMonth--wrap {
+    gap: 30px;
+  }
 }

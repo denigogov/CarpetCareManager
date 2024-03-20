@@ -1,5 +1,6 @@
-@use '../colors';
-@use '../mixing';
+@use "../colors";
+@use "../mixing";
+@use "../general";
 
 .createOrder--nav {
   ul {
@@ -45,7 +46,7 @@
 }
 
 .orderSearchInput {
-  background: url('../../assets/search-input-icon.svg');
+  background: url("../../assets/search-input-icon.svg");
   @include mixing.inputFiledsAddIcon();
 }
 
@@ -87,5 +88,21 @@
 
   &::-webkit-scrollbar-thumb {
     background-color: colors.$banner-Primary;
+  }
+}
+
+@media (max-width: general.$mobile) {
+  .createOrder--nav {
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   }
 }

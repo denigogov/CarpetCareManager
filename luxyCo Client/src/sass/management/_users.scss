@@ -6,3 +6,12 @@
   height: 100%;
   @include mixing.table;
 }
+
+// Only Visible to Phone
+.createUserIcon {
+  @include mixing.iconLinkShow;
+
+  &::after {
+    content: "add new user";
+  }
+}

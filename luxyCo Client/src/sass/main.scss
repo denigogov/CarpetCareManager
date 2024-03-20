@@ -1,6 +1,6 @@
-@use './general';
-@use './colors';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@use "./general";
+@use "./colors";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 * {
   padding: 0;
@@ -65,7 +65,13 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: general.$mobile) {
+    width: 90%;
+    height: 90%;
+  }
 }
+
 .overlay {
   position: fixed;
   top: 0;
@@ -85,6 +91,18 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: general.$laptop) {
+    width: 50%;
+  }
+
+  @media (max-width: general.$tablet) {
+    width: 50%;
+  }
+
+  @media (max-width: general.$mobile) {
+    width: 80%;
+  }
 }
 
 .xsPopup {
@@ -94,9 +112,60 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: general.$laptop) {
+    width: 30%;
+  }
+
+  @media (max-width: general.$tablet) {
+    width: 50%;
+  }
+
+  @media (max-width: general.$mobile) {
+    width: 70%;
+  }
+}
+
+.vmro {
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg)
+    brightness(119%) contrast(119%);
 }
 
 // FILTER FOR CHANGE COLOR OF SVG!!!!
 
 // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg)
 //   brightness(119%) contrast(119%);
+
+// for some reason  its not working !
+// @media screen and (max-width: general.$laptop) {
+//   .smallPopup {
+//     width: 50%;
+//   }
+
+//   .xsPopup {
+//     width: 30%;
+//   }
+// }
+
+// @media (max-width: general.$tablet) {
+//   .smallPopup {
+//     width: 50%;
+//   }
+//   .xsPopup {
+//     width: 50%;
+//   }
+// }
+
+// @media (max-width: general.$mobile) {
+//   .smallPopup {
+//     width: 80%;
+//   }
+//   .xsPopup {
+//     width: 70%;
+//   }
+
+//   .popUp {
+//     width: 90%;
+//     height: 90%;
+//   }
+// }

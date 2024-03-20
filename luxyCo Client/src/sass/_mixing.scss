@@ -1,5 +1,5 @@
-@use './colors';
-@use './general';
+@use "./colors";
+@use "./general";
 
 @mixin inputFieldsLogin($borderColor: colors.$borderLine-Primary) {
   border: 1px solid $borderColor;
@@ -30,6 +30,10 @@
   &:active {
     transform: translateY(-3px);
   }
+
+  @media (max-width: general.$mobile) {
+    padding: 12px;
+  }
 }
 
 @mixin inputFileds() {
@@ -46,6 +50,16 @@
   &:invalid {
     border: 1px solid colors.$error;
   }
+
+  @media (max-width: general.$mobile) {
+    background-color: transparent;
+    // padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+      outline: 1px solid colors.$borderLine-Second;
+    }
+  }
 }
 
 @mixin inputFiledsAddIcon() {
@@ -56,6 +70,21 @@
   background-position: left;
   background-size: 25px;
   background-color: #fff;
+}
+
+@mixin iconLinkShow() {
+  padding: 10px;
+  display: flex;
+
+  &::after {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+  }
+
+  img {
+    width: 25px;
+  }
 }
 
 //   @mixin buttonHover($btnHoverColor: colors.$primary-darker) {
@@ -88,6 +117,32 @@
     tr:hover {
       transition: general.$transition;
       background-color: colors.$background-Primary;
+    }
+  }
+
+  @media (max-width: general.$tablet) {
+    td {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: 15ch auto;
+
+      &:first-child {
+        margin-top: 2rem;
+      }
+
+      &:last-child {
+        margin-bottom: 2rem;
+      }
+
+      &::before {
+        content: attr(data-cell) ": ";
+        font-weight: 600;
+        float: left;
+      }
+    }
+
+    th {
+      display: none;
     }
   }
 }

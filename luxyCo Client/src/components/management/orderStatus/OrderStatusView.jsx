@@ -1,8 +1,8 @@
-import '../../../sass/management/orderStatus/_orderStatusView.scss';
-import deleteUserIcon from '../../../assets/deleteIcon.svg';
-import addIcon from '../../../assets/addIcon.svg';
-import { useState } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import "../../../sass/management/orderStatus/_orderStatusView.scss";
+import deleteUserIcon from "../../../assets/deleteIcon.svg";
+import addIcon from "../../../assets/addIcon.svg";
+import { useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const OrderStatusView = ({
   orderStatusData,
@@ -13,18 +13,20 @@ const OrderStatusView = ({
   const [editStatus, setEditStatus] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
 
+  const isPhone = window.innerWidth < 1022;
+
   const navigate = useNavigate();
 
-  const handleEditClick = i => {
+  const handleEditClick = (i) => {
     setEditStatus(i.status_name);
     setUpdatedStatus(i.status_name);
   };
 
-  const handleDeleteClick = e => {
+  const handleDeleteClick = (e) => {
     handleDeleteRequest(e);
   };
 
-  const onClickUpdate = i => {
+  const onClickUpdate = (i) => {
     handleUpdateBtn(i);
 
     // After updating to close the input filed
@@ -32,27 +34,38 @@ const OrderStatusView = ({
   };
 
   // Event handler stop bubbling
-  const preventPropagation = event => {
+  const preventPropagation = (event) => {
     event.stopPropagation();
   };
 
   const popupWindow = () => {
-    setPopupOpen(x => !x);
-    navigate('/management/orderStatus');
+    setPopupOpen((x) => !x);
+    navigate("/management/orderStatus");
   };
 
   return (
     <div className="orderStatusView">
+      {isPhone && (
+        <div className="addStatusIcon">
+          <Link
+            style={{ color: "black" }}
+            to="/management/orderStatus/createStatus"
+            onClick={() => setPopupOpen((x) => !x)}
+          >
+            <img src={addIcon} alt="plus icon" />
+          </Link>
+        </div>
+      )}
       <table>
         <thead>
           <tr>
             <th>
               <Link
-                style={{ color: 'black' }}
+                style={{ color: "black" }}
                 to="/management/orderStatus/createStatus"
-                onClick={() => setPopupOpen(x => !x)}
+                onClick={() => setPopupOpen((x) => !x)}
               >
-                <img src={addIcon} alt="plus icon" /> add service
+                <img src={addIcon} alt="plus icon" /> add status
               </Link>
             </th>
             <th>Status Name</th>
@@ -63,20 +76,20 @@ const OrderStatusView = ({
         <tbody>
           {orderStatusData.map((i, index) => (
             <tr key={i.id}>
-              <td>{index + 1}</td>
-              <td>
+              <td data-cell="#">{index + 1}</td>
+              <td data-cell="Status Name">
                 {editStatus === i.status_name ? (
                   <input
                     type="text"
                     defaultValue={i.status_name}
-                    onChange={e => setUpdatedStatus(e.target.value)}
+                    onChange={(e) => setUpdatedStatus(e.target.value)}
                   />
                 ) : (
-                  i?.status_name ?? 'status not provieded'
+                  i?.status_name ?? "status not provieded"
                 )}
               </td>
 
-              <td>
+              <td data-cell="Edit">
                 {editStatus !== i.status_name ? (
                   <button onClick={() => handleEditClick(i)}>edit</button>
                 ) : (
@@ -88,7 +101,7 @@ const OrderStatusView = ({
                   </button>
                 )}
               </td>
-              <td onClick={() => handleDeleteClick(i)}>
+              <td data-cell="Delete" onClick={() => handleDeleteClick(i)}>
                 <img src={deleteUserIcon} alt="delete status" />
               </td>
             </tr>

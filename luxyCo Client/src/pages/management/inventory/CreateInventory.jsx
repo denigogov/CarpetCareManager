@@ -1,12 +1,12 @@
-import CreateInventoryView from '../../../components/management/inventory/CreateInventoryView';
-import { useEffect, useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
-import { handlePostPutDeleteRequest } from '../../../handleRequests';
+import CreateInventoryView from "../../../components/management/inventory/CreateInventoryView";
+import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import ApiSendRequestMessage from "../../../components/ApiSendRequestMessage";
+import { handlePostPutDeleteRequest } from "../../../handleRequests";
 
 const CreateInventory = ({ token }) => {
-  const [success, setSuccess] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [showQRCode, setShowQRcode] = useState(false);
 
   const { mutate } = useSWRConfig();
@@ -14,27 +14,27 @@ const CreateInventory = ({ token }) => {
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 5000);
       return () => clearTimeout(timer);
     }
   }, [success]);
 
-  const { data: inventoryCategories } = useSWR(['inventoryCategory', token]);
+  const { data: inventoryCategories } = useSWR(["inventoryCategory", token]);
 
-  const handleCreateInventory = async inputData => {
+  const handleCreateInventory = async (inputData) => {
     handlePostPutDeleteRequest(
-      '/table/inventory/',
+      "/table/inventory/",
       null,
-      'POST',
+      "POST",
       token,
       inputData,
-      'please try again',
+      "please try again",
       setErrorMessage,
       setSuccess,
       mutate,
-      'inventory',
-      'Inventory created!',
+      "inventory",
+      "Inventory created!",
       setShowQRcode(true)
     );
   };

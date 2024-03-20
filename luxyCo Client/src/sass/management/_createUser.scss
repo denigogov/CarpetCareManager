@@ -38,3 +38,27 @@
   margin-top: 1rem;
   letter-spacing: general.$spacing;
 }
+
+@media (max-width: general.$tablet) {
+  .createUser {
+    transform: scale(1);
+
+    h3,
+    form,
+    button {
+      transform: translateY(30px);
+    }
+  }
+}
+
+@media (max-width: general.$mobile) {
+  .createUser {
+    transform: scale(0.7);
+
+    h3,
+    form,
+    button {
+      transform: translateY(30px);
+    }
+  }
+}

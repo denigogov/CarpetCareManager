@@ -1,16 +1,17 @@
-import { useSWRConfig } from 'swr';
-import '../../sass/management/_createUser.scss';
-import { useEffect, useState } from 'react';
-import { fetchTableDepartment } from '../../api';
-import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useSWRConfig } from "swr";
+import "../../sass/management/_createUser.scss";
+import { useEffect, useState } from "react";
+import { fetchTableDepartment } from "../../api";
+import ApiSendRequestMessage from "../../components/ApiSendRequestMessage";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const CreateUser = ({ token }) => {
   const { mutate } = useSWRConfig();
   const [departments, setDepartments] = useState([]);
   const [userDataStoring, setUserDataStoring] = useState({});
-  const [success, setSucces] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSucces] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const [setPopupOpen] = useOutletContext();
@@ -18,49 +19,72 @@ const CreateUser = ({ token }) => {
   useEffect(() => {
     const fetchDepartment = async () => {
       const data = await fetchTableDepartment(token);
-      setDepartments(data);
+      const filteredData = data?.filter((department) => department?.id !== 3);
+      setDepartments(filteredData);
     };
     fetchDepartment();
 
     if (success) {
-      const timer = setTimeout(() => {
-        setSucces('');
-        setPopupOpen(false);
-        navigate('/management/users/');
-      }, 2000);
-      return () => clearTimeout(timer);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        iconColor: "#da0063",
+        title: `Success!`,
+        html: `${success}!`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      setSucces("");
+      setPopupOpen(false);
+      navigate("/management/users/");
     }
   }, [success]);
 
-  const inputUserForm = e => {
+  const inputUserForm = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    const convertedValue = name === 'department_id' ? parseInt(value) : value;
+    const convertedValue = name === "department_id" ? parseInt(value) : value;
 
-    setUserDataStoring(prevState => ({
+    setUserDataStoring((prevState) => ({
       ...prevState,
       [name]: convertedValue,
     }));
   };
 
-  const submitCreateUser = e => {
+  const submitCreateUser = (e) => {
     e.preventDefault();
+
+    // Leaving as a reference I need to refactore fetcing user with SWR without useEffect!
+
+    //  handlePostPutDeleteRequest(
+    //     "/user/",
+    //     null,
+    //     "POST",
+    //     token,
+    //     userDataStoring,
+    //     "error user not added, please try again",
+    //     setErrorMessage,
+    //     setSucces,
+    //     mutate,
+    //     "https://carpetcare.onrender.com/user",
+    //     `${userDataStoring.username} added`
+    //   );
 
     const createUser = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/user/`, {
-          method: 'POST',
+        const res = await fetch(`https://carpetcare.onrender.com/user/`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(userDataStoring),
         });
 
         if (res.ok) {
-          mutate('http://localhost:4000/user'); // mutate is  Refresh the users data
-          setSucces(`${userDataStoring.username} added`);
-          setErrorMessage('');
+          mutate("https://carpetcare.onrender.com/user"); // mutate is  Refresh the users data
+          setSucces(`User ${userDataStoring.username} successfully  created`);
+          setErrorMessage("");
 
           return res;
         } else {

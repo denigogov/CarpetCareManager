@@ -3,11 +3,14 @@ import detailsIcon from "../../assets/detailsIcon.svg";
 import deleteCustomerIcon from "../../assets/deleteIcon.svg";
 import editCustomerIcon from "../../assets/editIcon.svg";
 import { Link } from "react-router-dom";
+import ApiSendRequestMessage from "../ApiSendRequestMessage";
 
 const ContactView = ({
   filteredCustomerResults,
   handleDeleteUser,
   setPopupOpen,
+  success,
+  errorMessage,
 }) => {
   return (
     <div>
@@ -30,14 +33,16 @@ const ContactView = ({
             {filteredCustomerResults.map((customer) => {
               return (
                 <tr key={customer.id}>
-                  <td>{customer.first_name}</td>
-                  <td>{customer.last_name}</td>
-                  <td>{customer.street}</td>
-                  <td>{customer.city}</td>
-                  <td>{customer.postalCode}</td>
-                  <td>{customer.phone_number.match(/.{1,3}/g).join("-")}</td>
+                  <td data-cell="First Name">{customer.first_name}</td>
+                  <td data-cell="Last Name">{customer.last_name}</td>
+                  <td data-cell="Street">{customer.street}</td>
+                  <td data-cell="City">{customer.city}</td>
+                  <td data-cell="Postal Code">{customer.postalCode}</td>
+                  <td data-cell="Phone">
+                    {customer.phone_number.match(/.{1,3}/g).join("-")}
+                  </td>
 
-                  <td>
+                  <td data-cell="Details">
                     <Link
                       to={
                         `/contact/details/${customer.id}`
@@ -50,7 +55,7 @@ const ContactView = ({
                     </Link>
                   </td>
 
-                  <td>
+                  <td data-cell="Edit">
                     <Link
                       to={`/contact/edit/${customer.id}`}
                       onClick={() => setPopupOpen((x) => !x)}
@@ -59,7 +64,7 @@ const ContactView = ({
                     </Link>
                   </td>
 
-                  <td>
+                  <td data-cell="Delete">
                     <img
                       src={deleteCustomerIcon}
                       alt="customer delete icon"
@@ -77,11 +82,15 @@ const ContactView = ({
             })}
             {!filteredCustomerResults.length && (
               <tr>
-                <td colSpan="11">No customer found</td>
+                <td data-cell="Status" colSpan="11">
+                  No customer found
+                </td>
               </tr>
             )}
           </tbody>
         </table>
+
+        <ApiSendRequestMessage success={success} errorMessage={errorMessage} />
       </div>
     </div>
   );

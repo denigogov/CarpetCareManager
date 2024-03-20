@@ -1,6 +1,6 @@
-@use '../colors';
-@use '../general';
-@use '../mixing';
+@use "../colors";
+@use "../general";
+@use "../mixing";
 
 .orderInput--wrap {
   display: flex;
@@ -47,4 +47,10 @@
 
 .currentPrice {
   font-size: 11px;
+}
+
+@media (max-width: general.$mobileS) {
+  .stepOneFlex {
+    flex-direction: column;
+  }
 }

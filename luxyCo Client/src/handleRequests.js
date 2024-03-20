@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:4000';
+import Swal from "sweetalert2";
+
+const BASE_URL = "https://carpetcare.onrender.com";
 
 /**
  *
@@ -34,7 +36,7 @@ export const handlePostPutDeleteRequest = async (
     const requestOptions = {
       method: method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
@@ -49,7 +51,16 @@ export const handlePostPutDeleteRequest = async (
     const res = await fetch(apiUrl, requestOptions);
 
     if (res.ok) {
-      if (typeof mutateFunction === 'function') {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        iconColor: "#da0063",
+        title: `${succ}!`,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+
+      if (typeof mutateFunction === "function") {
         mutateFunction([`${mutateUrl}`, token]);
       }
 
@@ -58,9 +69,9 @@ export const handlePostPutDeleteRequest = async (
       }
 
       setSuccess(`${succ}`);
-      setErrorMessage('');
+      setErrorMessage("");
     } else {
-      throw new Error('Request failed');
+      throw new Error("Request failed");
     }
   } catch (err) {
     setErrorMessage(`${errMessage}, ${err.message}`);

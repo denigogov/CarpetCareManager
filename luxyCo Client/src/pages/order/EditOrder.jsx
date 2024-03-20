@@ -1,18 +1,18 @@
-import { useLoaderData } from 'react-router-dom';
-import '../../sass/order/_editOrder.scss';
-import useSWR, { useSWRConfig } from 'swr';
+import { useLoaderData } from "react-router-dom";
+import "../../sass/order/_editOrder.scss";
+import useSWR, { useSWRConfig } from "swr";
 
-import { useEffect, useRef, useState } from 'react';
-import EditOrderOwnerView from '../../components/order/EditOrderOwnerView';
-import EditOrderUserView from '../../components/order/EditOrderUserView';
-import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
-import { handlePostPutDeleteRequest } from '../../handleRequests';
+import { useEffect, useRef, useState } from "react";
+import EditOrderOwnerView from "../../components/order/EditOrderOwnerView";
+import EditOrderUserView from "../../components/order/EditOrderUserView";
+import ApiSendRequestMessage from "../../components/ApiSendRequestMessage";
+import { handlePostPutDeleteRequest } from "../../handleRequests";
 
 const EditOrder = ({ token, userInfo }) => {
   const fetchOrderById = useLoaderData(token);
   const { mutate } = useSWRConfig();
-  const [error, setError] = useState('');
-  const [updateSuccessful, setUpdateSuccessful] = useState('');
+  const [error, setError] = useState("");
+  const [updateSuccessful, setUpdateSuccessful] = useState("");
 
   const orderStatusRef = useRef(null);
   const totalPriceRef = useRef();
@@ -24,7 +24,7 @@ const EditOrder = ({ token, userInfo }) => {
   useEffect(() => {
     if (updateSuccessful) {
       const timer = setTimeout(() => {
-        setUpdateSuccessful('');
+        setUpdateSuccessful("");
       }, 2000);
       return () => clearTimeout(timer);
     }
@@ -37,7 +37,7 @@ const EditOrder = ({ token, userInfo }) => {
     .slice(0, 10);
 
   // set user to be able to select date min. today
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   // In case we don't update the scheduled date
   const [scheduledDate, setScheduleDate] = useState(formatedDate);
@@ -46,17 +46,17 @@ const EditOrder = ({ token, userInfo }) => {
     data: orderStatus,
     error: orderStatusError,
     isLoading: orderStatusLoading,
-  } = useSWR(['orderStatus', token]);
+  } = useSWR(["orderStatus", token]);
 
   if (orderStatusError) return <h6>{error.message}</h6>;
   if (orderStatusLoading) return <h3>loading...</h3>;
 
   // Removing the status which is the same as the current one!!
   const orderStatusConfig = orderStatus.filter(
-    status => status.status_name !== fetchOrderById.status_name
+    (status) => status.status_name !== fetchOrderById.status_name
   );
 
-  const handleUpdateUser = e => {
+  const handleUpdateUser = (e) => {
     e.preventDefault();
 
     const updatedData = {
@@ -73,17 +73,17 @@ const EditOrder = ({ token, userInfo }) => {
     orderUpdateDataRef.current = updatedData;
 
     handlePostPutDeleteRequest(
-      '/table/orders/',
+      "/table/orders/",
       fetchOrderById.id,
-      'PUT',
+      "PUT",
       token,
       orderUpdateDataRef.current,
-      'Error Updating Order',
+      "Error Updating Order",
       setError,
       setUpdateSuccessful,
       mutate,
-      'http://localhost:4000/http://localhost:4000/table/orders',
-      'Order updated.'
+      "https://carpetcare.onrender.com/table/orders",
+      "Order updated."
     );
   };
 
@@ -91,13 +91,16 @@ const EditOrder = ({ token, userInfo }) => {
     <div className="editOrderContainer">
       <p>Update Order</p>
       <p className="customerSubtitle--name">
-        Order ID: <span style={{ fontWeight: '600' }}>{fetchOrderById.id}</span>
+        Order ID: <span style={{ fontWeight: "600" }}>{fetchOrderById.id}</span>
       </p>
 
       <div
         className="editOrder--wrap"
         style={{
-          gridTemplateColumns: userInfo.department === 2 ? '1fr 1fr' : '1fr',
+          gridTemplateColumns:
+            userInfo.department === 2 || userInfo.department === 3
+              ? "1fr 1fr"
+              : "1fr",
         }}
       >
         <div>
@@ -113,7 +116,7 @@ const EditOrder = ({ token, userInfo }) => {
         </div>
 
         <div className="editOrder--ownerView">
-          {userInfo.department === 2 && (
+          {(userInfo.department === 2 || userInfo.department === 3) && (
             <EditOrderOwnerView
               fetchOrderById={fetchOrderById}
               totalPriceRef={totalPriceRef}

@@ -1,5 +1,6 @@
 @use "../colors";
 @use "../mixing";
+@use "../general";
 
 .contact--nav {
   text-align: center;
@@ -32,4 +33,12 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+@media screen and (max-width: general.$mobileS) {
+  .contact--nav {
+    ul {
+      gap: 15px;
+    }
+  }
 }

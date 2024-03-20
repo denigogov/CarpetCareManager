@@ -1,21 +1,21 @@
-import LoadingView from '../../components/LoadingView';
-import '../../sass/delivery/_delivery.scss';
-import ScanOrder from '../../components/delivery/ScanOrder';
-import SearchOrderNav from '../../components/delivery/SearchOrderNav';
-import SearchOrderView from '../../components/delivery/SearchOrderView';
-import useSWR from 'swr';
-import { fetchOrderStatus, fetchOrdersBySchedueledDate } from '../../api';
-import { useState } from 'react';
+import LoadingView from "../../components/LoadingView";
+import "../../sass/delivery/_delivery.scss";
+import ScanOrder from "../../components/delivery/ScanOrder";
+import SearchOrderNav from "../../components/delivery/SearchOrderNav";
+import SearchOrderView from "../../components/delivery/SearchOrderView";
+import useSWR from "swr";
+import { fetchOrderStatus, fetchOrdersBySchedueledDate } from "../../api";
+import { useState } from "react";
 
 const Delivery = ({ token }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [searchByStatus, setSearchByStatus] = useState('all');
-  const [inputSearchValue, setInputSearchValue] = useState('');
+  const [searchByStatus, setSearchByStatus] = useState("all");
+  const [inputSearchValue, setInputSearchValue] = useState("");
 
-  const formattedDateLocal = date => {
+  const formattedDateLocal = (date) => {
     if (!date || !(date instanceof Date)) {
-      return '';
+      return "";
     }
     return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
       .toISOString()
@@ -27,13 +27,13 @@ const Delivery = ({ token }) => {
     data: orderStatus,
     error: orderStatusError,
     isLoading: orderStatusLoading,
-  } = useSWR(['orderStatus', token], () => fetchOrderStatus(token));
+  } = useSWR(["orderStatus", token], () => fetchOrderStatus(token));
 
   const {
     data: ordersBySchedueledDate,
     error: ordersBySchedueledDateError,
     isLoading: ordersBySchedueledDateLoading,
-  } = useSWR(['ordersByScheduledDate', token, startDate, endDate], () =>
+  } = useSWR(["ordersByScheduledDate", token, startDate, endDate], () =>
     fetchOrdersBySchedueledDate(
       formattedDateLocal(startDate),
       formattedDateLocal(endDate),
@@ -47,26 +47,26 @@ const Delivery = ({ token }) => {
     return <LoadingView />;
 
   const filterData = inputSearchValue
-    ? ordersBySchedueledDate.filter(order => {
+    ? ordersBySchedueledDate.filter((order) => {
         const searchValue = inputSearchValue.toLowerCase().trim();
 
         const firstNameMatch = order.first_name
           ? order.first_name.toLowerCase().includes(searchValue)
-          : '';
+          : "";
 
         const lastNameMatch = order.last_name
           ? order.last_name.toLowerCase().includes(searchValue)
-          : '';
+          : "";
 
         return (
-          (searchByStatus === 'all' || order.status_name === searchByStatus) &&
+          (searchByStatus === "all" || order.status_name === searchByStatus) &&
           (firstNameMatch || lastNameMatch)
         );
       })
-    : searchByStatus === 'all'
+    : searchByStatus === "all"
     ? ordersBySchedueledDate
     : ordersBySchedueledDate.filter(
-        order => order.status_name === searchByStatus
+        (order) => order.status_name === searchByStatus
       );
 
   return (
@@ -76,7 +76,7 @@ const Delivery = ({ token }) => {
           <ScanOrder token={token} orderStatus={orderStatus} />
         </div>
 
-        <div>something else</div>
+        <div style={{ textAlign: "center" }}>Carpet Care Manager</div>
       </div>
       <div className="searchOrderNav">
         <SearchOrderNav

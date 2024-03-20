@@ -1,6 +1,6 @@
-@use '../../colors';
-@use '../../mixing';
-@use '../../general';
+@use "../../colors";
+@use "../../mixing";
+@use "../../general";
 
 .inventory-navBar {
   display: flex;
@@ -26,13 +26,13 @@
   }
 
   .selectCat--inventory {
-    background: url('../../../assets/eyeView.svg') no-repeat left center;
+    background: url("../../../assets/eyeView.svg") no-repeat left center;
     background-size: 15px;
     padding-left: 20px;
   }
 
   .searchInventory {
-    background: url('../../../assets/search-input-icon.svg') no-repeat left
+    background: url("../../../assets/search-input-icon.svg") no-repeat left
       center;
     padding-left: 20px;
     background-size: 20px;
@@ -43,7 +43,7 @@
     padding: 13px;
 
     &:nth-child(6) {
-      background: url('../../../assets/downloadIcon.svg') no-repeat left center;
+      background: url("../../../assets/downloadIcon.svg") no-repeat left center;
       padding-left: 35px;
       background-size: 20px;
     }
@@ -59,4 +59,12 @@
   flex-direction: row-reverse;
   gap: 10px;
   color: colors.$font-Secound;
+}
+
+@media screen and (max-width: general.$tablet) {
+  .inventory-navBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }

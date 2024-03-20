@@ -1,8 +1,8 @@
-import '../../sass/order/_orderView.scss';
-import PDFGenerator from './GeneratePDF';
-import deleteIcon from '../../assets/deleteIcon.svg';
-import updateIcon from '../../assets/updateIcon.svg';
-import { Link } from 'react-router-dom';
+import "../../sass/order/_orderView.scss";
+import PDFGenerator from "./GeneratePDF";
+import deleteIcon from "../../assets/deleteIcon.svg";
+import updateIcon from "../../assets/updateIcon.svg";
+import { Link } from "react-router-dom";
 
 const OrderView = ({
   data,
@@ -16,33 +16,33 @@ const OrderView = ({
   // User to search orders by FirstName, LastName, and Street
 
   const search = searchOrder
-    ? data.filter(order => {
+    ? data.filter((order) => {
         const searchValue = searchOrder.toLowerCase().trim();
 
         const firstNameMatch = order.first_name
           ? order.first_name.toLowerCase().includes(searchValue)
-          : '';
+          : "";
 
         const lastNameMatch = order.last_name
           ? order.last_name.toLowerCase().includes(searchValue)
-          : '';
+          : "";
         const streetMatch = order.street
           ? order.street.toLowerCase().includes(searchValue)
-          : '';
+          : "";
         return (
-          (orderStatus === 'all' || order.status_name === orderStatus) &&
+          (orderStatus === "all" || order.status_name === orderStatus) &&
           (firstNameMatch || lastNameMatch || streetMatch)
         );
       })
-    : orderStatus === 'all'
+    : orderStatus === "all"
     ? data
-    : data.filter(order => order.status_name === orderStatus);
+    : data.filter((order) => order.status_name === orderStatus);
 
   const totalm2 = search.length
-    ? search.map(order => order.m2).reduce((acc, mov) => +acc + +mov)
-    : '';
+    ? search.map((order) => order.m2).reduce((acc, mov) => +acc + +mov)
+    : "";
 
-  const handleSelectOrder = order => {
+  const handleSelectOrder = (order) => {
     handleSelectedOrder(order);
   };
 
@@ -68,34 +68,43 @@ const OrderView = ({
               <th>Delivery</th>
               <th>Created By</th>
               <th>Edit</th>
-              {userInfo.department === 2 && <th>Delete</th>}
+              {(userInfo.department === 2 || userInfo.department === 3) && (
+                <th>Delete</th>
+              )}
             </tr>
           </thead>
           <tbody>
-            {search.map(order => (
+            {search.map((order) => (
               <tr key={order.id}>
-                <td>{order.id}</td>
+                <td data-cell="Order Id"> {order.id}</td>
                 <td
-                  style={{ cursor: 'pointer' }}
+                  data-cell="Customer"
+                  style={{ cursor: "pointer" }}
                   onClick={() => handleSelectOrder(order)}
-                >{`${order?.first_name ?? 'customer deleted'} ${
-                  order?.last_name ?? ''
+                >{`${order?.first_name ?? "customer deleted"} ${
+                  order?.last_name ?? ""
                 }`}</td>
 
-                <td>{`${order?.street ?? ''} - ${order?.city ?? ''}`}</td>
-                <td>{order?.service_name ?? 'service removed'}</td>
-                <td>{order?.status_name}</td>
+                <td data-cell="Address">{`${order?.street ?? ""} - ${
+                  order?.city ?? ""
+                }`}</td>
+                <td data-cell="Service Type">
+                  {order?.service_name ?? "service removed"}
+                </td>
+                <td data-cell="Order Status">{order?.status_name}</td>
 
-                <td>
+                <td data-cell="Order Date">
                   {new Date(order?.order_date)
                     .toISOString()
                     .slice(0, 19)
-                    .replaceAll('-', '.')
-                    .replace('T', ' ') ?? 'no data added'}
+                    .replaceAll("-", ".")
+                    .replace("T", " ") ?? "no data added"}
                 </td>
 
-                <td>{order?.total_price ?? 'no price added'} €</td>
-                <td>
+                <td data-cell="Total Price">
+                  {order?.total_price ?? "no price added"} €
+                </td>
+                <td data-cell="Scheduled Date">
                   {order.scheduled_date
                     ? new Date(
                         new Date(order.scheduled_date).getTime() +
@@ -103,31 +112,35 @@ const OrderView = ({
                       )
                         .toISOString()
                         .slice(0, 10)
-                    : 'no scheduled date'}
+                    : "no scheduled date"}
                 </td>
-                <td>{order?.m2 ?? 'not provided'}</td>
-                <td>{order?.pieces ?? 'not provided'}</td>
-                <td>{order.delivery === 0 ? 'no' : 'yes'}</td>
-                <td>{order?.username ?? 'user deleted'}</td>
-                <td>
+                <td data-cell="m2">{order?.m2 ?? "not provided"}</td>
+                <td data-cell="Pieces">{order?.pieces ?? "not provided"}</td>
+                <td data-cell="Delivery">
+                  {order.delivery === 0 ? "no" : "yes"}
+                </td>
+                <td data-cell="Created By">
+                  {order?.username ?? "user deleted"}
+                </td>
+                <td data-cell="Edit">
                   <Link
                     to={
                       `/order/edit/${order.id}`
                         ? `/order/edit/${order.id}`
                         : `/order/`
                     }
-                    onClick={() => setPopupOpen(x => !x)}
+                    onClick={() => setPopupOpen((x) => !x)}
                   >
                     <img src={updateIcon} alt="update order icon" />
                   </Link>
                 </td>
 
-                {userInfo.department === 2 && (
-                  <td>
+                {(userInfo.department === 2 || userInfo.department === 3) && (
+                  <td data-cell="Delete">
                     <img
                       src={deleteIcon}
                       alt="delete icon"
-                      style={{ width: '24px' }}
+                      style={{ width: "24px" }}
                       onClick={() => handleDeleteOrder(order.id)}
                     />
                   </td>
@@ -139,20 +152,24 @@ const OrderView = ({
               <tr>
                 <th colSpan="7"></th>
                 <th colSpan="1">Total</th>
-                <td colSpan="1">{totalm2} m²</td>
-                <td>
+                <td data-cell="Total" colSpan="1">
+                  {totalm2} m²
+                </td>
+                <td data-cell="Download">
                   <PDFGenerator data={search} />
                 </td>
               </tr>
             ) : (
               <tr>
-                <td colSpan="11">No order found</td>
+                <td data-cell="Status" colSpan="11">
+                  No order found
+                </td>
               </tr>
             )}
           </tbody>
         </table>
       ) : (
-        ''
+        ""
       )}
     </div>
   );

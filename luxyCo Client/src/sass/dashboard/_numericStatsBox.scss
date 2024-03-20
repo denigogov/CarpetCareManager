@@ -1,5 +1,6 @@
-@use '../colors';
-@use '../mixing';
+@use "../colors";
+@use "../mixing";
+@use "../general";
 
 .numericStats--wrap {
   height: 100%;
@@ -15,7 +16,8 @@
 }
 
 .numerStats--chart {
-  width: 75%;
+  width: calc(32em - 2rem);
+  height: 240px;
   margin: 0 auto;
 }
 
@@ -42,5 +44,16 @@
 
   .total--subtitle-value {
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: general.$mobile) {
+  .numerStats--chart {
+    width: 100%;
+  }
+  .numericStats-box--container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
   }
 }

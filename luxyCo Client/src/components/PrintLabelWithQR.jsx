@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import ReactToPrint from 'react-to-print';
-import QRCodeLabel from './QRCodeLabel';
-import '../sass/_QRCodeStyle.scss';
+import { useRef } from "react";
+import ReactToPrint from "react-to-print";
+import QRCodeLabel from "./QRCodeLabel";
+import "../sass/_QRCodeStyle.scss";
 
 const PrintLabelsWithQR = ({ printData }) => {
   const componentRef = useRef();

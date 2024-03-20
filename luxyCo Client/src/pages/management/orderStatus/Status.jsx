@@ -1,20 +1,20 @@
-import useSWR, { useSWRConfig } from 'swr';
-import OrderStatusView from '../../../components/management/orderStatus/OrderStatusView';
-import { useEffect, useState } from 'react';
-import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
-import ErrorDisplayView from '../../../components/ErrorDisplayView';
-import LoadingView from '../../../components/LoadingView';
-import { handlePostPutDeleteRequest } from '../../../handleRequests';
+import useSWR, { useSWRConfig } from "swr";
+import OrderStatusView from "../../../components/management/orderStatus/OrderStatusView";
+import { useEffect, useState } from "react";
+import ApiSendRequestMessage from "../../../components/ApiSendRequestMessage";
+import ErrorDisplayView from "../../../components/ErrorDisplayView";
+import LoadingView from "../../../components/LoadingView";
+import { handlePostPutDeleteRequest } from "../../../handleRequests";
 
 const OrderStatus = ({ token }) => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [updatedStatus, setUpdatedStatus] = useState('');
+  const [updatedStatus, setUpdatedStatus] = useState("");
 
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 2500);
       return () => clearTimeout(timer);
     }
@@ -25,7 +25,7 @@ const OrderStatus = ({ token }) => {
     data: orderStatus,
     error: orderStatusError,
     isLoading: errorStatusLoading,
-  } = useSWR(['tableOrderService', token]);
+  } = useSWR(["tableOrderService", token]);
 
   if (orderStatusError)
     return (
@@ -37,45 +37,45 @@ const OrderStatus = ({ token }) => {
     );
   if (errorStatusLoading) return <LoadingView />;
 
-  const handleUpdateBtn = async e => {
+  const handleUpdateBtn = async (e) => {
     const confirmUpdate = confirm(
       `Please confirm if you want to update this status "${e.status_name}"`
     );
     if (confirmUpdate) {
       handlePostPutDeleteRequest(
-        '/table/orderStatusTable/',
+        "/table/orderStatusTable/",
         e.id,
-        'PUT',
+        "PUT",
         token,
         { status_name: updatedStatus },
-        'update faild',
+        "update faild",
         setErrorMessage,
         setSuccess,
         mutate,
-        'tableOrderService',
-        'service updated'
+        "tableOrderService",
+        "service updated"
       );
     }
   };
 
-  const handleDeleteRequest = async e => {
+  const handleDeleteRequest = async (e) => {
     const confirmDelete = confirm(
       `Please confirm if you want to delete this status "${e.status_name}"`
     );
 
     if (confirmDelete) {
       handlePostPutDeleteRequest(
-        '/table/orderStatus/',
+        "/table/orderStatus/",
         e.id,
-        'DELETE',
+        "DELETE",
         token,
         null,
-        'delete faild',
+        "delete faild",
         setErrorMessage,
         setSuccess,
         mutate,
-        'tableOrderService',
-        'service deleted'
+        "tableOrderService",
+        "service deleted"
       );
     }
   };

@@ -1,35 +1,35 @@
-import { useEffect, useState } from 'react';
-import CreateServiceView from '../../../components/management/price/CreateServiceView';
-import { useSWRConfig } from 'swr';
-import { handlePostPutDeleteRequest } from '../../../handleRequests';
+import { useEffect, useState } from "react";
+import CreateServiceView from "../../../components/management/price/CreateServiceView";
+import { useSWRConfig } from "swr";
+import { handlePostPutDeleteRequest } from "../../../handleRequests";
 
 export default function AddService({ token }) {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [success, setSuccess] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState("");
 
   const { mutate } = useSWRConfig();
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 5000);
       return () => clearTimeout(timer);
     }
   }, [success]);
 
-  const handleCreateService = async inputData => {
+  const handleCreateService = async (inputData) => {
     handlePostPutDeleteRequest(
-      '/table/services/',
+      "/table/services/",
       null,
-      'POST',
+      "POST",
       token,
       inputData,
-      'please try again',
+      "please try again",
       setErrorMessage,
       setSuccess,
       mutate,
-      'tableServices',
-      'service created!'
+      "tableServices",
+      "service created!"
     );
 
     // Leaving as a reference for the future projects in case I forget Something !!

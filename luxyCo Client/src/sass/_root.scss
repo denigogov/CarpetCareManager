@@ -1,5 +1,5 @@
-@use './colors';
-@use './general';
+@use "./colors";
+@use "./general";
 
 .navbarContainer {
   display: flex;
@@ -53,17 +53,16 @@
     // margin-top: -100px;
   }
 
-  nav {
+  .mainNavBar {
     background-color: colors.$background-Primary;
     border-right: 1px solid colors.$borderLine-Primary;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 0.5px;
-
     transition: general.$transition;
     ul {
       text-align: justify;
-      height: 220px;
+      // height: 220px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -142,4 +141,105 @@ footer p {
 
 .linkedInLogo {
   width: 50px;
+}
+
+// this class close the navbar
+.closeOpenNavBar {
+  position: absolute;
+  transition: all 0.6s linear;
+  transform: translateX(-300px);
+  z-index: 3;
+}
+
+// EYE ICON !
+.bx-hide {
+  font-size: 25px;
+  color: colors.$font-Primary;
+  cursor: pointer;
+  transition: general.$transition;
+
+  &::after {
+    content: "hide navigation";
+    color: colors.$font-Primary;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &:hover {
+    color: colors.$button-Primary;
+    font-size: 1.85rem;
+  }
+}
+
+.openNavbarBtn__container {
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  cursor: pointer;
+
+  &::after {
+    content: "Navigation";
+    color: #fff;
+    font-size: 10px;
+  }
+
+  &:hover::after {
+    transition: general.$transition;
+    font-size: 11px;
+  }
+
+  span {
+    cursor: pointer;
+    font-size: 15px;
+    border-left: 3px solid white;
+    padding: 3px;
+
+    &:first-child {
+      border-color: blue;
+    }
+
+    &:nth-child(2) {
+      border-color: yellow;
+    }
+  }
+}
+
+@media screen and (max-width: general.$mobile) {
+  .navbar-left {
+    position: absolute;
+    z-index: 3;
+    height: calc(100vh + 90px);
+  }
+
+  // Logout Icon for mobile view!
+  .bx-power-off {
+    font-size: 35px;
+    color: colors.$button-Primary;
+    cursor: pointer;
+    transition: general.$transition;
+
+    &::after {
+      content: "Logout";
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
+  .overlay1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1;
+    transition: all 0.5s;
+  }
 }

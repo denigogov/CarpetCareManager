@@ -1,25 +1,25 @@
-import '../../sass/dashboard/_dashboard.scss';
-import NumericStatsBox from '../../components/dashboard/NumericStatsBox';
-import Calculator from '../../components/dashboard/Calculator';
+import "../../sass/dashboard/_dashboard.scss";
+import NumericStatsBox from "../../components/dashboard/NumericStatsBox";
+import Calculator from "../../components/dashboard/Calculator";
 import {
   fetchOrderStatisticByDay,
   fetchOrderStatisticByHour,
   fetchOrderStatisticByMonth,
   fetchOrderStatisticByStatus,
-} from '../../api';
-import useSWR, { useSWRConfig } from 'swr';
-import StatisticByMonth from '../../components/dashboard/StatisticByMonth';
-import StatisticByServices from '../../components/dashboard/CustomerOrderStat';
-import HoursStatisticChart from '../../components/dashboard/HoursStatisticChart';
-import CustomerOrderStat from '../../components/dashboard/CustomerOrderStat';
-import LoadingView from '../../components/LoadingView';
-import ErrorDisplayView from '../../components/ErrorDisplayView';
+} from "../../api";
+import useSWR, { useSWRConfig } from "swr";
+import StatisticByMonth from "../../components/dashboard/StatisticByMonth";
+import StatisticByServices from "../../components/dashboard/CustomerOrderStat";
+import HoursStatisticChart from "../../components/dashboard/HoursStatisticChart";
+import CustomerOrderStat from "../../components/dashboard/CustomerOrderStat";
+import LoadingView from "../../components/LoadingView";
+import ErrorDisplayView from "../../components/ErrorDisplayView";
 const Dashboard = ({ token }) => {
   const {
     data: statisticOrderByDay,
     error: statisticOrderByDayError,
     isLoading: statisticOrderByDayLoading,
-  } = useSWR(['statisticOrderByDay', token], () =>
+  } = useSWR(["statisticOrderByDay", token], () =>
     fetchOrderStatisticByDay(token)
   );
 
@@ -27,7 +27,7 @@ const Dashboard = ({ token }) => {
     data: statisticOrderByMonth,
     error: statisticOrderByMonthError,
     isLoading: statisticOrderByMonthLoading,
-  } = useSWR(['statisticOrderByMonth', token], () =>
+  } = useSWR(["statisticOrderByMonth", token], () =>
     fetchOrderStatisticByMonth(token)
   );
 
@@ -35,7 +35,7 @@ const Dashboard = ({ token }) => {
     data: statisticOrderByStatus,
     error: statisticOrderByStatusError,
     isLoading: statisticOrderByStatusLoading,
-  } = useSWR(['statisticOrderByStatus', token], () =>
+  } = useSWR(["statisticOrderByStatus", token], () =>
     fetchOrderStatisticByStatus(token)
   );
 
@@ -43,7 +43,7 @@ const Dashboard = ({ token }) => {
     data: statisticOrderByHour,
     error: statisticOrderByHourError,
     isLoading: statisticOrderByHourLoading,
-  } = useSWR(['statisticOrderByHour', token], () =>
+  } = useSWR(["statisticOrderByHour", token], () =>
     fetchOrderStatisticByHour(token)
   );
 
@@ -55,7 +55,7 @@ const Dashboard = ({ token }) => {
   )
     return (
       <ErrorDisplayView
-        errorMessage={'faild to fetch'}
+        errorMessage={"faild to fetch"}
         navigateTo1="/dashboard"
         navigateTo2="/order"
       />

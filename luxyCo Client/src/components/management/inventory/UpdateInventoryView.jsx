@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 const UpdateInventoryView = ({
   selectedInventoryData,
@@ -31,13 +31,13 @@ const UpdateInventoryView = ({
   };
   return (
     <div>
-      <div className="createInventory">
+      <div className="createInventory updateInventory">
         <p>Update Inventory</p>
 
         <p>Inventory Number: {selectedInventoryData.article_number}</p>
 
         <form>
-          <div className="createInventory--left">
+          <div className="createInventory--left ">
             <label>Article Name</label>
             <input
               type="text"
@@ -56,7 +56,7 @@ const UpdateInventoryView = ({
 
             <label>Quantity</label>
             <input
-              type="number"
+              type="tel"
               min="0"
               placeholder="Quantity"
               defaultValue={selectedInventoryData.quantity}
@@ -64,7 +64,7 @@ const UpdateInventoryView = ({
               ref={articleQuantityRef}
             />
           </div>
-          <div className="createInventory--right">
+          <div className="createInventory--right ">
             <label>Article Category</label>
             <select ref={selectedCategoryRef}>
               <option value={selectedInventoryData.category_id}>
@@ -88,7 +88,7 @@ const UpdateInventoryView = ({
 
             <label>Price</label>
             <input
-              type="number"
+              type="tel"
               min="0"
               step=".01"
               placeholder="Price €"

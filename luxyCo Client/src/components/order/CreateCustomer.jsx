@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react';
-import '../../sass/order/_createCustomer.scss';
-import useSWR, { useSWRConfig } from 'swr';
+import { useRef, useState } from "react";
+import "../../sass/order/_createCustomer.scss";
+import useSWR, { useSWRConfig } from "swr";
+import { handlePostPutDeleteRequest } from "../../handleRequests";
 
 const CreateCustomer = ({
   token,
@@ -10,7 +11,7 @@ const CreateCustomer = ({
   setStepTwo,
 }) => {
   const { mutate } = useSWRConfig();
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const takeFirstName = useRef(null);
   const takeLastName = useRef(null);
@@ -20,7 +21,7 @@ const CreateCustomer = ({
   const takePostalCode = useRef(null);
   const customerData = useRef(null);
 
-  const handleAddCustomerForm = e => {
+  const handleAddCustomerForm = (e) => {
     e.preventDefault();
 
     const data = {
@@ -39,29 +40,33 @@ const CreateCustomer = ({
     const { first_name, last_name, phone_number } = data;
 
     const findDuplicate = customers.some(
-      arr => arr.phone_number === takePhoneNumber.current.value
+      (arr) => arr.phone_number === takePhoneNumber.current.value
     );
 
     {
       findDuplicate &&
         setError(
-          'please try again, user with same phone number already exists'
+          "please try again, user with same phone number already exists"
         );
     }
 
-    console.log(findDuplicate);
+    // console.log(findDuplicate);
 
     if (!first_name || !last_name || !phone_number) {
-      setError('Please fill in all the required fields.');
+      setError("Please fill in all the required fields.");
       return;
     }
 
+    // I have to fix BUG
+    // When the user is created from order for the first time when u try its imposible after secound time you can create the user !
+
+    //  I need to transform into  **handlePostPutDeleteRequest**
     const addCustomer = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/customer`, {
-          method: 'POST',
+        const res = await fetch(`https://carpetcare.onrender.com/customer`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(customerData.current),
@@ -70,11 +75,11 @@ const CreateCustomer = ({
         if (res.ok) {
           setCreateNewCustomer(false);
           setNewCustomerData(customerData.current);
-          mutate('http://localhost:4000/customer', true);
+          mutate("https://carpetcare.onrender.com/customer", true);
           setStepTwo(true);
         }
       } catch (error) {
-        setError('Error creating customer', error);
+        setError("Error creating customer", error);
       }
     };
     addCustomer();

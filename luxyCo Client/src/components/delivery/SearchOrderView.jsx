@@ -1,5 +1,5 @@
-import { tr } from 'date-fns/locale';
-import '../../sass/delivery/_searchOrderView.scss';
+import { tr } from "date-fns/locale";
+import "../../sass/delivery/_searchOrderView.scss";
 
 const SearchOrderView = ({ ordersBySchedueledDate, filterData }) => {
   return (
@@ -24,34 +24,42 @@ const SearchOrderView = ({ ordersBySchedueledDate, filterData }) => {
               ? filterData.map((order, index) => {
                   return (
                     <tr key={order.id}>
-                      <td>{index + 1}</td>
-                      <td>{order.id}</td>
-                      <td>
-                        {order?.first_name ?? 'custumer not exist'}{' '}
+                      <td data-cell="#">{index + 1}</td>
+                      <td data-cell="Order ID">{order.id}</td>
+                      <td data-cell="Customer">
+                        {order?.first_name ?? "custumer not exist"}{" "}
                         {order.last_name}
                       </td>
-                      <td>{order?.m2 ?? 'no m² added'}</td>
-                      <td>{order?.pieces ?? 'no pieces added'}</td>
-                      <td>{order?.total_price ?? 'no price added'}</td>
-                      <td>{order?.service_name ?? 'service  not exist'}</td>
-                      <td>{order?.status_name ?? 'status not exist'}</td>
-                      <td>
+                      <td data-cell="m2">{order?.m2 ?? "no m² added"}</td>
+                      <td data-cell="Pieces">
+                        {order?.pieces ?? "no pieces added"}
+                      </td>
+                      <td data-cell="Price">
+                        {order?.total_price ?? "no price added"}
+                      </td>
+                      <td data-cell="Service">
+                        {order?.service_name ?? "service  not exist"}
+                      </td>
+                      <td data-cell="Status">
+                        {order?.status_name ?? "status not exist"}
+                      </td>
+                      <td data-cell="Scheduled Date">
                         {order.scheduled_date
                           ? new Date(order.scheduled_date)
                               .toISOString()
                               .slice(0, 10)
-                          : 'no scheduled date'}
+                          : "no scheduled date"}
                       </td>
                     </tr>
                   );
                 })
-              : ''}
+              : ""}
             {filterData.length < 1 ? (
               <tr>
                 <td colSpan="8"> no orders found</td>
               </tr>
             ) : (
-              ''
+              ""
             )}
           </tbody>
         </table>

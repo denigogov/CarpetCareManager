@@ -1,6 +1,6 @@
-@use '../colors';
-@use '../mixing';
-@use '../general';
+@use "../colors";
+@use "../mixing";
+@use "../general";
 
 .details-viewTable {
   height: 450px;
@@ -38,4 +38,11 @@
 .datePicker--contactDetails {
   @include mixing.inputFileds;
   padding: 7px;
+}
+
+@media screen and (max-width: general.$laptop) {
+  .details--calculation {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
