@@ -2,7 +2,18 @@
 
 CarpetCareManager is a comprehensive carpet cleaning service management app designed to optimize the operations of carpet cleaning businesses. With an intuitive user interface and powerful features, it simplifies order management, tracks inventory, and provides valuable insights into business performance.
 
-**Please note:** The project is currently under development. While it's a work in progress, the provided GIF demonstrates the initial functionality and user interface design.
+
+
+**Project Status:** This project is currently under development. While it's a work in progress, you can access the live version of the application [here](https://carpetcaremanager.onrender.com/).
+
+To access the live app, please use the following login credentials:
+
+- **Username:** demo
+- **Password:** demo123
+
+Please note that this is a development version, and the login credentials are provided for testing purposes.
+
+
 
 <p align="center">
 
