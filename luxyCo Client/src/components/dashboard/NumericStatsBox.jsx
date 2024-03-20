@@ -1,16 +1,16 @@
-import "../../sass/dashboard/_numericStatsBox.scss";
-import NumericStatsView from "./NumericStatsView";
+import '../../sass/dashboard/_numericStatsBox.scss';
+import NumericStatsView from './NumericStatsView';
 
 const NumericStatsBox = ({ token, statisticOrderByDay }) => {
   // Data for CHART JS
   const orderStatisticTotal = {
-    labels: statisticOrderByDay?.map((label) => label.day_of_week),
+    labels: statisticOrderByDay?.map(label => label.day_of_week),
     datasets: [
       {
-        label: "orders counter per day",
-        data: statisticOrderByDay?.map((label) => label.total_orders),
-        backgroundColor: ["rgba(245, 92, 132)"],
-        borderColor: ["rgba(255, 99, 132, 0.6)"],
+        label: 'orders counter per day',
+        data: statisticOrderByDay?.map(label => label.total_orders),
+        backgroundColor: ['rgba(245, 92, 132)'],
+        borderColor: ['rgba(255, 99, 132, 0.6)'],
         borderWidth: 1,
         borderRadius: 10,
       },
@@ -18,13 +18,13 @@ const NumericStatsBox = ({ token, statisticOrderByDay }) => {
   };
 
   const orderStatisticByMonth = {
-    labels: statisticOrderByDay?.map((label) => label.day_of_week),
+    labels: statisticOrderByDay?.map(label => label.day_of_week),
     datasets: [
       {
-        label: "orders counter per day",
-        data: statisticOrderByDay?.map((label) => label.current_month_orders),
-        backgroundColor: ["rgba(245, 92, 132)"],
-        borderColor: ["rgba(255, 99, 132, 0.6)"],
+        label: 'orders counter per day',
+        data: statisticOrderByDay?.map(label => label.current_month_orders),
+        backgroundColor: ['rgba(245, 92, 132)'],
+        borderColor: ['rgba(255, 99, 132, 0.6)'],
         borderWidth: 1,
         borderRadius: 10,
       },

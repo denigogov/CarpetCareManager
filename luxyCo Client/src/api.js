@@ -1,6 +1,8 @@
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export const fetchTokenValidation = async token => {
   try {
-    const res = await fetch('https://carpetcare.onrender.com/login', {
+    const res = await fetch(`${BASE_URL}/login`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -16,8 +18,6 @@ export const fetchTokenValidation = async token => {
 };
 
 // -===========================================================
-
-const BASE_URL = 'https://carpetcare.onrender.com'; // Your API base URL
 
 export const fetchApi = async (endpoint, token) => {
   try {

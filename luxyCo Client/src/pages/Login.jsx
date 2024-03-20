@@ -1,21 +1,26 @@
-import "../sass/_login.scss";
-import loginIcon from "../assets/icon-user.svg";
-import PropTypes from "prop-types";
-import { useState } from "react";
+import '../sass/_login.scss';
+import loginIcon from '../assets/icon-user.svg';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useAuth } from '../helpers/Auth';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Login = ({ setToken, setUserInfo }) => {
-  const [username, setUsername] = useState("demo");
-  const [password, setPassword] = useState("demo123");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('demo');
+  const [password, setPassword] = useState('demo123');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const loginResponse = async (credentials) => {
+  const auth = useAuth();
+
+  const loginResponse = async credentials => {
     setLoading(true);
     try {
-      const response = await fetch(`https://carpetcare.onrender.com/login`, {
-        method: "POST",
+      const response = await fetch(`${BASE_URL}/login`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(credentials),
       });
@@ -27,19 +32,20 @@ const Login = ({ setToken, setUserInfo }) => {
       setUserInfo(data);
       return data.token;
     } catch (error) {
-      setError("Wrong password or username");
+      setError('Wrong password or username');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const token = await loginResponse({
       username,
       password,
     });
-    setToken(token);
+
+    auth.login(token);
   };
 
   return (
@@ -58,7 +64,7 @@ const Login = ({ setToken, setUserInfo }) => {
           defaultValue="demo"
           type="text"
           className="login__username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
         />
         <input
           disabled={loading}
@@ -66,7 +72,7 @@ const Login = ({ setToken, setUserInfo }) => {
           defaultValue="demo123"
           type="password"
           className="login__password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
 
         <button onClick={() => setLoading(true)} className="login-btn">
