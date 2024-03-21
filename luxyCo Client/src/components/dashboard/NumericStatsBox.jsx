@@ -1,7 +1,8 @@
+import { useAuth } from '../../helpers/Auth';
 import '../../sass/dashboard/_numericStatsBox.scss';
 import NumericStatsView from './NumericStatsView';
 
-const NumericStatsBox = ({ token, statisticOrderByDay }) => {
+const NumericStatsBox = ({ statisticOrderByDay }) => {
   // Data for CHART JS
   const orderStatisticTotal = {
     labels: statisticOrderByDay?.map(label => label.day_of_week),
@@ -82,7 +83,6 @@ const NumericStatsBox = ({ token, statisticOrderByDay }) => {
   return (
     <div>
       <NumericStatsView
-        token={token}
         option={option}
         chartData={orderStatisticTotal}
         chartData1={orderStatisticByMonth}

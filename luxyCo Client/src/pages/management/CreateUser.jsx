@@ -5,10 +5,13 @@ import { fetchTableDepartment } from '../../api';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../helpers/Auth';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const CreateUser = ({ token }) => {
+const CreateUser = () => {
+  const { token } = useAuth();
+
   const { mutate } = useSWRConfig();
   const [departments, setDepartments] = useState([]);
   const [userDataStoring, setUserDataStoring] = useState({});

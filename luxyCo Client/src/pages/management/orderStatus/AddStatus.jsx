@@ -1,14 +1,17 @@
-import { useOutletContext, useNavigate } from "react-router-dom";
-import CreateStatusView from "../../../components/management/orderStatus/CreateStatusView";
-import "../../../sass/management/orderStatus/_orderStatusCreate.scss";
-import { handlePostPutDeleteRequest } from "../../../handleRequests";
-import { useEffect, useState } from "react";
-import { useSWRConfig } from "swr";
-import ApiSendRequestMessage from "../../../components/ApiSendRequestMessage";
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import CreateStatusView from '../../../components/management/orderStatus/CreateStatusView';
+import '../../../sass/management/orderStatus/_orderStatusCreate.scss';
+import { handlePostPutDeleteRequest } from '../../../handleRequests';
+import { useEffect, useState } from 'react';
+import { useSWRConfig } from 'swr';
+import ApiSendRequestMessage from '../../../components/ApiSendRequestMessage';
+import { useAuth } from '../../../helpers/Auth';
 
-const AddStatus = ({ token }) => {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [success, setSuccess] = useState("");
+const AddStatus = () => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const { token } = useAuth();
 
   const [setPopupOpen] = useOutletContext();
   const navigate = useNavigate();
@@ -17,29 +20,29 @@ const AddStatus = ({ token }) => {
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        setSuccess("");
+        setSuccess('');
         setPopupOpen(false);
-        navigate("/management/orderStatus");
+        navigate('/management/orderStatus');
       }, 2500);
       return () => clearTimeout(timer);
     }
   }, [success]);
 
-  const handleCreateService = async (statusName) => {
+  const handleCreateService = async statusName => {
     const sendData = { status_name: statusName };
 
     handlePostPutDeleteRequest(
-      "/table/orderStatus",
+      '/table/orderStatus',
       null,
-      "POST",
+      'POST',
       token,
       sendData,
-      "Create Status faild, please try again",
+      'Create Status faild, please try again',
       setErrorMessage,
       setSuccess,
       mutate,
-      "tableOrderService",
-      "service created"
+      'tableOrderService',
+      'service created'
     );
   };
 

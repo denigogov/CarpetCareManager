@@ -13,8 +13,11 @@ import OrderStepThree from '../../components/order/OrderStepThree';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { handlePostPutDeleteRequest } from '../../handleRequests';
+import { useAuth } from '../../helpers/Auth';
 
-const CreateOrder = ({ token, userInfo }) => {
+const CreateOrder = () => {
+  const { token, userInfo } = useAuth();
+
   const navigate = useNavigate();
   const [setPopupOpen] = useOutletContext();
 
@@ -125,8 +128,6 @@ const CreateOrder = ({ token, userInfo }) => {
           <div className="createOrder--wrap">
             <OrderStepOne
               customers={customers}
-              token={token}
-              userInfo={userInfo}
               selectedUser={selectedUser}
               setSelectedUser={setSelectedUser}
               setNewCustomerID={setNewCustomerID}

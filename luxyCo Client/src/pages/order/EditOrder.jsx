@@ -7,8 +7,13 @@ import EditOrderOwnerView from '../../components/order/EditOrderOwnerView';
 import EditOrderUserView from '../../components/order/EditOrderUserView';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 import { handlePostPutDeleteRequest } from '../../handleRequests';
+import { useAuth } from '../../helpers/Auth';
 
-const EditOrder = ({ token, userInfo }) => {
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const EditOrder = () => {
+  const { token, userInfo } = useAuth();
+
   const fetchOrderById = useLoaderData(token);
   const { mutate } = useSWRConfig();
   const [error, setError] = useState('');
@@ -82,7 +87,7 @@ const EditOrder = ({ token, userInfo }) => {
       setError,
       setUpdateSuccessful,
       mutate,
-      'https://carpetcare.onrender.com/table/orders',
+      `${BASE_URL}/table/orders`,
       'Order updated.'
     );
   };

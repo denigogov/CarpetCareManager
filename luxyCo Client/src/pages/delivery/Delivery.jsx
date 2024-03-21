@@ -6,12 +6,15 @@ import SearchOrderView from '../../components/delivery/SearchOrderView';
 import useSWR from 'swr';
 import { fetchOrderStatus, fetchOrdersBySchedueledDate } from '../../api';
 import { useState } from 'react';
+import { useAuth } from '../../helpers/Auth';
 
-const Delivery = ({ token }) => {
+const Delivery = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [searchByStatus, setSearchByStatus] = useState('all');
   const [inputSearchValue, setInputSearchValue] = useState('');
+
+  const { token } = useAuth();
 
   const formattedDateLocal = date => {
     if (!date || !(date instanceof Date)) {
@@ -73,7 +76,7 @@ const Delivery = ({ token }) => {
     <div className="delivery--container">
       <div className="delivery__container--scan">
         <div className="delivery--scan">
-          <ScanOrder token={token} orderStatus={orderStatus} />
+          <ScanOrder orderStatus={orderStatus} />
         </div>
 
         <div style={{ textAlign: 'center' }}>Carpet Care Manager</div>

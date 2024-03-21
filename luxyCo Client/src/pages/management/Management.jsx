@@ -11,8 +11,11 @@ import useSWR from 'swr';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
 import { fetchOrderStatus, fetchTableServices } from '../../api';
 import LoadingView from '../../components/LoadingView';
+import { useAuth } from '../../helpers/Auth';
 
-const Management = ({ token }) => {
+const Management = () => {
+  const { token } = useAuth();
+
   const {
     data: services,
     error: servicesError,

@@ -4,6 +4,8 @@ import useSWR, { useSWRConfig } from 'swr';
 import { handlePostPutDeleteRequest } from '../../handleRequests';
 import { useAuth } from '../../helpers/Auth';
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const CreateCustomer = ({
   setCreateNewCustomer,
   setNewCustomerData,
@@ -66,7 +68,7 @@ const CreateCustomer = ({
     //  I need to transform into  **handlePostPutDeleteRequest**
     const addCustomer = async () => {
       try {
-        const res = await fetch(`https://carpetcare.onrender.com/customer`, {
+        const res = await fetch(`${BASE_URL}/customer`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -78,7 +80,7 @@ const CreateCustomer = ({
         if (res.ok) {
           setCreateNewCustomer(false);
           setNewCustomerData(customerData.current);
-          mutate('https://carpetcare.onrender.com/customer', true);
+          mutate(`${BASE_URL}/customer`, true);
           setStepTwo(true);
         }
       } catch (error) {

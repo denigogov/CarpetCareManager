@@ -14,7 +14,10 @@ import HoursStatisticChart from '../../components/dashboard/HoursStatisticChart'
 import CustomerOrderStat from '../../components/dashboard/CustomerOrderStat';
 import LoadingView from '../../components/LoadingView';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
-const Dashboard = ({ token }) => {
+import { useAuth } from '../../helpers/Auth';
+const Dashboard = () => {
+  const { token } = useAuth();
+
   const {
     data: statisticOrderByDay,
     error: statisticOrderByDayError,
@@ -73,10 +76,7 @@ const Dashboard = ({ token }) => {
     <div className="dashboard--container">
       {/* showing total orders.... */}
       <div className="numericStats--box">
-        <NumericStatsBox
-          token={token}
-          statisticOrderByDay={statisticOrderByDay}
-        />
+        <NumericStatsBox statisticOrderByDay={statisticOrderByDay} />
       </div>
 
       <div className="calculator">

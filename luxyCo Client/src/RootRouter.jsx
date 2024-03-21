@@ -4,21 +4,24 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
+
+import {
+  fetchSingleUser,
+  fetchTableDepartment,
+  fetchSingleCustomer,
+  fetchCustomerOrders,
+  fetchOrderById,
+} from './api';
+
 import { useAuth } from './helpers/Auth';
+import { RequireAuth } from './helpers/RequireAuth';
 import Login from './pages/Login';
 import Dashboard from './pages/dashboard/Dashboard';
 import Root from './pages/Root';
-import { RequireAuth } from './helpers/RequireAuth';
 import Order from './pages/order/Order';
 import CreateOrder from './pages/order/CreateOrder';
 import EditOrder from './pages/order/EditOrder';
-import {
-  fetchCustomerOrders,
-  fetchOrderById,
-  fetchOrdersById,
-  fetchSingleCustomer,
-  fetchSingleUser,
-} from './api';
+
 import Delivery from './pages/delivery/Delivery';
 import EditContact from './pages/contact/EditContact';
 import CreateContact from './pages/contact/CreateContact';
@@ -44,7 +47,6 @@ import { OwnerAuth } from './helpers/OwnerAuth';
 
 const RootRouter = () => {
   const auth = useAuth();
-
   const token = auth.token;
   const userInfo = auth.userInfo;
 
@@ -60,41 +62,32 @@ const RootRouter = () => {
             </RequireAuth>
           }
         >
-          <Route index element={<Dashboard token={token} />} />
-          <Route path="dashboard" element={<Dashboard token={token} />} />
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
 
-          <Route
-            path="order"
-            element={<Order token={token} userInfo={userInfo} />}
-          >
-            <Route
-              path="createOrder"
-              element={<CreateOrder token={token} userInfo={userInfo} />}
-            />
+          <Route path="order" element={<Order />}>
+            <Route path="createOrder" element={<CreateOrder />} />
             <Route
               path="edit/:id"
-              element={<EditOrder token={token} userInfo={userInfo} />}
+              element={<EditOrder />}
               loader={({ params }) => fetchOrderById({ params }, token)}
             />
           </Route>
 
-          <Route path="/delivery" element={<Delivery token={token} />} />
+          <Route path="/delivery" element={<Delivery />} />
 
           {/* CONTACT ROUTE */}
-          <Route path="contact" element={<Contact token={token} />}>
-            <Route
-              path="addCustomer"
-              element={<CreateContact token={token} />}
-            />
+          <Route path="contact" element={<Contact />}>
+            <Route path="addCustomer" element={<CreateContact />} />
             <Route
               path="edit/:id"
-              element={<EditContact token={token} />}
+              element={<EditContact />}
               loader={({ params }) => fetchSingleCustomer({ params }, token)}
             />
 
             <Route
               path="details/:id"
-              element={<DetailsContact token={token} />}
+              element={<DetailsContact />}
               loader={({ params }) => fetchCustomerOrders({ params }, token)}
               errorElement={
                 <ErrorDisplayView
@@ -115,63 +108,61 @@ const RootRouter = () => {
               </OwnerAuth>
             }
           >
-            <Route
-              index
-              element={<Users token={token} userInfo={userInfo} />}
-            />
-            <Route
-              path="users"
-              element={<Users token={token} userInfo={userInfo} />}
-            >
+            <Route index element={<Users />} />
+            <Route path="users" element={<Users />}>
               <Route
                 path="edit/:id"
-                element={<EditUser token={token} />}
+                element={<EditUser />}
                 loader={({ params }) => fetchSingleUser({ params }, token)}
               />
               <Route
                 path="details/:id"
-                element={<DetailsUser token={token} />}
+                element={<DetailsUser />}
                 loader={({ params }) => fetchSingleUser({ params }, token)}
               />
-              <Route path="addUser" element={<CreateUser token={token} />} />
+              <Route path="addUser" element={<CreateUser />} />
             </Route>
 
-            <Route path="analytics" element={<Analytics token={token} />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="expenses" element={<Expenses />} />
 
-            <Route path="price" element={<Price token={token} />}>
-              <Route path="addService" element={<AddService token={token} />} />
+            <Route path="price" element={<Price />}>
+              <Route path="addService" element={<AddService />} />
             </Route>
-            <Route path="orderStatus" element={<OrderStatus token={token} />}>
-              <Route
-                path="createStatus"
-                element={<AddStatus token={token} />}
-              />
+            <Route path="orderStatus" element={<OrderStatus />}>
+              <Route path="createStatus" element={<AddStatus />} />
             </Route>
 
-            <Route path="inventory" element={<Inventory token={token} />}>
-              <Route
-                path="add-inventory"
-                element={<CreateInventory token={token} />}
-              />
+            <Route path="inventory" element={<Inventory />}>
+              <Route path="add-inventory" element={<CreateInventory />} />
 
-              <Route
-                path="updateInventory/:id"
-                element={<UpdateInventory token={token} />}
-              />
+              <Route path="updateInventory/:id" element={<UpdateInventory />} />
               <Route
                 path="addInventoryCategory"
-                element={<CreateNewCategory token={token} />}
+                element={<CreateNewCategory />}
               />
             </Route>
           </Route>
         </Route>
 
+        {/* Need to change the url fix the view ! */}
         <Route
           key="notFound"
           path="*"
-          element={<h1>Error</h1>}
-          errorElement={<h4>HEllo</h4>}
+          element={
+            <ErrorDisplayView
+              errorMessage="URL Not Found"
+              navigateTo1="/"
+              navigateTo2="/dashboard"
+            />
+          }
+          errorElement={
+            <ErrorDisplayView
+              errorMessage="URL Not Found"
+              navigateTo1="/"
+              navigateTo2="/dashboard"
+            />
+          }
         ></Route>
       </>
     )

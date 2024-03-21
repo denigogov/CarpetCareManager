@@ -1,16 +1,20 @@
-import useSWR, { useSWRConfig } from "swr";
-import { useEffect, useState } from "react";
-import LoadingView from "../../../components/LoadingView";
-import ErrorDisplayView from "../../../components/ErrorDisplayView";
-import PriceView from "../../../components/management/price/PriceView";
-import { handlePostPutDeleteRequest } from "../../../handleRequests";
+import useSWR, { useSWRConfig } from 'swr';
+import { useEffect, useState } from 'react';
+import LoadingView from '../../../components/LoadingView';
+import ErrorDisplayView from '../../../components/ErrorDisplayView';
+import PriceView from '../../../components/management/price/PriceView';
+import { handlePostPutDeleteRequest } from '../../../handleRequests';
+import { useAuth } from '../../../helpers/Auth';
 
-const Price = ({ token }) => {
+const BASE_URL = import.meta.env.VITE_API_URL;
+const Price = () => {
+  const { token } = useAuth();
+
   const [selectedService, setSelectedService] = useState(null);
-  const [serviceName, setServiceName] = useState("");
+  const [serviceName, setServiceName] = useState('');
   const [servicePrice, setServicePrice] = useState();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState('');
 
   const { mutate } = useSWRConfig();
 
@@ -18,7 +22,7 @@ const Price = ({ token }) => {
     data: services,
     error: servicesError,
     isLoading: servicesLoading,
-  } = useSWR(["tableServices", token]);
+  } = useSWR(['tableServices', token]);
 
   // POST REQUEST
   const handleUpdateOrder = async () => {
@@ -33,17 +37,17 @@ const Price = ({ token }) => {
 
     if (confirmUpdate) {
       handlePostPutDeleteRequest(
-        "/table/services/",
+        '/table/services/',
         selectedService.id,
-        "PUT",
+        'PUT',
         token,
         sendUpdate,
-        "update faild, please try again",
+        'update faild, please try again',
         setErrorMessage,
         setSuccess,
         mutate,
-        "https://carpetcare.onrender.com/table/services",
-        "service updated"
+        `${BASE_URL}/table/services`,
+        'service updated'
       );
     }
   };
@@ -61,7 +65,6 @@ const Price = ({ token }) => {
   return (
     <div>
       <PriceView
-        token={token}
         handleUpdateOrder={handleUpdateOrder}
         tableServices={services}
         setSelectedService={setSelectedService}

@@ -7,8 +7,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import downloadIcon from '../../assets/downloadIcon.svg';
+import { useAuth } from '../../helpers/Auth';
 
-const DetailsContact = ({ token }) => {
+const DetailsContact = () => {
+  const { token } = useAuth();
   const fetchCustomerOrders = useLoaderData(token);
 
   const [totalPrice, setTotalPrice] = useState(null);

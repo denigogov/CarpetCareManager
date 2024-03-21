@@ -13,18 +13,21 @@ import useSWR, { useSWRConfig } from 'swr';
 import { fetchOrdersByDate, fetchOrderStatus } from '../../api';
 import SelectedOrderInfo from '../../components/order/SelectedOrderInfo';
 import LoadingView from '../../components/LoadingView';
-import ErrorDisplayView from '../../components/ErrorDisplayView';
-import CreateOrder from './CreateOrder';
 import { handlePostPutDeleteRequest } from '../../handleRequests';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import { useAuth } from '../../helpers/Auth';
 
-const Order = ({ token, userInfo }) => {
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const Order = () => {
   const [wishDate, setWishDate] = useState(new Date());
   const [orderStatus, setOrderStatus] = useState('all');
   const [searchOrder, setSearchOrder] = useState('');
   const [popupOpen, setPopupOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [success, setSuccess] = useState('');
+
+  const { token } = useAuth();
 
   // selected order RENDER THE ORDER INFO !! STILL IN PROGRESS SOME FIELDS NEED TO BE REMOVE FROM THE TABLE AND TO BE ADDED IN SELECTED ORDER INFO
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -94,7 +97,7 @@ const Order = ({ token, userInfo }) => {
         setErrorMessage,
         setSuccess,
         mutate,
-        'https://carpetcare.onrender.com/table/orders',
+        `${BASE_URL}/table/orders`,
         'Order Deleted'
       );
     }
@@ -164,7 +167,6 @@ const Order = ({ token, userInfo }) => {
           orderStatus={orderStatus}
           searchOrder={searchOrder}
           handleSelectedOrder={handleSelectedOrder}
-          userInfo={userInfo}
           handleDeleteOrder={handleDeleteOrder}
           setPopupOpen={setPopupOpen}
         />

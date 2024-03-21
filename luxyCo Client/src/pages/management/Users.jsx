@@ -13,10 +13,13 @@ import useSWR, { useSWRConfig } from 'swr';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../helpers/Auth';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const Users = ({ token, userInfo }) => {
+const Users = () => {
+  const { token, userInfo } = useAuth();
+
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
   const [popupOpen, setPopupOpen] = useState(false);

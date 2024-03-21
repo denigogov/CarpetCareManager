@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import '../../sass/delivery/scanOrder.scss';
 import { fetchOrdersById } from '../../api';
 import ScanedOrderView from './ScanedOrderView';
+import { useAuth } from '../../helpers/Auth';
 
-const ScanOrder = ({ token, orderStatus }) => {
+const ScanOrder = ({ orderStatus }) => {
   const [scanedOrderId, setScanedOrderId] = useState('');
   const [orderId, setOrderId] = useState(null);
   const [fetchedOrderById, setFetchedOrderById] = useState(null);
   const [error, setError] = useState('');
+
+  const { token } = useAuth();
 
   // Fetching the order by ID
   useEffect(() => {
@@ -46,7 +49,6 @@ const ScanOrder = ({ token, orderStatus }) => {
           </button>
           <ScanedOrderView
             fetchedOrderById={fetchedOrderById}
-            token={token}
             orderStatus={orderStatus}
           />
         </div>

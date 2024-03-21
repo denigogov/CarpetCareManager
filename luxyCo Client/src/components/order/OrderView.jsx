@@ -3,17 +3,19 @@ import PDFGenerator from './GeneratePDF';
 import deleteIcon from '../../assets/deleteIcon.svg';
 import updateIcon from '../../assets/updateIcon.svg';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../helpers/Auth';
 
 const OrderView = ({
   data,
   orderStatus,
   searchOrder,
   handleSelectedOrder,
-  userInfo,
   handleDeleteOrder,
   setPopupOpen,
 }) => {
   // User to search orders by FirstName, LastName, and Street
+
+  const { userInfo } = useAuth();
 
   const search = searchOrder
     ? data.filter(order => {

@@ -5,10 +5,13 @@ import { fetchTableDepartment } from '../../api';
 import useSWR, { useSWRConfig } from 'swr';
 import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../helpers/Auth';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const EditUser = ({ token }) => {
+const EditUser = () => {
+  const { token } = useAuth();
+
   const data = useLoaderData(token);
   const { mutate } = useSWRConfig();
 

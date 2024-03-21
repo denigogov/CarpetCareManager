@@ -3,8 +3,10 @@ import NumericStatsBox from '../../components/dashboard/NumericStatsBox';
 import { fetchOrderStatisticByDay } from '../../api';
 import ErrorDisplayView from '../../components/ErrorDisplayView';
 import LoadingView from '../../components/LoadingView';
+import { useAuth } from '../../helpers/Auth';
 
-const Analytics = ({ token }) => {
+const Analytics = () => {
+  const { token } = useAuth();
   const {
     data: statisticOrderByDay,
     error: statisticOrderByDayError,
@@ -24,10 +26,7 @@ const Analytics = ({ token }) => {
   return (
     <div>
       <div className="numericStats--box">
-        <NumericStatsBox
-          token={token}
-          statisticOrderByDay={statisticOrderByDay}
-        />
+        <NumericStatsBox statisticOrderByDay={statisticOrderByDay} />
       </div>
     </div>
   );

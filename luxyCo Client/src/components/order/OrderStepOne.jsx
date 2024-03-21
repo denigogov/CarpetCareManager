@@ -4,10 +4,12 @@ import addCustomerIcon from '../../assets/addUserIcon.svg';
 
 import CreateCustomer from './CreateCustomer';
 import useSWR, { useSWRConfig } from 'swr';
+import { useAuth } from '../../helpers/Auth';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const OrderStepOne = ({
   customers,
-  token,
   selectedUser,
   setSelectedUser,
   setNewCustomerID,
@@ -52,7 +54,7 @@ const OrderStepOne = ({
     setSelectedUser('');
     // Toggle the state to open and close create user
     setCreateNewCustomer(!createNewCustomer);
-    mutate('https://carpetcare.onrender.com/table/orderServices');
+    mutate(`${BASE_URL}/table/orderServices`);
     setNewCustomerID(customerLastId);
   };
 
@@ -113,7 +115,6 @@ const OrderStepOne = ({
       </div>
       {createNewCustomer && (
         <CreateCustomer
-          token={token}
           setCreateNewCustomer={setCreateNewCustomer}
           setNewCustomerData={setNewCustomerData}
           customers={customers}

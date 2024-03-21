@@ -1,14 +1,17 @@
-import { useLoaderData } from "react-router-dom";
-import "../../sass/management/_detailsUser.scss";
+import { useLoaderData } from 'react-router-dom';
+import '../../sass/management/_detailsUser.scss';
+import { useAuth } from '../../helpers/Auth';
 
-export const DetailsUser = ({ token }) => {
+export const DetailsUser = () => {
+  const { token } = useAuth();
+
   const data = useLoaderData(token);
 
   return (
     <div className="detailsUser">
       <div className="detailsUser--title">
         <h3>User Details</h3>
-        <p style={{ color: "#da0063" }}>{data.username}</p>
+        <p style={{ color: '#da0063' }}>{data.username}</p>
       </div>
 
       <div className="detailsUser--data">
@@ -25,7 +28,7 @@ export const DetailsUser = ({ token }) => {
             Last Name:<span>{data.last_name}</span>
           </p>
           <p>
-            Adress: <span>{data.street ? data.street : "no adress added"}</span>
+            Adress: <span>{data.street ? data.street : 'no adress added'}</span>
           </p>
         </div>
         <div className="columnRight">
@@ -33,8 +36,8 @@ export const DetailsUser = ({ token }) => {
             Phone Number:
             <span>
               {data.phone_number
-                ? data.phone_number.match(/.{1,3}/g).join("-")
-                : "no phone number added"}
+                ? data.phone_number.match(/.{1,3}/g).join('-')
+                : 'no phone number added'}
             </span>
           </p>
           <p>
@@ -42,12 +45,12 @@ export const DetailsUser = ({ token }) => {
             <span>
               {data.department_name
                 ? data.department_name
-                : "no departmen added"}
+                : 'no departmen added'}
             </span>
           </p>
           <p>
             Salary:
-            <span>{data.salary ? `${data.salary}$` : "no salary added"}</span>
+            <span>{data.salary ? `${data.salary}$` : 'no salary added'}</span>
           </p>
         </div>
       </div>
