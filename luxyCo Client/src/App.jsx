@@ -5,7 +5,6 @@ import {
   RouterProvider,
   Navigate,
 } from 'react-router-dom';
-import useToken from './useToken';
 import React, { useEffect, useState } from 'react';
 
 import Login from './pages/Login';
@@ -67,16 +66,18 @@ import {
 } from './api';
 import { useAuth } from './helpers/Auth';
 import { RequireAuth } from './helpers/RequireAuth';
+import RootRouter from './RootRouter';
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
   const auth = useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const validateToken = async () => {
       try {
         if (typeof auth.token === 'string' && auth.token.length) {
           const userData = await fetchTokenValidation(auth?.token);
+
           if (userData) {
             auth.info(userData);
           } else {
@@ -97,197 +98,181 @@ const App = () => {
   const token = auth.token;
   const userInfo = auth.userInfo;
 
-  console.log('userInfo', userInfo);
+  // const router = createBrowserRouter(
+  //   createRoutesFromElements(
+  //     // <Route path="/" element={<Root userInfo={userInfo} />}>
+  //     <Route path="/" element={<Login />}>
+  //       {/* <Route index element={<Navigate to="dashboard" />} /> */}
 
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<Root userInfo={userInfo} />}>
-        <Route index element={<Navigate to="dashboard" />} />
+  //       <Route
+  //         path="dashboard"
+  //         element={
+  //           <React.Suspense fallback={<LoadingView />}>
+  //             <LazyDashboard token={token} />
+  //           </React.Suspense>
+  //         }
+  //       />
+  //       <Route
+  //         path="order"
+  //         element={
+  //           <React.Suspense fallback={<LoadingView />}>
+  //             <Order token={token} userInfo={userInfo} />
+  //           </React.Suspense>
+  //         }
+  //       >
+  //         <Route
+  //           path="createOrder"
+  //           element={<CreateOrder token={token} userInfo={userInfo} />}
+  //         />
+  //         <Route
+  //           path="edit/:id"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <EditOrder token={token} userInfo={userInfo} />
+  //             </React.Suspense>
+  //           }
+  //           loader={({ params }) => fetchOrderById({ params }, token)}
+  //         />
+  //       </Route>
+  //       <Route
+  //         path="/delivery"
+  //         element={
+  //           <React.Suspense fallback={<LoadingView />}>
+  //             <LazyDelivery token={token} />
+  //           </React.Suspense>
+  //         }
+  //       />
+  //       {/* CONTACT ROUTE */}
+  //       <Route
+  //         path="contact"
+  //         element={
+  //           <React.Suspense fallback={<LoadingView />}>
+  //             <Contact token={token} />
+  //           </React.Suspense>
+  //         }
+  //       >
+  //         <Route path="addCustomer" element={<CreateContact token={token} />} />
+  //         <Route
+  //           path="edit/:id"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <EditContact token={token} />
+  //             </React.Suspense>
+  //           }
+  //           loader={({ params }) => fetchSingleCustomer({ params }, token)}
+  //         />
 
-        <Route
-          path="dashboard"
-          element={
-            <React.Suspense fallback={<LoadingView />}>
-              <LazyDashboard token={token} />
-            </React.Suspense>
-          }
-        />
-        <Route
-          path="order"
-          element={
-            <React.Suspense fallback={<LoadingView />}>
-              <Order token={token} userInfo={userInfo} />
-            </React.Suspense>
-          }
-        >
-          <Route
-            path="createOrder"
-            element={<CreateOrder token={token} userInfo={userInfo} />}
-          />
-          <Route
-            path="edit/:id"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <EditOrder token={token} userInfo={userInfo} />
-              </React.Suspense>
-            }
-            loader={({ params }) => fetchOrderById({ params }, token)}
-          />
-        </Route>
-        <Route
-          path="/delivery"
-          element={
-            <React.Suspense fallback={<LoadingView />}>
-              <LazyDelivery token={token} />
-            </React.Suspense>
-          }
-        />
-        {/* CONTACT ROUTE */}
-        <Route
-          path="contact"
-          element={
-            <React.Suspense fallback={<LoadingView />}>
-              <Contact token={token} />
-            </React.Suspense>
-          }
-        >
-          <Route path="addCustomer" element={<CreateContact token={token} />} />
-          <Route
-            path="edit/:id"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <EditContact token={token} />
-              </React.Suspense>
-            }
-            loader={({ params }) => fetchSingleCustomer({ params }, token)}
-          />
+  //         <Route
+  //           path="details/:id"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <DetailsContact token={token} />
+  //             </React.Suspense>
+  //           }
+  //           loader={({ params }) => fetchCustomerOrders({ params }, token)}
+  //           errorElement={
+  //             // TESTING ERROR ELEMENT TO ADD NAVLINKS
+  //             <ErrorDisplayView
+  //               errorMessage="No Orders found for this user"
+  //               navigateTo1="/dashboard"
+  //               navigateTo2="/order"
+  //             />
+  //           }
+  //         />
+  //       </Route>
 
-          <Route
-            path="details/:id"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <DetailsContact token={token} />
-              </React.Suspense>
-            }
-            loader={({ params }) => fetchCustomerOrders({ params }, token)}
-            errorElement={
-              // TESTING ERROR ELEMENT TO ADD NAVLINKS
-              <ErrorDisplayView
-                errorMessage="No Orders found for this user"
-                navigateTo1="/dashboard"
-                navigateTo2="/order"
-              />
-            }
-          />
-        </Route>
+  //       <Route
+  //         path="management"
+  //         element={
+  //           <React.Suspense fallback={<LoadingView />}>
+  //             <Management token={token} />
+  //           </React.Suspense>
+  //         }
+  //       >
+  //         <Route index element={<Users token={token} userInfo={userInfo} />} />
+  //         <Route
+  //           path="users"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <Users token={token} userInfo={userInfo} />
+  //             </React.Suspense>
+  //           }
+  //         >
+  //           <Route
+  //             path="edit/:id"
+  //             element={
+  //               <React.Suspense fallback={<LoadingView />}>
+  //                 <EditUser token={token} />
+  //               </React.Suspense>
+  //             }
+  //             loader={({ params }) => fetchSingleUser({ params }, token)}
+  //           />
+  //           <Route
+  //             path="details/:id"
+  //             element={
+  //               <React.Suspense fallback={<LoadingView />}>
+  //                 <DetailsUser token={token} />
+  //               </React.Suspense>
+  //             }
+  //             loader={({ params }) => fetchSingleUser({ params }, token)}
+  //           />
+  //           <Route path="addUser" element={<CreateUser token={token} />} />
+  //         </Route>
 
-        <Route
-          path="management"
-          element={
-            <React.Suspense fallback={<LoadingView />}>
-              <Management token={token} />
-            </React.Suspense>
-          }
-        >
-          <Route index element={<Users token={token} userInfo={userInfo} />} />
-          <Route
-            path="users"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <Users token={token} userInfo={userInfo} />
-              </React.Suspense>
-            }
-          >
-            <Route
-              path="edit/:id"
-              element={
-                <React.Suspense fallback={<LoadingView />}>
-                  <EditUser token={token} />
-                </React.Suspense>
-              }
-              loader={({ params }) => fetchSingleUser({ params }, token)}
-            />
-            <Route
-              path="details/:id"
-              element={
-                <React.Suspense fallback={<LoadingView />}>
-                  <DetailsUser token={token} />
-                </React.Suspense>
-              }
-              loader={({ params }) => fetchSingleUser({ params }, token)}
-            />
-            <Route path="addUser" element={<CreateUser token={token} />} />
-          </Route>
+  //         <Route path="analytics" element={<Analytics token={token} />} />
+  //         <Route path="expenses" element={<Expenses />} />
 
-          <Route path="analytics" element={<Analytics token={token} />} />
-          <Route path="expenses" element={<Expenses />} />
+  //         <Route
+  //           path="price"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <Price token={token} />
+  //             </React.Suspense>
+  //           }
+  //         >
+  //           <Route path="addService" element={<AddService token={token} />} />
+  //         </Route>
+  //         <Route
+  //           path="orderStatus"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <OrderStatus token={token} />
+  //             </React.Suspense>
+  //           }
+  //         >
+  //           <Route path="createStatus" element={<AddStatus token={token} />} />
+  //         </Route>
 
-          <Route
-            path="price"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <Price token={token} />
-              </React.Suspense>
-            }
-          >
-            <Route path="addService" element={<AddService token={token} />} />
-          </Route>
-          <Route
-            path="orderStatus"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <OrderStatus token={token} />
-              </React.Suspense>
-            }
-          >
-            <Route path="createStatus" element={<AddStatus token={token} />} />
-          </Route>
+  //         <Route
+  //           path="inventory"
+  //           element={
+  //             <React.Suspense fallback={<LoadingView />}>
+  //               <Inventory token={token} />
+  //             </React.Suspense>
+  //           }
+  //         >
+  //           <Route
+  //             path="add-inventory"
+  //             element={<CreateInventory token={token} />}
+  //           />
 
-          <Route
-            path="inventory"
-            element={
-              <React.Suspense fallback={<LoadingView />}>
-                <Inventory token={token} />
-              </React.Suspense>
-            }
-          >
-            <Route
-              path="add-inventory"
-              element={<CreateInventory token={token} />}
-            />
+  //           <Route
+  //             path="updateInventory/:id"
+  //             element={<UpdateInventory token={token} />}
+  //           />
+  //           <Route
+  //             path="addInventoryCategory"
+  //             element={<CreateNewCategory token={token} />}
+  //           />
+  //         </Route>
+  //       </Route>
 
-            <Route
-              path="updateInventory/:id"
-              element={<UpdateInventory token={token} />}
-            />
-            <Route
-              path="addInventoryCategory"
-              element={<CreateNewCategory token={token} />}
-            />
-          </Route>
-        </Route>
+  //       <Route path="*" element={<p>Error</p>}></Route>
+  //     </Route>
+  //   )
+  // );
 
-        {/* BUG  THIS SHOULD BE ERROR ELEMENT BUT I ADDED BECAUSE PREVENTING ME USER LOGIN ERROR  BUG*/}
-        {/* Mistake came from the user info in some point I'm losing the data from USERINFO and that way I have FLICKER PROBLEM with managment I need to fix prevent losing the data !!!!!! vazno */}
-        <Route path="*" element={<p></p>}></Route>
-        {/* <Route
-          path="*"
-          element={
-            <ErrorDisplayView
-              errorMessage="Page not found"
-              navigateTo1={"order"}
-            />
-          }
-        /> */}
-      </Route>
-    )
-  );
-
-  return (
-    <div>
-      {loading ? <p>loading...</p> : <RouterProvider router={router} />}
-    </div>
-  );
+  return <div>{loading ? <p>loading...</p> : <RootRouter />}</div>;
 
   // return (
   //   <div>

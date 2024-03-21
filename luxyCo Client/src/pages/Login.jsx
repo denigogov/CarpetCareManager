@@ -1,18 +1,22 @@
 import '../sass/_login.scss';
 import loginIcon from '../assets/icon-user.svg';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useAuth } from '../helpers/Auth';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const Login = ({ setToken, setUserInfo }) => {
+const Login = () => {
   const [username, setUsername] = useState('demo');
   const [password, setPassword] = useState('demo123');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const auth = useAuth();
+
+  const redirectPath = location.state?.path || '/';
 
   const loginResponse = async credentials => {
     setLoading(true);
@@ -29,7 +33,8 @@ const Login = ({ setToken, setUserInfo }) => {
       if (!response.ok) {
         throw new Error();
       }
-      setUserInfo(data);
+      auth.info(data);
+
       return data.token;
     } catch (error) {
       setError('Wrong password or username');
@@ -46,6 +51,7 @@ const Login = ({ setToken, setUserInfo }) => {
     });
 
     auth.login(token);
+    navigate(redirectPath, { replace: true });
   };
 
   return (
@@ -141,9 +147,6 @@ const Login = ({ setToken, setUserInfo }) => {
       <p className="errorMessage">{error}</p>
     </div>
   );
-};
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
 };
 
 export default Login;
