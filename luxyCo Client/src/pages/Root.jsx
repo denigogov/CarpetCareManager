@@ -5,6 +5,7 @@ import githubIcon from '../assets/githubIcon.svg';
 import linkedInIcon from '../assets/linkedInIcon.svg';
 import { useState } from 'react';
 import { useAuth } from '../helpers/Auth';
+import { OwnerAuth } from '../helpers/OwnerAuth';
 
 const Root = ({ userInfo }) => {
   const navigate = useNavigate();
@@ -92,7 +93,8 @@ const Root = ({ userInfo }) => {
                   {/* <span className="tooltip">Contact</span> */}
                 </li>
               </NavLink>
-              {(userInfo?.department === 2 || userInfo?.department === 3) && (
+
+              {auth.userInfo.department === 1 || (
                 <NavLink
                   to="management"
                   className={({ isActive, isPending }) =>

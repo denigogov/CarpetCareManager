@@ -1,10 +1,12 @@
-import { useLoaderData } from "react-router-dom";
-import "../../sass/management/_editUser.scss";
-import { useEffect, useState } from "react";
-import { fetchTableDepartment } from "../../api";
-import useSWR, { useSWRConfig } from "swr";
-import ApiSendRequestMessage from "../../components/ApiSendRequestMessage";
-import Swal from "sweetalert2";
+import { useLoaderData } from 'react-router-dom';
+import '../../sass/management/_editUser.scss';
+import { useEffect, useState } from 'react';
+import { fetchTableDepartment } from '../../api';
+import useSWR, { useSWRConfig } from 'swr';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import Swal from 'sweetalert2';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const EditUser = ({ token }) => {
   const data = useLoaderData(token);
@@ -12,64 +14,61 @@ const EditUser = ({ token }) => {
 
   const [formData, setFormData] = useState(data);
   const [departments, setDepartments] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [success, setSucces] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSucces] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchTableDepartment(token);
-      const filteredData = data?.filter((department) => department?.id !== 3);
+      const filteredData = data?.filter(department => department?.id !== 3);
 
       setDepartments(filteredData);
     };
 
     if (success) {
       Swal.fire({
-        position: "center",
-        icon: "success",
-        iconColor: "#da0063",
+        position: 'center',
+        icon: 'success',
+        iconColor: '#da0063',
         title: `${success}!`,
         showConfirmButton: false,
         timer: 2500,
       });
-      setSucces("");
+      setSucces('');
     }
 
     fetchData();
   }, [success]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    const convertedValue = name === "department_id" ? parseInt(value) : value;
+    const convertedValue = name === 'department_id' ? parseInt(value) : value;
 
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name]: convertedValue,
     }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async e => {
     e.preventDefault();
 
     const { id, department_name, ...requestData } = formData;
 
     try {
-      const response = await fetch(
-        `https://carpetcare.onrender.com/user/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/user/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestData),
+      });
 
       if (response.ok) {
-        mutate("https://carpetcare.onrender.com/user");
-        setSucces("user updated");
-        setErrorMessage("");
+        mutate(`${BASE_URL}/user`);
+        setSucces('user updated');
+        setErrorMessage('');
       } else throw Error();
     } catch (err) {
       setErrorMessage(`update faild, please try again ${err}`);
@@ -80,7 +79,7 @@ const EditUser = ({ token }) => {
     <div className="editUser">
       <div className="editUser--title">
         <h3>User Update</h3>
-        <p style={{ color: "#da0063" }}>{data.first_name}</p>
+        <p style={{ color: '#da0063' }}>{data.first_name}</p>
       </div>
 
       <form>

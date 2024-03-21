@@ -1,29 +1,31 @@
-import "../../sass/management/_users.scss";
+import '../../sass/management/_users.scss';
 // import deleteIcon from "../../assets/deleteIcon.svg";
-import deleteUserIcon from "../../assets/deleteIcon.svg";
-import editIcon from "../../assets/editIcon.svg";
-import detailsIcon from "../../assets/detailsIcon.svg";
-import addUserIcon from "../../assets/addUserIcon.svg";
-import { Outlet, Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import LoadingView from "../../components/LoadingView";
+import deleteUserIcon from '../../assets/deleteIcon.svg';
+import editIcon from '../../assets/editIcon.svg';
+import detailsIcon from '../../assets/detailsIcon.svg';
+import addUserIcon from '../../assets/addUserIcon.svg';
+import { Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import LoadingView from '../../components/LoadingView';
 
-import useSWR, { useSWRConfig } from "swr";
-import ErrorDisplayView from "../../components/ErrorDisplayView";
-import ApiSendRequestMessage from "../../components/ApiSendRequestMessage";
-import Swal from "sweetalert2";
+import useSWR, { useSWRConfig } from 'swr';
+import ErrorDisplayView from '../../components/ErrorDisplayView';
+import ApiSendRequestMessage from '../../components/ApiSendRequestMessage';
+import Swal from 'sweetalert2';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Users = ({ token, userInfo }) => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
   const [popupOpen, setPopupOpen] = useState(false);
-  const [success, setSucces] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSucces] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const isPhone = window.innerWidth < 1022;
 
-  const fetcher = async (url) => {
+  const fetcher = async url => {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,49 +36,46 @@ const Users = ({ token, userInfo }) => {
   };
 
   // To Render ERROR ,DATA and WHEN DATA IS LOAD!
-  const { data, error, isLoading } = useSWR(
-    "https://carpetcare.onrender.com/user",
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR(`${BASE_URL}/user`, fetcher);
 
-  const filteredData = data?.filter((user) => user?.id !== 145);
+  const filteredData = data?.filter(user => user?.id !== 145);
 
   const deleteUser = async (id, first_name) => {
     try {
       const sendMessage = Swal.fire({
-        title: "Delete User",
+        title: 'Delete User',
         html: `Please confirm if you want to delete this user <strong>${first_name.toUpperCase()}</strong> all data related to the user will be lost.`,
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#da0063",
-        iconColor: "#da0063",
-        cancelButtonColor: "#b7b7b7",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: '#da0063',
+        iconColor: '#da0063',
+        cancelButtonColor: '#b7b7b7',
+        confirmButtonText: 'Yes, delete it!',
       });
 
       if ((await sendMessage).isConfirmed) {
-        await fetch(`https://carpetcare.onrender.com/user/${id}`, {
-          method: "DELETE",
+        await fetch(`${BASE_URL}/user/${id}`, {
+          method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        mutate("https://carpetcare.onrender.com/user"); // mutate is  Refresh the users data
-        setSucces("User Deleted");
-        setErrorMessage("");
+        mutate(`${BASE_URL}/user`); // mutate is  Refresh the users data
+        setSucces('User Deleted');
+        setErrorMessage('');
 
         Swal.fire({
-          position: "center",
-          icon: "success",
-          iconColor: "#da0063",
+          position: 'center',
+          icon: 'success',
+          iconColor: '#da0063',
           title: `${success}!`,
           showConfirmButton: false,
           timer: 2500,
         });
       }
     } catch (error) {
-      setErrorMessage("Error deleting user", error);
+      setErrorMessage('Error deleting user', error);
     }
   };
 
@@ -92,13 +91,13 @@ const Users = ({ token, userInfo }) => {
   if (isLoading) return <LoadingView />;
 
   // Event handler stop bubbling
-  const preventPropagation = (event) => {
+  const preventPropagation = event => {
     event.stopPropagation();
   };
 
   const popupWindow = () => {
-    setPopupOpen((x) => !x);
-    navigate("/management/users/");
+    setPopupOpen(x => !x);
+    navigate('/management/users/');
   };
 
   return (
@@ -109,7 +108,7 @@ const Users = ({ token, userInfo }) => {
             <div className="createUserIcon">
               <Link
                 to={`/management/users/addUser/`}
-                onClick={() => setPopupOpen((x) => !x)}
+                onClick={() => setPopupOpen(x => !x)}
               >
                 <img src={addUserIcon} alt="create new user icon" />
               </Link>
@@ -121,7 +120,7 @@ const Users = ({ token, userInfo }) => {
               <th>
                 <Link
                   to={`/management/users/addUser/`}
-                  onClick={() => setPopupOpen((x) => !x)}
+                  onClick={() => setPopupOpen(x => !x)}
                 >
                   <img src={addUserIcon} alt="create new user icon" />
                 </Link>
@@ -148,7 +147,7 @@ const Users = ({ token, userInfo }) => {
                   <td data-cell="Details">
                     <Link
                       to={`/management/users/details/${users.id}`}
-                      onClick={() => setPopupOpen((x) => !x)}
+                      onClick={() => setPopupOpen(x => !x)}
                     >
                       <img src={detailsIcon} alt="user details Icon" />
                     </Link>
