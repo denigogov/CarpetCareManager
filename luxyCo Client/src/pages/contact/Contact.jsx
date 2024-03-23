@@ -30,14 +30,14 @@ const Contact = () => {
     error: fetchCustomersError,
     isLoading: fetchCustomersLoading,
   } = useSWR(['fetchCustomers', token], () => fetchTableCustomers(token), {
-    refreshInterval: 1000, // Refresh data every 1 seconds
+    // refreshInterval: 1000, // Refresh data every 1 seconds
   });
 
   // if (fetchCustomersError) return <h6>{fetchCustomersError.message}</h6>; // I need to add personal error messages!
   // if (fetchCustomersError) return <h6>{fetchCustomersError.message}</h6>; // I need to add personal error messages!
   if (fetchCustomersLoading) return <LoadingView />; // I need to add personal error messages!
 
-  const filteredCustomerResults = fetchCustomers.filter(customer => {
+  const filteredCustomerResults = fetchCustomers?.filter(customer => {
     const searchValue = inputSearchCustomer.toLowerCase().trim();
 
     const searchByFirstName = customer.first_name

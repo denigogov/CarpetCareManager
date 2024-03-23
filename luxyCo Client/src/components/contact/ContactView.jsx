@@ -1,9 +1,9 @@
-import "../../sass/contact/_contactView.scss";
-import detailsIcon from "../../assets/detailsIcon.svg";
-import deleteCustomerIcon from "../../assets/deleteIcon.svg";
-import editCustomerIcon from "../../assets/editIcon.svg";
-import { Link } from "react-router-dom";
-import ApiSendRequestMessage from "../ApiSendRequestMessage";
+import '../../sass/contact/_contactView.scss';
+import detailsIcon from '../../assets/detailsIcon.svg';
+import deleteCustomerIcon from '../../assets/deleteIcon.svg';
+import editCustomerIcon from '../../assets/editIcon.svg';
+import { Link } from 'react-router-dom';
+import ApiSendRequestMessage from '../ApiSendRequestMessage';
 
 const ContactView = ({
   filteredCustomerResults,
@@ -30,7 +30,7 @@ const ContactView = ({
             </tr>
           </thead>
           <tbody>
-            {filteredCustomerResults.map((customer) => {
+            {filteredCustomerResults?.map(customer => {
               return (
                 <tr key={customer.id}>
                   <td data-cell="First Name">{customer.first_name}</td>
@@ -39,7 +39,7 @@ const ContactView = ({
                   <td data-cell="City">{customer.city}</td>
                   <td data-cell="Postal Code">{customer.postalCode}</td>
                   <td data-cell="Phone">
-                    {customer.phone_number.match(/.{1,3}/g).join("-")}
+                    {customer.phone_number.match(/.{1,3}/g).join('-')}
                   </td>
 
                   <td data-cell="Details">
@@ -49,7 +49,7 @@ const ContactView = ({
                           ? `/contact/details/${customer.id}`
                           : `/contact/`
                       }
-                      onClick={() => setPopupOpen((x) => !x)}
+                      onClick={() => setPopupOpen(x => !x)}
                     >
                       <img src={detailsIcon} alt="customer details icon" />
                     </Link>
@@ -58,7 +58,7 @@ const ContactView = ({
                   <td data-cell="Edit">
                     <Link
                       to={`/contact/edit/${customer.id}`}
-                      onClick={() => setPopupOpen((x) => !x)}
+                      onClick={() => setPopupOpen(x => !x)}
                     >
                       <img src={editCustomerIcon} alt="customer edit icon" />
                     </Link>
@@ -80,7 +80,7 @@ const ContactView = ({
                 </tr>
               );
             })}
-            {!filteredCustomerResults.length && (
+            {!filteredCustomerResults?.length && (
               <tr>
                 <td data-cell="Status" colSpan="11">
                   No customer found

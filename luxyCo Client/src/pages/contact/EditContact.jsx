@@ -22,7 +22,12 @@ const EditContact = () => {
   const postalCodeRef = useRef(null);
   const customerInputData = useRef(null);
 
-  const fethcSingleUserData = useLoaderData(token);
+  const fethcSingleUserDatas = useLoaderData(token);
+
+  const fethcSingleUserData = fethcSingleUserDatas
+    ? fethcSingleUserDatas[0]
+    : [];
+
   const { data: fetchCustomers } = useSWR(['fetchCustomers', token]);
 
   const handleUpdateInput = e => {
