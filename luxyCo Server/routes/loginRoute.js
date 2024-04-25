@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const rateLimit = require('express-rate-limit');
@@ -28,7 +29,7 @@ router
 //every 12 minutes!
 cron.schedule('*/12 * * * *', async () => {
   try {
-    await fetch('https://carpetcare.onrender.com/login', {
+    await fetch(process.env.CRONJOBURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
