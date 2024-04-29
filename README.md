@@ -1,9 +1,5 @@
-# CarpetCareManager ![Static Badge](https://img.shields.io/badge/Online-https%3A%2F%2Fcarpetcaremanager.onrender.com%2F-red?link=carpetcaremanager.onrender.com) ![GitHub Release](https://img.shields.io/github/v/release/denigogov/CarpetCareManager) [![GitHub Release Date](https://img.shields.io/github/release-date/denigogov/CarpetCareManager) ](https://carpetcaremanager.onrender.com/) 
-
-
-
-
-
+# CarpetCareManager ![Static Badge](https://img.shields.io/badge/Online-https%3A%2F%2Fcarpetcaremanager.onrender.com%2F-%23da0063?style=flat-square&logoSize=autp&link=https%3A%2F%2Fcarpetcaremanager.onrender.com%2F) 
+![GitHub Release](https://img.shields.io/github/v/release/denigogov/CarpetCareManager) [![GitHub Release Date](https://img.shields.io/github/release-date/denigogov/CarpetCareManager) ](https://carpetcaremanager.onrender.com/) 
 
  
 CarpetCareManager is a comprehensive carpet cleaning service management app designed to optimize the operations of carpet cleaning businesses. With an intuitive user interface and powerful features, it simplifies order management, tracks inventory, and provides valuable insights into business performance.
