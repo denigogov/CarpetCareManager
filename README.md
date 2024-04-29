@@ -1,23 +1,25 @@
-# CarpetCareManager
+# CarpetCareManager ![Static Badge](https://img.shields.io/badge/Online-https%3A%2F%2Fcarpetcaremanager.onrender.com%2F-red?link=carpetcaremanager.onrender.com) ![GitHub Release](https://img.shields.io/github/v/release/denigogov/CarpetCareManager) [![GitHub Release Date](https://img.shields.io/github/release-date/denigogov/CarpetCareManager) ](https://carpetcaremanager.onrender.com/) 
 
+
+
+
+
+
+ 
 CarpetCareManager is a comprehensive carpet cleaning service management app designed to optimize the operations of carpet cleaning businesses. With an intuitive user interface and powerful features, it simplifies order management, tracks inventory, and provides valuable insights into business performance.
 
+**Project Status:**  This project is currently under development. I'm thrilled to announce the new version of CarpetCareManager! After carefully refactoring the codebase and incorporating lessons learned from previous projects, I've redesigned and improved the app's structure and functionality. This new version marks the beginning of a journey toward continuous improvement, with plans to add even more features and enhancements in the future.
 
 
-**Project Status:** This project is currently under development. While it's a work in progress, you can access the live version of the application [here](https://carpetcaremanager.onrender.com/).
 
-To access the live app, please use the following login credentials:
+
+
+To access the  [live](https://carpetcaremanager.onrender.com/) app, please use the following login credentials:
 
 - **Username:** demo
 - **Password:** demo123
 
 Please note that this is a development version, and the login credentials are provided for testing purposes.
-
-
-
-<p align="center">
-
-  <img src="./luxyCo%20Client/src/assets/demoApp.gif" alt="App gif" width="500px" />
 
 ## Purpose
 
@@ -95,5 +97,3 @@ We welcome contributions to improve CarpetCareManager. If you encounter any issu
 ## License
 
 CarpetCareManager is released under the ISC License.
-
-This README.md is for the app's phase 2 completion. The app is approximately 70% complete, and the remaining features (Users, Analytics, Expenses, Prices, Inventory) will be implemented in phase 3.
