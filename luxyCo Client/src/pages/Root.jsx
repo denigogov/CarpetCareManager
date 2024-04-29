@@ -14,6 +14,7 @@ const Root = ({ userInfo }) => {
   const isPhone = window.innerWidth < 768;
 
   const [openNavBar, setOpenNavBar] = useState(!isPhone);
+  const [clickOnMenuLink, setClickOnMenuLink] = useState(false);
 
   const logoutHandler = () => {
     auth.logout();
@@ -21,8 +22,15 @@ const Root = ({ userInfo }) => {
 
   const handleNavBar = () => {
     setOpenNavBar(e => !e);
+    setClickOnMenuLink(false);
   };
 
+  const handleCloseNavOnItemClick = () => {
+    if (isPhone) {
+      setClickOnMenuLink(e => !e);
+      setOpenNavBar(false);
+    }
+  };
   return (
     <div className="rootContainer">
       <div className="navbarContainer">
@@ -43,7 +51,7 @@ const Root = ({ userInfo }) => {
           </div>
           <div className="userLoggedin">{userInfo?.name ?? ''}</div>
 
-          <nav className="mainNavBar">
+          <nav className="mainNavBar" onClick={handleCloseNavOnItemClick}>
             <ul>
               <NavLink
                 to="dashboard"
